@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>King's Hand — Demo Web</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#132033; --navy-2:#1d2d45; --gold:#F5B82E; --orange:#F39A1E;
+  --bg:#F3F1EC; --card:#fff; --line:#E3DFD6; --ink:#1f2633; --mute:#6b7280;
+  --green:#2f9e6a; --red:#d6544f; --amber:#d99a1c; --blue:#2f6fd6;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Plus Jakarta Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.brand{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-size:22px;color:var(--gold);text-decoration:none}
+.brand img{height:26px}
+.demo-bar{background:var(--gold);color:var(--navy);font-size:13px;padding:6px 16px;text-align:center}
+.demo-bar button{background:none;border:0;text-decoration:underline;color:inherit;font-weight:600;padding:0 4px}
+
+/* login */
+#login{min-height:calc(100vh - 32px);display:grid;grid-template-columns:1.1fr 1fr}
+.login-side{background:var(--navy);color:#e8ecf3;padding:56px;display:flex;flex-direction:column;justify-content:space-between}
+.login-side h1{font-family:Fraunces,serif;font-size:44px;line-height:1.1;margin:0 0 16px;color:#fff;max-width:14ch}
+.login-side p{max-width:46ch;color:#b9c3d3}
+.login-form{display:flex;align-items:center;justify-content:center;padding:32px}
+.login-form form{width:100%;max-width:360px}
+.login-form h2{margin:0 0 4px;font-size:24px}
+label{display:block;font-size:13px;font-weight:600;margin:16px 0 6px}
+input,textarea,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}
+textarea{min-height:110px;resize:vertical}
+.hint{font-size:13px;color:var(--mute);background:#fff8e6;border:1px solid #f3dfa8;border-radius:8px;padding:10px 12px;margin-top:16px}
+.err{color:var(--red);font-size:13px;min-height:20px;margin-top:8px}
+
+.btn{border:0;border-radius:8px;padding:10px 16px;font-weight:600}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn-green{background:var(--green);color:#fff}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-red{background:#fff;color:var(--red);border:1px solid #f0c4c2}
+.btn-block{width:100%;margin-top:20px}
+
+/* app */
+#app{display:none}
+header.top{background:var(--navy);color:#fff;position:sticky;top:0;z-index:10}
+.top-in{max-width:1180px;margin:auto;display:flex;align-items:center;gap:32px;padding:14px 24px}
+nav.main{display:flex;gap:4px;flex:1}
+nav.main button{background:none;border:0;color:#c9d2e0;padding:8px 14px;border-radius:8px;font-weight:600}
+nav.main button[aria-current="page"]{color:#fff;background:var(--navy-2)}
+.top-actions{display:flex;align-items:center;gap:12px;position:relative}
+.icon-btn{background:none;border:0;color:#fff;padding:6px;position:relative}
+.icon-btn svg{width:20px;height:20px;display:block}
+.dot{position:absolute;top:2px;right:2px;background:var(--orange);color:#fff;font-size:10px;border-radius:9px;min-width:16px;height:16px;line-height:16px;text-align:center;padding:0 3px}
+.profile-btn{background:none;border:1px solid var(--gold);color:#fff;border-radius:10px;padding:6px 14px;font-weight:600}
+.notif-panel{position:absolute;right:90px;top:44px;width:320px;background:#fff;color:var(--ink);border-radius:12px;box-shadow:0 12px 32px rgba(19,32,51,.18);padding:8px;display:none}
+.notif-panel.open{display:block}
+.notif-panel h3{font-size:14px;margin:8px 10px}
+.notif-item{padding:10px;border-radius:8px;font-size:13px}
+.notif-item.unread{background:#fff8e6}
+.notif-item small{display:block;color:var(--mute)}
+.menu-toggle{display:none}
+
+main{max-width:1180px;margin:auto;padding:32px 24px 64px}
+.page{display:none}
+.page.active{display:block}
+.head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.head h1{font-size:30px;margin:0}
+.role{background:var(--orange);color:#fff;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.stat{display:flex;flex-direction:column;gap:2px;text-align:left;border:1px solid var(--line);background:#fff;border-radius:14px;padding:18px 20px}
+.stat:hover{border-color:var(--navy)}
+.stat .n{font-size:34px;font-weight:700;line-height:1.1}
+.stat .l{color:var(--mute);font-size:14px}
+.grid2{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;align-items:start}
+.section-title{font-size:16px;font-weight:700;margin:0 0 12px}
+.plist{display:flex;flex-direction:column;gap:10px}
+.pitem{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.pitem:hover{border-color:var(--navy)}
+.pitem strong{display:block}
+.pitem small{color:var(--mute)}
+.badge{font-size:12px;font-weight:700;border-radius:20px;padding:3px 10px;white-space:nowrap}
+.s-active{background:#e3f4ec;color:var(--green)}
+.s-inactive{background:#e6eaf0;color:#4b5a70}
+.s-pending{background:#fbf0d9;color:var(--amber)}
+.s-rejected{background:#eee;color:#666}
+.notif-list .notif-item{border-bottom:1px solid var(--line);border-radius:0}
+.notif-list .notif-item:last-child{border:0}
+.empty{color:var(--mute);padding:16px;text-align:center}
+
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.toolbar input{max-width:280px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 12px;font-size:13px;font-weight:600}
+.chip[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* detail */
+.back{background:none;border:0;color:var(--navy);font-weight:600;padding:0;margin-bottom:16px}
+.detail-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-top:20px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0}
+.facts dt{color:var(--mute)}
+.facts dd{margin:0;font-weight:600}
+.progress{height:10px;background:#eee;border-radius:5px;overflow:hidden;margin-top:6px}
+.progress span{display:block;height:100%;background:var(--green)}
+.chart svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--mute);margin-top:6px}
+.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.reports{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+.files{list-style:none;padding:0;margin:12px 0 0;font-size:14px}
+.files li{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+.files small{color:var(--mute)}
+.upload input[type=file]{display:none}
+.upload label{display:inline-block;margin:0;cursor:pointer}
+
+/* proposal */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.form-grid .full{grid-column:1/-1}
+.statement{font-size:13px;color:var(--mute);background:#faf9f6;border:1px dashed var(--line);border-radius:8px;padding:12px;margin-top:16px}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--mute);font-weight:600}
+
+/* profile */
+.profile-grid{display:grid;grid-template-columns:300px 1fr;gap:20px}
+.avatar{width:96px;height:96px;border-radius:50%;background:var(--navy);color:var(--gold);display:grid;place-items:center;font-family:Fraunces,serif;font-size:36px;margin-bottom:12px}
+.kv{display:grid;grid-template-columns:160px 1fr;gap:4px 16px;align-items:center}
+.kv input[readonly]{border-color:transparent;background:transparent;padding-left:0;font-weight:600}
+.mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.mini-stats div{background:#faf9f6;border-radius:10px;padding:12px}
+.mini-stats b{display:block;font-size:22px}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:12px 18px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+@media (max-width:860px){
+  #login{grid-template-columns:1fr}
+  .login-side{padding:32px}
+  .login-side h1{font-size:32px}
+  .stats,.grid2,.detail-grid,.reports,.profile-grid,.form-grid{grid-template-columns:1fr}
+  .top-in{gap:12px;flex-wrap:wrap}
+  nav.main{order:3;flex-basis:100%;overflow-x:auto}
+  .top-actions{margin-left:auto}
+  .notif-panel{right:0;width:min(320px,90vw)}
+  .kv{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="demo-bar">Versi web untuk demo. Data contoh tersimpan di browser Anda. <button id="resetBtn" type="button">Reset data</button></div>
+
+<!-- LOGIN -->
+<section id="login">
+  <div class="login-side">
+    <a class="brand" href="#"><img src="logo.png" alt="">King's Hand</a>
+    <div>
+      <h1>Pantau proyek dari proposal sampai laporan.</h1>
+      <p>Aplikasi untuk penanggung jawab proyek: ajukan proposal, pantau status dan progres, unggah laporan keuangan dan perkembangan, semuanya di satu tempat.</p>
+    </div>
+    <p style="font-size:13px">Tugas Besar IF2050 Dasar Rekayasa Perangkat Lunak, ITB 2025.</p>
+  </div>
+  <div class="login-form">
+    <form id="loginForm" novalidate>
+      <h2>Masuk</h2>
+      <p style="color:var(--mute);margin:0">Masuk sebagai penanggung jawab proyek.</p>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" value="demo@kingshand.id">
+      <label for="pw">Kata sandi</label>
+      <input id="pw" type="password" autocomplete="current-password" value="demo123">
+      <div class="err" id="loginErr" role="alert"></div>
+      <button class="btn btn-primary btn-block" type="submit">Masuk</button>
+      <div class="hint">Akun demo sudah terisi: <b>demo@kingshand.id</b> / <b>demo123</b>.</div>
+    </form>
+  </div>
+</section>
+
+<!-- APP -->
+<div id="app">
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#" data-go="dashboard"><img src="logo.png" alt="">King's Hand</a>
+    <nav class="main" aria-label="Menu utama">
+      <button data-go="dashboard">Dashboard</button>
+      <button data-go="projects">Proyek</button>
+      <button data-go="proposal">Proposal</button>
+    </nav>
+    <div class="top-actions">
+      <button class="icon-btn" id="bellBtn" aria-label="Notifikasi" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="dot" id="bellDot"></span>
+      </button>
+      <div class="notif-panel" id="notifPanel" role="dialog" aria-label="Notifikasi">
+        <h3>Notifikasi admin</h3>
+        <div id="notifPanelList"></div>
+      </div>
+      <button class="profile-btn" data-go="profile">Profil</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- DASHBOARD -->
+  <section class="page" id="p-dashboard">
+    <div class="head"><h1 id="hello">Halo</h1><span class="role">Penanggung jawab</span></div>
+    <div class="stats" id="stats"></div>
+    <div class="grid2">
+      <div>
+        <h2 class="section-title">Proyek terbaru</h2>
+        <div class="plist" id="dashList"></div>
+      </div>
+      <div class="card">
+        <h2 class="section-title">Notifikasi admin</h2>
+        <div class="notif-list" id="dashNotif"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="page" id="p-projects">
+    <div class="head"><h1>Daftar proyek</h1></div>
+    <div class="toolbar">
+      <input id="q" type="search" placeholder="Cari nama atau lokasi" aria-label="Cari proyek">
+      <div class="chips" id="filterChips" role="group" aria-label="Filter status"></div>
+    </div>
+    <div class="plist" id="projList"></div>
+  </section>
+
+  <!-- DETAIL -->
+  <section class="page" id="p-detail">
+    <button class="back" data-go="projects">← Kembali ke daftar proyek</button>
+    <div id="detail"></div>
+  </section>
+
+  <!-- PROPOSAL -->
+  <section class="page" id="p-proposal">
+    <div class="head"><h1>Proposal</h1></div>
+    <div class="grid2">
+      <form class="card" id="propForm">
+        <h2 class="section-title">Ajukan proposal baru</h2>
+        <div class="form-grid">
+          <div class="full"><label for="fJudul">Judul proyek</label><input id="fJudul" required></div>
+          <div><label for="fLokasi">Lokasi</label><input id="fLokasi" required></div>
+          <div><label for="fTarget">Target penerima manfaat</label><input id="fTarget" required></div>
+          <div><label for="fDana">Kebutuhan dana (Rp juta)</label><input id="fDana" type="number" min="1" required></div>
+          <div><label for="fMulai">Rencana mulai</label><input id="fMulai" type="month" required></div>
+          <div class="full"><label for="fDesk">Deskripsi singkat</label><textarea id="fDesk" required></textarea></div>
+          <div class="full upload"><label class="btn btn-ghost" for="fFile">Lampirkan file proposal (PDF)</label><input id="fFile" type="file" accept=".pdf"> <small id="fFileName" style="color:var(--mute)"></small></div>
+        </div>
+        <p class="statement">Dengan mengajukan proposal ini, saya menyatakan data di atas benar dan bersedia mempertanggungjawabkan penggunaan dana proyek.</p>
+        <div class="err" id="propErr" role="alert"></div>
+        <div class="row-actions"><button class="btn btn-primary" type="submit" id="propSubmit">Ajukan proposal</button><button class="btn btn-ghost" type="button" id="propCancel" hidden>Batal edit</button></div>
+      </form>
+      <div class="card">
+        <h2 class="section-title">Proposal saya</h2>
+        <div style="overflow-x:auto"><table><thead><tr><th>Judul</th><th>Status</th><th></th></tr></thead><tbody id="propTable"></tbody></table></div>
+        <p style="font-size:13px;color:var(--mute)">Di aplikasi asli, admin yang mengevaluasi. Di demo ini, tombol <b>Simulasikan evaluasi</b> memerankan admin.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="page" id="p-profile">
+    <div class="head"><h1>Profil</h1><span class="role">Penanggung jawab</span></div>
+    <div class="profile-grid">
+      <div class="card">
+        <div class="avatar" id="avatar">D</div>
+        <h2 style="margin:0 0 4px;font-size:20px" id="pName"></h2>
+        <p style="margin:0;color:var(--mute)" id="pOrg"></p>
+        <div class="mini-stats" style="grid-template-columns:1fr">
+          <div><small>Penyelesaian proyek</small><b id="pDone"></b></div>
+        </div>
+        <button class="btn btn-red btn-block" id="logoutBtn">Keluar</button>
+      </div>
+      <form class="card" id="profileForm">
+        <h2 class="section-title">Data pribadi</h2>
+        <div class="kv">
+          <label for="uName">Nama lengkap</label><input id="uName" readonly>
+          <label for="uEmail">Email</label><input id="uEmail" type="email" readonly>
+          <label for="uOrg">Lembaga</label><input id="uOrg" readonly>
+          <label for="uPhone">No. telepon</label><input id="uPhone" readonly>
+          <span style="font-size:13px;font-weight:600">Tanggal bergabung</span><span id="uJoin" style="font-weight:600"></span>
+        </div>
+        <div class="mini-stats" id="pStats"></div>
+        <div class="row-actions"><button class="btn btn-gold" type="button" id="editProfile">Ubah profil</button><button class="btn btn-primary" type="submit" id="saveProfile" hidden>Simpan</button><button class="btn btn-ghost" type="button" id="cancelProfile" hidden>Batal</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const DEMO_USER = {email:"demo@kingshand.id", password:"demo123"};
+const SEED = {
+  user:{name:"Dinda Pratama", email:"demo@kingshand.id", org:"Yayasan Nusa Mandiri", phone:"0812-3456-7890", join:"2025-02-12"},
+  projects:[
+    {id:1,name:"Cafe Le' de Jainero",lokasi:"Dago, Bandung",target:"Mahasiswa & wisatawan lokal",desc:"Kedai kopi modern dengan konsep fusion tropis dan sentuhan seni lokal.",status:"active",dana:500,start:"2025-01",progress:[8,17,26,38,47,55,63],spend:[30,60,95,160,210,250,290],reports:{keu:[{name:"Laporan-Keuangan-Q1.pdf",date:"2025-04-02"}],dev:[{name:"Progres-Renovasi-Maret.pdf",date:"2025-03-30"}]}},
+    {id:2,name:"Sekolah Luar Biasa Papua",lokasi:"Jayapura, Papua",target:"Anak berkebutuhan khusus",desc:"Pembangunan sekolah khusus untuk anak berkebutuhan di Papua.",status:"active",dana:1000,start:"2024-11",progress:[5,12,20,29,35,44,52],spend:[80,160,250,360,430,520,600],reports:{keu:[],dev:[{name:"Foto-Pondasi.pdf",date:"2025-02-14"}]}},
+    {id:3,name:"Wisata Alam Curug Telu",lokasi:"Lembang, Bandung Barat",target:"Wisatawan keluarga",desc:"Pengembangan jalur trekking dan fasilitas eco tourism di sekitar air terjun.",status:"pending",dana:750,start:"2025-07",progress:[],spend:[],reports:{keu:[],dev:[]}},
+    {id:4,name:"Bank Sampah Cikutra",lokasi:"Cikutra, Bandung",target:"Warga RW 05",desc:"Unit bank sampah warga dengan sistem tabungan dan pemilahan.",status:"active",dana:120,start:"2025-02",progress:[15,30,48,60,72,81,90],spend:[10,25,40,55,70,85,100],reports:{keu:[{name:"Kas-Bank-Sampah-Mei.pdf",date:"2025-06-01"}],dev:[]}},
+    {id:5,name:"Perpustakaan Keliling Garut",lokasi:"Garut",target:"Siswa SD pedesaan",desc:"Mobil perpustakaan keliling yang mengunjungi 12 desa secara bergilir.",status:"inactive",dana:200,start:"2024-06",progress:[20,40,60,80,100,100,100],spend:[40,80,120,160,195,198,198],reports:{keu:[{name:"Laporan-Akhir-Keuangan.pdf",date:"2025-01-10"}],dev:[{name:"Laporan-Akhir-Program.pdf",date:"2025-01-10"}]}},
+    {id:6,name:"Klinik Desa Sukamaju",lokasi:"Sukamaju, Sumedang",target:"Warga desa",desc:"Renovasi pos kesehatan desa dan pengadaan alat dasar.",status:"active",dana:350,start:"2025-03",progress:[10,22,31,40,52,60,66],spend:[20,55,90,130,170,200,225],reports:{keu:[],dev:[]}},
+    {id:7,name:"Pelatihan UMKM Digital",lokasi:"Cimahi",target:"Pelaku UMKM",desc:"Pelatihan pemasaran digital dan pencatatan keuangan untuk 80 UMKM.",status:"inactive",dana:90,start:"2024-08",progress:[25,50,75,100,100,100,100],spend:[20,45,70,88,88,88,88],reports:{keu:[{name:"Rekap-Dana-Pelatihan.pdf",date:"2024-12-05"}],dev:[]}},
+    {id:8,name:"Kebun Hidroponik Sekolah",lokasi:"Antapani, Bandung",target:"Siswa SMP",desc:"Kebun hidroponik sebagai sarana belajar dan sumber sayur kantin.",status:"active",dana:60,start:"2025-04",progress:[12,25,40,55,63,70,78],spend:[8,16,25,33,40,46,50],reports:{keu:[],dev:[]}}
+  ],
+  proposals:[
+    {id:101,judul:"Wisata Alam Curug Telu",status:"pending",projectId:3},
+    {id:102,judul:"Rumah Baca Cibiru",status:"rejected",note:"Anggaran belum dirinci per pos."}
+  ],
+  notifs:[
+    {text:"Proposal Wisata Alam Curug Telu sedang ditinjau admin.",date:"2025-06-20",read:false},
+    {text:"Laporan perkembangan Cafe Le' de Jainero bulan Juni belum diunggah.",date:"2025-06-18",read:false},
+    {text:"Proposal Rumah Baca Cibiru ditolak: anggaran belum dirinci per pos.",date:"2025-06-10",read:true},
+    {text:"Laporan keuangan Bank Sampah Cikutra diterima.",date:"2025-06-02",read:true}
+  ]
+};
+const KEY="kingshand-demo-v1";
+const store={get(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}},set(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}},clear(){try{localStorage.removeItem(KEY)}catch(e){}}};
+let S = store.get() || structuredClone(SEED);
+let loggedIn=false;
+try{loggedIn=sessionStorage.getItem("kh-login")==="1"}catch(e){}
+const save=()=>store.set(S);
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const STATUS={active:"Aktif",inactive:"Selesai",pending:"Menunggu persetujuan",rejected:"Ditolak"};
+const MONTHS=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+const fmtDate=d=>{const [y,m,dd]=d.split("-");return (dd?+dd+" ":"")+MONTHS[+m-1]+" "+y};
+const rp=j=>j>=1000?"Rp "+(j/1000).toLocaleString("id-ID")+" miliar":"Rp "+j+" juta";
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove("show"),2600)}
+
+/* login */
+$("#loginForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const em=$("#email").value.trim().toLowerCase(), pw=$("#pw").value;
+  if(em!==DEMO_USER.email||pw!==DEMO_USER.password){$("#loginErr").textContent="Email atau kata sandi salah. Gunakan akun demo di bawah.";return}
+  loggedIn=true;try{sessionStorage.setItem("kh-login","1")}catch(e){}
+  showApp();
+});
+$("#logoutBtn").addEventListener("click",()=>{loggedIn=false;try{sessionStorage.removeItem("kh-login")}catch(e){};$("#app").style.display="none";$("#login").style.display="";location.hash=""});
+$("#resetBtn").addEventListener("click",()=>{store.clear();S=structuredClone(SEED);render();toast("Data demo dikembalikan ke awal.")});
+
+function showApp(){$("#login").style.display="none";$("#app").style.display="block";render();route()}
+
+/* routing */
+function go(p){location.hash=p}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b){e.preventDefault();go(b.dataset.go)}});
+window.addEventListener("hashchange",route);
+function route(){
+  if(!loggedIn)return;
+  let h=location.hash.slice(1)||"dashboard";
+  let page=h.startsWith("project/")?"detail":h;
+  if(!$("#p-"+page)){page="dashboard";h="dashboard"}
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="p-"+page));
+  document.querySelectorAll("nav.main button").forEach(b=>{if(b.dataset.go===(page==="detail"?"projects":page))b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+  if(page==="detail")renderDetail(+h.split("/")[1]);
+  closeNotif();window.scrollTo(0,0);
+}
+
+/* render */
+function render(){
+  $("#hello").textContent="Halo, "+S.user.name.split(" ")[0];
+  renderStats();renderDashList();renderNotifs();renderProjects();renderProposals();renderProfile();
+}
+function count(st){return S.projects.filter(p=>p.status===st).length}
+function renderStats(){
+  const items=[["active","Proyek aktif","var(--green)"],["inactive","Proyek selesai","#4b5a70"],["pending","Menunggu persetujuan","var(--amber)"]];
+  $("#stats").innerHTML=items.map(([k,l,c])=>`<button class="stat" data-filter="${k}"><span class="n" style="color:${c}">${count(k)}</span><span class="l">${l}</span></button>`).join("");
+  $("#stats").querySelectorAll(".stat").forEach(b=>b.onclick=()=>{filter=b.dataset.filter;renderProjects();go("projects")});
+}
+function pItem(p){
+  const last=p.progress.length?p.progress[p.progress.length-1]+"% selesai · ":"";
+  return `<button class="pitem" data-go="project/${p.id}"><span><strong>${esc(p.name)}</strong><small>${last}${esc(p.lokasi)}</small></span><span class="badge s-${p.status}">${STATUS[p.status]}</span></button>`;
+}
+function renderDashList(){
+  const order={pending:0,active:1,inactive:2};
+  $("#dashList").innerHTML=[...S.projects].sort((a,b)=>order[a.status]-order[b.status]).slice(0,5).map(pItem).join("");
+}
+function renderNotifs(){
+  const html=S.notifs.length?S.notifs.map(n=>`<div class="notif-item ${n.read?"":"unread"}">${esc(n.text)}<small>${fmtDate(n.date)}</small></div>`).join(""):'<div class="empty">Tidak ada notifikasi.</div>';
+  $("#dashNotif").innerHTML=html;$("#notifPanelList").innerHTML=html;
+  const unread=S.notifs.filter(n=>!n.read).length;
+  $("#bellDot").textContent=unread;$("#bellDot").style.display=unread?"":"none";
+}
+function addNotif(text){S.notifs.unshift({text,date:new Date().toISOString().slice(0,10),read:false});save();renderNotifs()}
+$("#bellBtn").addEventListener("click",e=>{
+  e.stopPropagation();const open=!$("#notifPanel").classList.contains("open");
+  $("#notifPanel").classList.toggle("open",open);$("#bellBtn").setAttribute("aria-expanded",open);
+  if(open){setTimeout(()=>{S.notifs.forEach(n=>n.read=true);save();$("#bellDot").style.display="none"},800)}else renderNotifs();
+});
+function closeNotif(){if($("#notifPanel").classList.contains("open")){$("#notifPanel").classList.remove("open");$("#bellBtn").setAttribute("aria-expanded","false");renderNotifs()}}
+document.addEventListener("click",e=>{if(!e.target.closest("#notifPanel"))closeNotif()});
+
+/* projects */
+let filter="all";
+function renderProjects(){
+  const chips=[["all","Semua"],["active","Aktif"],["pending","Menunggu"],["inactive","Selesai"]];
+  $("#filterChips").innerHTML=chips.map(([k,l])=>`<button class="chip" aria-pressed="${filter===k}" data-f="${k}">${l}</button>`).join("");
+  $("#filterChips").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{filter=c.dataset.f;renderProjects()});
+  const q=$("#q").value.trim().toLowerCase();
+  const list=S.projects.filter(p=>(filter==="all"||p.status===filter)&&(!q||(p.name+p.lokasi).toLowerCase().includes(q)));
+  $("#projList").innerHTML=list.length?list.map(pItem).join(""):'<div class="empty">Tidak ada proyek yang cocok.</div>';
+}
+$("#q").addEventListener("input",renderProjects);
+
+function monthLabels(start,n){let [y,m]=start.split("-").map(Number);return Array.from({length:n},(_,i)=>{const mm=(m-1+i)%12;return MONTHS[mm]})}
+function chart(p){
+  if(!p.progress.length)return '<div class="empty">Statistik muncul setelah proposal disetujui dan proyek berjalan.</div>';
+  const W=640,H=240,L=40,R=16,T=16,B=32,n=p.progress.length;
+  const x=i=>L+(W-L-R)*i/(n-1), y=v=>T+(H-T-B)*(1-v/100);
+  const spendPct=p.spend.map(v=>Math.min(100,v/p.dana*100));
+  const path=a=>a.map((v,i)=>(i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1)).join(" ");
+  const labels=monthLabels(p.start,n);
+  let g="";for(let v=0;v<=100;v+=25)g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#eee"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="#888">${v}%</text>`;
+  labels.forEach((l,i)=>g+=`<text x="${x(i)}" y="${H-10}" text-anchor="middle" font-size="11" fill="#888">${l}</text>`);
+  const dots=(a,c)=>a.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="#fff" stroke="${c}" stroke-width="2"><title>${labels[i]}: ${Math.round(v)}%</title></circle>`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Grafik progres dan penyerapan dana per bulan">${g}
+    <path d="${path(p.progress)}" fill="none" stroke="var(--green)" stroke-width="2.5"/>${dots(p.progress,"var(--green)")}
+    <path d="${path(spendPct)}" fill="none" stroke="var(--orange)" stroke-width="2.5" stroke-dasharray="6 4"/>${dots(spendPct,"var(--orange)")}</svg>
+    <div class="legend"><span><i style="background:var(--green)"></i>Progres pekerjaan</span><span><i style="background:var(--orange)"></i>Dana terpakai (% dari anggaran)</span></div>`;
+}
+function fileList(arr){return arr.length?`<ul class="files">${arr.map(f=>`<li><span>📄 ${esc(f.name)}</span><small>${fmtDate(f.date)}</small></li>`).join("")}</ul>`:'<p style="color:var(--mute);font-size:14px;margin:12px 0 0">Belum ada laporan.</p>'}
+function renderDetail(id){
+  const p=S.projects.find(x=>x.id===id);
+  if(!p){$("#detail").innerHTML='<div class="empty">Proyek tidak ditemukan.</div>';return}
+  const prog=p.progress.at(-1)??0, spent=p.spend.at(-1)??0;
+  const canReport=p.status==="active";
+  $("#detail").innerHTML=`
+    <div class="card">
+      <div class="head" style="margin:0 0 8px"><h1 style="font-size:26px">${esc(p.name)}</h1><span class="badge s-${p.status}">${STATUS[p.status]}</span></div>
+      <p style="margin:0;color:var(--mute)">${esc(p.desc)}</p>
+    </div>
+    <div class="detail-grid">
+      <div class="card chart"><h2 class="section-title">Statistik proyek</h2>${chart(p)}</div>
+      <div class="card">
+        <h2 class="section-title">Ringkasan</h2>
+        <dl class="facts"><dt>Lokasi</dt><dd>${esc(p.lokasi)}</dd><dt>Target</dt><dd>${esc(p.target)}</dd><dt>Mulai</dt><dd>${fmtDate(p.start)}</dd><dt>Anggaran</dt><dd>${rp(p.dana)}</dd><dt>Terpakai</dt><dd>${rp(spent)}</dd></dl>
+        <div style="margin-top:16px;font-size:14px">Progres <b>${prog}%</b><div class="progress"><span style="width:${prog}%"></span></div></div>
+      </div>
+    </div>
+    <div class="reports">
+      <div class="card"><h2 class="section-title">Laporan keuangan</h2>
+        ${canReport?`<div class="upload"><label class="btn btn-green" for="upKeu">Unggah laporan keuangan</label><input type="file" id="upKeu" accept=".pdf,.xlsx,.xls,.csv"></div>`:""}
+        ${fileList(p.reports.keu)}</div>
+      <div class="card"><h2 class="section-title">Laporan perkembangan</h2>
+        ${canReport?`<div class="upload"><label class="btn btn-blue" for="upDev">Unggah laporan perkembangan</label><input type="file" id="upDev" accept=".pdf,.jpg,.png"></div>`:""}
+        ${fileList(p.reports.dev)}</div>
+    </div>
+    ${canReport?"":`<p style="color:var(--mute);font-size:14px;margin-top:12px">${p.status==="pending"?"Laporan bisa diunggah setelah proposal disetujui.":"Proyek sudah selesai; laporan tidak bisa ditambah."}</p>`}`;
+  const bind=(sel,key,label)=>{const el=$(sel);if(!el)return;el.onchange=()=>{const f=el.files[0];if(!f)return;
+    p.reports[key].unshift({name:f.name,date:new Date().toISOString().slice(0,10)});save();
+    addNotif(`${label} ${p.name} terkirim ke admin.`);renderDetail(id);toast(`${label} terunggah: ${f.name}`)}};
+  bind("#upKeu","keu","Laporan keuangan");bind("#upDev","dev","Laporan perkembangan");
+}
+
+/* proposals */
+let editing=null;
+$("#fFile").addEventListener("change",()=>{$("#fFileName").textContent=$("#fFile").files[0]?.name||""});
+function renderProposals(){
+  $("#propTable").innerHTML=S.proposals.map(pr=>`<tr><td><b>${esc(pr.judul)}</b>${pr.note?`<br><small style="color:var(--mute)">${esc(pr.note)}</small>`:""}</td>
+    <td><span class="badge s-${pr.status}">${STATUS[pr.status]}</span></td>
+    <td style="white-space:nowrap">${pr.status==="pending"?`<button class="btn btn-ghost" style="padding:6px 10px" data-edit="${pr.id}">Ubah</button> <button class="btn btn-gold" style="padding:6px 10px" data-eval="${pr.id}">Simulasikan evaluasi</button>`:pr.projectId&&pr.status!=="rejected"?`<button class="btn btn-ghost" style="padding:6px 10px" data-go="project/${pr.projectId}">Lihat proyek</button>`:""}</td></tr>`).join("");
+  $("#propTable").querySelectorAll("[data-eval]").forEach(b=>b.onclick=()=>evaluate(+b.dataset.eval));
+  $("#propTable").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>startEdit(+b.dataset.edit));
+}
+function startEdit(id){
+  const pr=S.proposals.find(x=>x.id===id),p=S.projects.find(x=>x.id===pr.projectId);if(!p)return;
+  editing=id;$("#fJudul").value=p.name;$("#fLokasi").value=p.lokasi;$("#fTarget").value=p.target;$("#fDana").value=p.dana;$("#fMulai").value=p.start;$("#fDesk").value=p.desc;
+  $("#propSubmit").textContent="Simpan perubahan";$("#propCancel").hidden=false;$("#fJudul").focus();
+}
+function resetForm(){editing=null;$("#propForm").reset();$("#fFileName").textContent="";$("#propSubmit").textContent="Ajukan proposal";$("#propCancel").hidden=true;$("#propErr").textContent=""}
+$("#propCancel").onclick=resetForm;
+$("#propForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const v={name:$("#fJudul").value.trim(),lokasi:$("#fLokasi").value.trim(),target:$("#fTarget").value.trim(),dana:+$("#fDana").value,start:$("#fMulai").value,desc:$("#fDesk").value.trim()};
+  if(!v.name||!v.lokasi||!v.target||!v.dana||!v.start||!v.desc){$("#propErr").textContent="Lengkapi semua kolom sebelum mengajukan.";return}
+  if(editing){const pr=S.proposals.find(x=>x.id===editing);Object.assign(S.projects.find(x=>x.id===pr.projectId),v);pr.judul=v.name;save();render();resetForm();toast("Perubahan proposal disimpan.");return}
+  const pid=Date.now();
+  S.projects.push({id:pid,...v,status:"pending",progress:[],spend:[],reports:{keu:[],dev:[]}});
+  S.proposals.unshift({id:pid+1,judul:v.name,status:"pending",projectId:pid});
+  save();addNotif(`Proposal ${v.name} diterima dan menunggu evaluasi admin.`);render();resetForm();toast("Proposal diajukan.");
+});
+function evaluate(id){
+  const pr=S.proposals.find(x=>x.id===id),p=S.projects.find(x=>x.id===pr.projectId);
+  const ok=p&&p.dana<=800;
+  if(ok){pr.status="active";p.status="active";p.progress=[0,0];p.spend=[0,0];addNotif(`Proposal ${p.name} disetujui. Proyek kini aktif.`);toast("Disetujui: proyek kini aktif.")}
+  else{pr.status="rejected";pr.note="Kebutuhan dana di atas batas Rp 800 juta per proyek.";if(p)S.projects=S.projects.filter(x=>x!==p);addNotif(`Proposal ${pr.judul} ditolak: dana di atas batas.`);toast("Ditolak: dana di atas batas Rp 800 juta.")}
+  save();render();
+}
+
+/* profile */
+function renderProfile(){
+  const u=S.user;$("#pName").textContent=u.name;$("#pOrg").textContent=u.org;$("#avatar").textContent=u.name[0]||"?";
+  $("#uName").value=u.name;$("#uEmail").value=u.email;$("#uOrg").value=u.org;$("#uPhone").value=u.phone;$("#uJoin").textContent=fmtDate(u.join);
+  const done=count("inactive"),total=S.projects.filter(p=>p.status!=="pending").length;
+  $("#pDone").textContent=total?Math.round(done/total*100)+"%":"–";
+  $("#pStats").innerHTML=`<div><small>Total proyek</small><b>${S.projects.length}</b></div><div><small>Proposal</small><b>${S.proposals.length}</b></div><div><small>Laporan terunggah</small><b>${S.projects.reduce((a,p)=>a+p.reports.keu.length+p.reports.dev.length,0)}</b></div>`;
+}
+const pf=["#uName","#uEmail","#uOrg","#uPhone"];
+function setEdit(on){pf.forEach(s=>$(s).readOnly=!on);$("#editProfile").hidden=on;$("#saveProfile").hidden=!on;$("#cancelProfile").hidden=!on;if(on)$("#uName").focus()}
+$("#editProfile").onclick=()=>setEdit(true);
+$("#cancelProfile").onclick=()=>{renderProfile();setEdit(false)};
+$("#profileForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(!$("#uName").value.trim()||!$("#uEmail").checkValidity()){toast("Nama dan email yang valid wajib diisi.");return}
+  Object.assign(S.user,{name:$("#uName").value.trim(),email:$("#uEmail").value.trim(),org:$("#uOrg").value.trim(),phone:$("#uPhone").value.trim()});
+  save();render();setEdit(false);toast("Profil disimpan.");
+});
+
+if(loggedIn)showApp();
+</script>
+</body>
+</html>
