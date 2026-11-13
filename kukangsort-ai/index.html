@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KukangSort AI — Sortir Citra Camera Trap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js"></script>
+<style>
+/* ============================================================
+   TOKEN
+   Palet diambil dari dunia camera trap malam: hijau hutan gelap,
+   abu inframerah, fosfor hijau untuk aksi, amber untuk timestamp.
+   ============================================================ */
+:root{
+  --night:      #0A1410;   /* latar utama, hutan pukul 02:00 */
+  --canopy:     #12211A;   /* panel */
+  --moss:       #1C3327;   /* garis & border */
+  --ir:         #C9D2CB;   /* teks utama, abu inframerah */
+  --ir-dim:     #7C8C82;   /* teks sekunder */
+  --phosphor:   #8CE26B;   /* aksi utama */
+  --phosphor-d: #5FA845;
+  --amber:      #E9A93C;   /* timestamp, peringatan */
+  --coral:      #E2705F;   /* kelas delete */
+  --slate:      #6E93C4;   /* kelas unknown */
+
+  --r-pill: 999px;
+  --r-panel: 14px;
+  --gap: 20px;
+  --nav-h: 76px;
+
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --body: 'Inter Tight', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth; scroll-padding-top:calc(var(--nav-h) + 16px)}
+body{
+  background:var(--night); color:var(--ir);
+  font-family:var(--body); font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important}
+}
+:focus-visible{outline:2px solid var(--phosphor); outline-offset:3px; border-radius:6px}
+img{max-width:100%; display:block}
+button{font:inherit; color:inherit; background:none; border:0; cursor:pointer}
+
+/* ============================================================
+   NAV — pill melayang, TETAP mengikuti saat halaman digeser.
+   Kalau ingin nav diam di atas saja: ganti position:fixed -> absolute
+   pada .nav-wrap, lalu hapus padding-top di .page.
+   ============================================================ */
+.nav-wrap{
+  position:fixed; inset:0 0 auto 0; z-index:60;
+  padding:16px clamp(12px,3vw,28px);
+  transition:padding .25s ease;
+}
+.nav-wrap.is-scrolled{padding-top:10px}
+.nav{
+  max-width:1340px; margin:0 auto; height:60px;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px; padding:0 10px 0 18px;
+  background:rgba(18,33,26,.72);
+  border:1px solid var(--moss);
+  border-radius:var(--r-pill);
+  backdrop-filter:blur(14px) saturate(1.2);
+  transition:background .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.nav-wrap.is-scrolled .nav{
+  background:rgba(10,20,16,.92);
+  border-color:#274736;
+  box-shadow:0 10px 40px -12px #000;
+}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ir)}
+.brand svg{width:26px; height:26px; flex:none}
+.brand span{
+  font-family:var(--display); font-weight:800; font-size:15px;
+  letter-spacing:.14em; text-transform:uppercase;
+}
+.nav-links{display:flex; align-items:center; gap:4px}
+.nav-links a{
+  position:relative; padding:9px 18px; border-radius:var(--r-pill);
+  text-decoration:none; color:var(--ir-dim);
+  font-size:13px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+  transition:color .2s ease, background .2s ease;
+}
+.nav-links a:hover{color:var(--ir); background:rgba(140,226,107,.08)}
+.nav-links a.is-active{color:var(--night); background:var(--phosphor)}
+.nav-toggle{display:none}
+
+/* ============================================================
+   PAGE / SECTION
+   ============================================================ */
+.page{padding-top:var(--nav-h)}
+section{padding:96px clamp(16px,4vw,40px)}
+.wrap{max-width:1340px; margin:0 auto}
+.eyebrow{
+  font-family:var(--mono); font-size:11px; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--phosphor); margin-bottom:12px;
+}
+h2{
+  font-family:var(--display); font-weight:800; font-size:clamp(28px,4vw,44px);
+  line-height:1.05; letter-spacing:-.02em; margin-bottom:10px;
+}
+.lede{color:var(--ir-dim); max-width:62ch}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative; min-height:calc(100svh - var(--nav-h));
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  text-align:center; overflow:hidden; padding-block:80px;
+}
+.hero-bg{position:absolute; inset:0; z-index:0}
+.hero-bg::before{ /* dua mata kukang yang memantulkan flash IR */
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 42% 40%, rgba(233,169,60,.5) 0 6px, rgba(233,169,60,.10) 7px, transparent 60px),
+    radial-gradient(circle at 58% 40%, rgba(233,169,60,.5) 0 6px, rgba(233,169,60,.10) 7px, transparent 60px),
+    radial-gradient(ellipse 70% 60% at 50% 45%, #1B3327 0%, transparent 70%),
+    radial-gradient(ellipse 120% 90% at 50% 120%, #16281F 0%, transparent 60%),
+    var(--night);
+}
+.hero-bg::after{ /* garis scan sensor IR */
+  content:""; position:absolute; inset:0; opacity:.35;
+  background:repeating-linear-gradient(180deg, rgba(0,0,0,.5) 0 1px, transparent 1px 4px);
+  mix-blend-mode:overlay;
+}
+.hero > *{position:relative; z-index:1}
+.hero h1{
+  font-family:var(--display); font-weight:800;
+  font-size:clamp(46px,10vw,124px); line-height:.9; letter-spacing:-.04em;
+}
+.hero h1 em{font-style:normal; color:var(--phosphor)}
+.hero-sub{
+  margin:22px auto 0; max-width:52ch; color:var(--ir-dim); font-size:clamp(15px,1.6vw,18px);
+}
+.hero-cta{margin-top:34px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center}
+
+/* Signature: strip OSD camera trap di dasar hero */
+.osd{
+  position:absolute; left:0; right:0; bottom:0; z-index:2;
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  padding:10px clamp(16px,4vw,40px);
+  font-family:var(--mono); font-size:11px; letter-spacing:.08em;
+  color:var(--amber); background:linear-gradient(transparent, rgba(0,0,0,.75));
+  text-transform:uppercase;
+}
+.osd .rec{display:flex; align-items:center; gap:8px; color:var(--coral)}
+.osd .dot{width:8px; height:8px; border-radius:50%; background:var(--coral); animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:.15}}
+.osd span{white-space:nowrap}
+@media (max-width:720px){ .osd .hide-sm{display:none} }
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  padding:13px 26px; border-radius:var(--r-pill);
+  font-weight:600; font-size:14px; letter-spacing:.02em;
+  border:1px solid transparent; transition:transform .12s ease, background .2s ease, border-color .2s ease, color .2s ease;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--phosphor); color:#08130D}
+.btn-primary:hover{background:#A2ED84}
+.btn-ghost{border-color:var(--moss); color:var(--ir)}
+.btn-ghost:hover{border-color:var(--phosphor); color:var(--phosphor)}
+.btn[disabled]{opacity:.4; cursor:not-allowed; transform:none}
+.btn-sm{padding:9px 16px; font-size:13px}
+
+/* ---------- ABOUT ---------- */
+.about-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(24px,5vw,72px); align-items:center}
+.about-copy p + p{margin-top:16px}
+.about-copy p{color:var(--ir-dim); max-width:60ch}
+.species{display:grid; gap:12px; margin-top:28px}
+.species-row{
+  display:flex; align-items:baseline; gap:14px; padding:14px 0;
+  border-top:1px solid var(--moss);
+}
+.species-row .latin{font-family:var(--mono); font-size:12px; color:var(--phosphor); letter-spacing:.04em}
+.species-row .name{font-family:var(--display); font-weight:600; font-size:19px}
+.species-row .where{margin-left:auto; font-size:13px; color:var(--ir-dim)}
+.status-card{
+  border:1px solid var(--moss); border-radius:var(--r-panel);
+  background:linear-gradient(160deg, var(--canopy), #0D1A14);
+  padding:28px;
+}
+.status-card h3{font-family:var(--display); font-size:20px; font-weight:600; margin-bottom:6px}
+.status-card p{color:var(--ir-dim); font-size:14px}
+.iucn{
+  display:inline-flex; align-items:center; gap:8px; margin-bottom:16px;
+  padding:6px 12px; border-radius:var(--r-pill);
+  background:rgba(226,112,95,.12); border:1px solid rgba(226,112,95,.4);
+  color:var(--coral); font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+}
+.threats{margin-top:20px; display:grid; gap:10px}
+.threat{display:flex; align-items:center; gap:12px; font-size:14px}
+.threat .bar{flex:1; height:6px; border-radius:3px; background:var(--moss); overflow:hidden}
+.threat .bar i{display:block; height:100%; background:var(--coral); border-radius:3px}
+@media (max-width:920px){ .about-grid{grid-template-columns:1fr} }
+
+/* ---------- Kartu spesies dengan gambar ---------- */
+.species-cards{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:28px}
+@media (max-width:600px){ .species-cards{grid-template-columns:1fr} }
+.species-card{
+  border:1px solid var(--moss); border-radius:var(--r-panel); overflow:hidden;
+  background:#0D1A14;
+}
+.species-card img{width:100%; aspect-ratio:4/3; object-fit:cover; background:var(--canopy)}
+.species-card .body{padding:16px}
+.species-card .name{font-family:var(--display); font-weight:600; font-size:18px; margin-bottom:2px}
+.species-card .latin{font-family:var(--mono); font-size:12px; color:var(--phosphor); letter-spacing:.03em}
+.species-card .facts{margin-top:12px; display:grid; gap:7px}
+.species-card .fact{display:flex; gap:8px; font-size:13px; color:var(--ir-dim)}
+.species-card .fact b{color:var(--ir); font-weight:600; min-width:64px; flex:none}
+.species-card .credit{margin-top:10px; font-family:var(--mono); font-size:10px; color:var(--ir-dim)}
+
+/* ---------- Panel spesifikasi dataset & model ---------- */
+.spec-section{margin-top:80px}
+.spec-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:26px}
+@media (max-width:920px){ .spec-grid{grid-template-columns:1fr} }
+.spec-card{
+  border:1px solid var(--moss); border-radius:var(--r-panel);
+  background:linear-gradient(160deg, var(--canopy), #0D1A14); padding:26px;
+}
+.spec-card h3{font-family:var(--display); font-size:19px; font-weight:600; margin-bottom:4px}
+.spec-card .sub{font-family:var(--mono); font-size:11px; color:var(--ir-dim); letter-spacing:.1em; text-transform:uppercase; margin-bottom:18px}
+.spec-rows{display:grid; gap:0}
+.spec-row{display:flex; justify-content:space-between; gap:12px; padding:11px 0; border-top:1px solid var(--moss); font-size:14px}
+.spec-row span:first-child{color:var(--ir-dim)}
+.spec-row span:last-child{font-family:var(--mono); text-align:right}
+.spec-row b{color:var(--phosphor)}
+.acc-big{display:flex; align-items:baseline; gap:10px; margin:6px 0 18px}
+.acc-big .num{font-family:var(--display); font-size:52px; font-weight:800; letter-spacing:-.02em; color:var(--phosphor)}
+.acc-big .lbl{font-family:var(--mono); font-size:11px; color:var(--ir-dim); letter-spacing:.14em; text-transform:uppercase}
+.perclass{margin-top:16px; display:grid; gap:10px}
+.perclass .pc{display:grid; grid-template-columns:82px 1fr 44px; align-items:center; gap:12px; font-size:13px}
+.perclass .track{height:8px; border-radius:4px; background:#0A130E; overflow:hidden}
+.perclass .track i{display:block; height:100%; border-radius:4px}
+.perclass .val{font-family:var(--mono); font-size:12px; text-align:right}
+.warn-card{
+  grid-column:1 / -1;
+  border:1px solid rgba(233,169,60,.4); border-radius:var(--r-panel);
+  background:rgba(233,169,60,.07); padding:22px 24px;
+  display:flex; gap:16px; align-items:flex-start;
+}
+.warn-card svg{flex:none; color:var(--amber); margin-top:2px}
+.warn-card h4{font-family:var(--display); font-size:17px; font-weight:600; color:#E8D6B4; margin-bottom:8px}
+.warn-card p{font-size:14px; color:#D8C9A8; line-height:1.6}
+.warn-card p + p{margin-top:10px}
+
+/* ---------- TABS ---------- */
+.tabs{
+  display:inline-flex; gap:4px; padding:5px; margin-bottom:28px;
+  border:1px solid var(--moss); border-radius:var(--r-pill); background:var(--canopy);
+  flex-wrap:wrap;
+}
+.tab{
+  padding:10px 22px; border-radius:var(--r-pill); color:var(--ir-dim);
+  font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+  transition:background .2s, color .2s;
+}
+.tab:hover{color:var(--ir)}
+.tab[aria-selected="true"]{background:var(--phosphor); color:#08130D}
+.panel[hidden]{display:none}
+
+/* ---------- WORKBENCH ---------- */
+.bench{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:var(--gap); align-items:start}
+@media (max-width:1040px){ .bench{grid-template-columns:1fr} }
+.card{
+  border:1px solid var(--moss); border-radius:var(--r-panel);
+  background:var(--canopy); padding:22px;
+}
+.card + .card{margin-top:var(--gap)}
+.card-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px}
+.card-title{
+  font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--ir-dim);
+}
+
+/* Dropzone */
+.drop{
+  border:1.5px dashed var(--moss); border-radius:var(--r-panel);
+  padding:38px 22px; text-align:center; transition:border-color .2s, background .2s;
+}
+.drop.is-over{border-color:var(--phosphor); background:rgba(140,226,107,.06)}
+.drop h3{font-family:var(--display); font-size:20px; font-weight:600; margin-bottom:6px}
+.drop p{color:var(--ir-dim); font-size:14px; margin-bottom:18px}
+.drop small{display:block; margin-top:14px; color:var(--ir-dim); font-family:var(--mono); font-size:11px}
+
+/* Meter kelas */
+.counts{display:grid; gap:12px}
+.count-row{display:grid; grid-template-columns:96px 1fr 56px; align-items:center; gap:14px}
+.count-row .label{font-size:14px; display:flex; align-items:center; gap:8px}
+.count-row .swatch{width:9px; height:9px; border-radius:2px}
+.count-row .track{height:8px; border-radius:4px; background:#0D1A14; overflow:hidden}
+.count-row .track i{display:block; height:100%; width:0; border-radius:4px; transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.count-row .num{font-family:var(--mono); font-size:14px; text-align:right}
+.total{
+  display:flex; align-items:baseline; justify-content:space-between;
+  padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid var(--moss);
+}
+.total b{font-family:var(--display); font-size:34px; font-weight:800; letter-spacing:-.02em}
+.total span{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ir-dim)}
+
+/* Chart batang */
+.chart{display:flex; align-items:flex-end; gap:18px; height:210px; padding:14px 6px 0; border-bottom:1px solid var(--moss)}
+.chart .col{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; gap:8px}
+.chart .val{font-family:var(--mono); font-size:12px; color:var(--ir)}
+.chart .bar{width:100%; border-radius:6px 6px 0 0; height:0; transition:height .7s cubic-bezier(.2,.8,.2,1)}
+.chart-x{display:flex; gap:18px; padding-top:10px}
+.chart-x div{flex:1; text-align:center; font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ir-dim)}
+
+/* Ringkasan / filmstrip */
+.strip-outer{position:relative}
+.strip{
+  display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory;
+  padding-bottom:8px; scrollbar-width:thin; scrollbar-color:var(--moss) transparent;
+}
+.strip::-webkit-scrollbar{height:6px}
+.strip::-webkit-scrollbar-thumb{background:var(--moss); border-radius:3px}
+.thumb{
+  position:relative; flex:none; width:168px; scroll-snap-align:start;
+  border:1px solid var(--moss); border-radius:10px; overflow:hidden;
+  background:#0D1A14; text-align:left; transition:border-color .2s, transform .12s;
+}
+.thumb:hover{border-color:var(--phosphor); transform:translateY(-2px)}
+.thumb.is-active{border-color:var(--phosphor)}
+.thumb img{aspect-ratio:4/3; object-fit:cover; width:100%; filter:grayscale(1) contrast(1.1)}
+.thumb .meta{padding:8px 10px; font-family:var(--mono); font-size:10px; color:var(--ir-dim); letter-spacing:.04em}
+.thumb .tag{
+  position:absolute; top:8px; left:8px; padding:3px 8px; border-radius:var(--r-pill);
+  font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:#08130D;
+}
+.strip-nav{position:absolute; top:32%; display:flex; width:100%; justify-content:space-between; pointer-events:none}
+.strip-nav button{
+  pointer-events:auto; width:34px; height:34px; border-radius:50%;
+  background:rgba(10,20,16,.9); border:1px solid var(--moss); color:var(--ir);
+  display:grid; place-items:center;
+}
+.strip-nav button:hover{border-color:var(--phosphor); color:var(--phosphor)}
+.strip-nav button:first-child{transform:translateX(-8px)}
+.strip-nav button:last-child{transform:translateX(8px)}
+
+/* Detail hasil */
+.detail{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+@media (max-width:600px){ .detail{grid-template-columns:1fr} }
+.frame{border:1px solid var(--moss); border-radius:10px; overflow:hidden; background:#0D1A14}
+.frame img{aspect-ratio:4/3; object-fit:cover; filter:grayscale(1) contrast(1.15)}
+.frame .cap{
+  padding:8px 10px; font-family:var(--mono); font-size:10px; letter-spacing:.05em; color:var(--ir-dim);
+  display:flex; justify-content:space-between; gap:8px;
+}
+.probs{margin-top:16px; display:grid; gap:10px}
+.prob{display:grid; grid-template-columns:76px 1fr 52px; align-items:center; gap:12px; font-size:13px}
+.prob .track{height:16px; border-radius:4px; background:#0D1A14; position:relative; overflow:hidden}
+.prob .track i{display:block; height:100%; width:0; transition:width .5s ease}
+.prob .num{font-family:var(--mono); font-size:12px; text-align:right}
+.threshold{
+  position:absolute; top:0; bottom:0; left:70%; width:1px;
+  background:repeating-linear-gradient(180deg, var(--amber) 0 3px, transparent 3px 6px);
+}
+
+/* Form waktu */
+.field{display:grid; gap:7px; margin-bottom:16px}
+.field label{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ir-dim)}
+.field input, .field select{
+  width:100%; padding:12px 14px; border-radius:10px;
+  background:#0D1A14; border:1px solid var(--moss); color:var(--ir);
+  font-family:var(--mono); font-size:14px;
+}
+.field input:focus, .field select:focus{border-color:var(--phosphor); outline:none}
+.hint{font-size:13px; color:var(--ir-dim); margin-top:4px}
+.note{
+  display:flex; gap:12px; align-items:flex-start; margin-top:20px; padding:14px 16px;
+  border:1px solid rgba(233,169,60,.35); background:rgba(233,169,60,.08);
+  border-radius:10px; font-size:13px; color:#E8D6B4;
+}
+.note svg{flex:none; margin-top:2px; color:var(--amber)}
+
+/* Empty state */
+.empty{
+  padding:34px 20px; text-align:center; border:1px dashed var(--moss); border-radius:10px;
+  color:var(--ir-dim); font-size:14px;
+}
+.empty b{display:block; color:var(--ir); font-family:var(--display); font-size:17px; font-weight:600; margin-bottom:4px}
+
+/* Ringkasan struktur folder */
+.tree{
+  margin-top:14px; padding:14px 16px; border:1px solid var(--moss);
+  border-radius:10px; background:#0D1A14;
+  font-family:var(--mono); font-size:11.5px; color:var(--ir-dim);
+}
+.tree b{color:var(--ir); font-weight:700}
+.tree .row{display:flex; justify-content:space-between; gap:12px; padding:3px 0}
+.tree .row span:first-child{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tree .skip{color:var(--amber); margin-top:8px; padding-top:8px; border-top:1px solid var(--moss)}
+
+/* Progress */
+.progress{height:4px; border-radius:2px; background:#0D1A14; overflow:hidden; margin-top:16px}
+.progress i{display:block; height:100%; width:0; background:var(--phosphor); transition:width .2s linear}
+.run-log{font-family:var(--mono); font-size:11px; color:var(--ir-dim); margin-top:8px; min-height:16px}
+
+/* Footer */
+footer{
+  border-top:1px solid var(--moss); padding:40px clamp(16px,4vw,40px);
+  display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ir-dim);
+}
+
+@media (max-width:760px){
+  .nav-links{
+    position:absolute; top:70px; right:0; left:0;
+    flex-direction:column; align-items:stretch; gap:2px; padding:10px;
+    background:rgba(10,20,16,.97); border:1px solid var(--moss); border-radius:18px;
+    display:none;
+  }
+  .nav-links.is-open{display:flex}
+  .nav-links a{text-align:center}
+  .nav-toggle{display:grid; place-items:center; width:42px; height:42px; border-radius:50%; border:1px solid var(--moss)}
+  section{padding:64px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV (fixed, ikut saat scroll) ===================== -->
+<div class="nav-wrap" id="navWrap">
+  <nav class="nav" aria-label="Navigasi utama">
+    <a class="brand" href="#home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--phosphor)" stroke-width="1.6" aria-hidden="true">
+        <path d="M12 3 3 8v8l9 5 9-5V8l-9-5Z" stroke-linejoin="round"/>
+        <circle cx="9" cy="11" r="1.8"/><circle cx="15" cy="11" r="1.8"/>
+        <path d="M9.5 15.5c1.5 1 3.5 1 5 0" stroke-linecap="round"/>
+      </svg>
+      <span>Kukang Sort AI</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#home" class="is-active">Home</a>
+      <a href="#about">About</a>
+      <a href="#more">More</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </nav>
+</div>
+
+<main class="page">
+
+<!-- ===================== HOME ===================== -->
+<section class="hero" id="home">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <p class="eyebrow">YOLOv11 · Klasifikasi citra camera trap</p>
+  <h1>Kukang<em>Sort</em> AI</h1>
+  <p class="hero-sub">
+    Ribuan bidikan camera trap dalam semalam, sebagian besar hanya daun tertiup angin.
+    Sistem ini menyortirnya jadi tiga kelas — kukang, unknown, delete — lalu mengelompokkan
+    sisanya berdasarkan waktu dan perilaku.
+  </p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#more">Buka dashboard</a>
+    <a class="btn btn-ghost" href="#about">Kenali kukang</a>
+  </div>
+  <div class="osd">
+    <span class="rec"><i class="dot"></i> REC</span>
+    <span class="hide-sm">IR 850nm · 3.1MP</span>
+    <span id="osdClock">--:--:--</span>
+    <span class="hide-sm">24°C</span>
+    <span>CAM_04</span>
+  </div>
+</section>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-copy">
+      <p class="eyebrow">Tentang subjek</p>
+      <h2>Kukang</h2>
+      <p>
+        Kukang (<em>slow loris</em>) adalah primata nokturnal bergerak lambat dengan mata bulat besar
+        yang hidup di pepohonan hutan. Mata itulah yang memantulkan cahaya inframerah camera trap —
+        dua titik terang di tengah malam yang jadi penanda pertama bagi model. Indonesia adalah rumah
+        bagi beberapa spesies kukang yang semuanya dilindungi.
+      </p>
+      <p>
+        Perannya penting sebagai penyerbuk alami dan pengendali hama dalam ekosistem. Satwa pemalu ini
+        kini dilindungi karena sangat terancam punah akibat perburuan liar dan hilangnya habitat asli.
+      </p>
+      <div class="species-cards">
+        <div class="species-card">
+          <img id="imgJawa" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%230D1A14' width='400' height='300'/%3E%3Ccircle cx='160' cy='130' r='14' fill='%23E9A93C' opacity='.5'/%3E%3Ccircle cx='240' cy='130' r='14' fill='%23E9A93C' opacity='.5'/%3E%3Ctext x='200' y='210' fill='%237C8C82' font-family='monospace' font-size='13' text-anchor='middle'%3Efoto Kukang Jawa%3C/text%3E%3Ctext x='200' y='230' fill='%235F6E64' font-family='monospace' font-size='10' text-anchor='middle'%3Eganti src gambar di sini%3C/text%3E%3C/svg%3E" alt="Kukang Jawa (Nycticebus javanicus)">
+          <div class="body">
+            <div class="name">Kukang Jawa</div>
+            <div class="latin">Nycticebus javanicus</div>
+            <div class="facts">
+              <div class="fact"><b>Sebaran</b><span>Endemik Jawa bagian barat &amp; tengah</span></div>
+              <div class="fact"><b>Status</b><span>Critically Endangered (IUCN)</span></div>
+              <div class="fact"><b>Ukuran</b><span>±29 cm · 570–690 g, terbesar di Indonesia</span></div>
+              <div class="fact"><b>Ciri</b><span>Garis punggung tegas, topeng wajah gelap</span></div>
+              <div class="fact"><b>Pakan</b><span>Getah, gum, nektar, serangga</span></div>
+            </div>
+            <div class="credit">Ilustrasi, bukan foto spesies ini.</div>
+          </div>
+        </div>
+
+        <div class="species-card">
+          <img id="imgSumatera" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%230D1A14' width='400' height='300'/%3E%3Ccircle cx='160' cy='130' r='14' fill='%23E9A93C' opacity='.5'/%3E%3Ccircle cx='240' cy='130' r='14' fill='%23E9A93C' opacity='.5'/%3E%3Ctext x='200' y='210' fill='%237C8C82' font-family='monospace' font-size='13' text-anchor='middle'%3Efoto Kukang Sumatera%3C/text%3E%3Ctext x='200' y='230' fill='%235F6E64' font-family='monospace' font-size='10' text-anchor='middle'%3Eganti src gambar di sini%3C/text%3E%3C/svg%3E" alt="Kukang Sumatera (Nycticebus coucang)">
+          <div class="body">
+            <div class="name">Kukang Sumatera</div>
+            <div class="latin">Nycticebus coucang</div>
+            <div class="facts">
+              <div class="fact"><b>Sebaran</b><span>Sumatera, Semenanjung Malaya</span></div>
+              <div class="fact"><b>Status</b><span>Endangered (IUCN)</span></div>
+              <div class="fact"><b>Ukuran</b><span>±27–38 cm · 600–700 g</span></div>
+              <div class="fact"><b>Ciri</b><span>Garis punggung lebih samar, warna lebih terang</span></div>
+              <div class="fact"><b>Pakan</b><span>Getah, gum, buah, serangga</span></div>
+            </div>
+            <div class="credit">Ilustrasi, bukan foto spesies ini.</div>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:20px; color:var(--ir-dim); font-size:13px">
+        Indonesia juga rumah bagi Kukang Kalimantan (<em>Nycticebus menagensis</em>) dan beberapa spesies lain.
+        Ketiga spesies utama di atas sama-sama dilindungi UU dan menjadi target utama perdagangan satwa ilegal.
+      </p>
+    </div>
+
+    <aside class="status-card">
+      <span class="iucn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 1 21h22L12 2Zm0 6 6.5 11h-13L12 8Z"/></svg>
+        IUCN · Critically Endangered
+      </span>
+      <h3>Kenapa penyortiran ini perlu</h3>
+      <p>
+        Satu camera trap bisa memicu ratusan bidikan per malam. Sebagian besar bukan kukang.
+        Waktu peneliti habis untuk membuang berkas kosong, bukan untuk membaca perilaku satwa.
+      </p>
+      <div class="threats">
+        <div class="threat"><span style="width:110px">Perburuan liar</span><span class="bar"><i style="width:86%"></i></span></div>
+        <div class="threat"><span style="width:110px">Hilang habitat</span><span class="bar"><i style="width:74%"></i></span></div>
+        <div class="threat"><span style="width:110px">Perdagangan</span><span class="bar"><i style="width:61%"></i></span></div>
+      </div>
+      <p style="margin-top:18px; font-family:var(--mono); font-size:11px; letter-spacing:.08em">
+        MITRA · PSSP IPB · TAMAN MARGASATWA CIKAMBULAN
+      </p>
+    </aside>
+  </div>
+
+  <div class="wrap spec-section">
+    <p class="eyebrow">Spesifikasi sistem</p>
+    <h2>Dataset &amp; akurasi model</h2>
+    <p class="lede">Dua model YOLO11-cls berdiri di balik sistem ini: satu untuk menyortir, satu untuk membaca perilaku. Berikut data pelatihan dan performanya, apa adanya.</p>
+
+    <div class="spec-grid">
+      <div class="spec-card">
+        <h3>Model Sortir</h3>
+        <div class="sub">kukang · unknown · delete</div>
+        <div class="spec-rows">
+          <div class="spec-row"><span>Arsitektur</span><span>YOLO11n-cls</span></div>
+          <div class="spec-row"><span>Jumlah kelas</span><span>3</span></div>
+          <div class="spec-row"><span>Total dataset</span><span><b>±1.050 foto</b></span></div>
+          <div class="spec-row"><span>Per kelas</span><span>±350 foto</span></div>
+          <div class="spec-row"><span>Resolusi input</span><span>224 × 224</span></div>
+          <div class="spec-row"><span>Preprocessing</span><span>CLAHE + unsharp</span></div>
+          <div class="spec-row"><span>Akurasi</span><span>belum dicantumkan</span></div>
+        </div>
+        <p style="margin-top:14px; font-size:12px; color:var(--ir-dim)">Hasil model asli pada foto contoh bisa dilihat langsung di bagian demo di bawah.</p>
+      </div>
+
+      <div class="spec-card">
+        <h3>Model Behavior</h3>
+        <div class="sub">bergerak · grooming · makan</div>
+        <div class="acc-big"><span class="num">87,5%</span><span class="lbl">akurasi validasi</span></div>
+        <div class="spec-rows">
+          <div class="spec-row"><span>Arsitektur</span><span>YOLO11s-cls</span></div>
+          <div class="spec-row"><span>Total dataset</span><span><b>152 foto</b></span></div>
+          <div class="spec-row"><span>Split</span><span>128 latih · 24 validasi</span></div>
+          <div class="spec-row"><span>Per kelas</span><span>±50 foto</span></div>
+        </div>
+        <div class="perclass">
+          <div class="pc"><span>bergerak</span><span class="track"><i style="width:100%; background:var(--phosphor)"></i></span><span class="val">100%</span></div>
+          <div class="pc"><span>grooming</span><span class="track"><i style="width:87.5%; background:var(--slate)"></i></span><span class="val">87,5%</span></div>
+          <div class="pc"><span>makan</span><span class="track"><i style="width:75%; background:var(--amber)"></i></span><span class="val">75%</span></div>
+        </div>
+        <p style="margin-top:12px; font-size:12px; color:var(--ir-dim)">Recall per kelas pada set validasi (24 foto).</p>
+      </div>
+
+      <div class="warn-card">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22L12 2Zm-1 6h2v7h-2V8Zm0 9h2v2h-2v-2Z"/></svg>
+        <div>
+          <h4>Baca akurasi ini dengan hati-hati</h4>
+          <p>
+            Angka akurasi berasal dari <b>dataset yang sangat kecil</b> — model behavior hanya divalidasi
+            pada 24 foto (8 per kelas). Pada ukuran ini, <b>satu foto salah tebak menggeser akurasi ±4%</b>,
+            jadi angka 87,5% punya rentang ketidakpastian yang lebar dan tidak boleh dibaca sebagai jaminan.
+          </p>
+          <p>
+            Kelas <b>makan</b> masih paling lemah (75%) karena mudah tertukar dengan bergerak — kukang sering
+            memegang makanan sambil berpindah. Model ini alat bantu penyortiran awal, <b>bukan pengganti
+            verifikasi manual peneliti</b>. Setiap hasil klasifikasi tetap perlu diperiksa sebelum dipakai
+            untuk kesimpulan ilmiah.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="more">
+  <div class="wrap">
+    <p class="eyebrow">Dashboard</p>
+    <h2>Sortir, saring, baca perilaku</h2>
+    <p class="lede">
+      Sortir dulu seluruh data raw jadi tiga kelas. Setelah itu tahap Waktu menyaring seluruh data raw
+      pada tanggal dan jam tertentu, sementara tahap Behavior hanya membaca citra kelas kukang.
+      Setiap tahap menghasilkan satu folder siap unduh.
+    </p>
+
+    <div class="tabs" role="tablist" aria-label="Tahap pengolahan" style="margin-top:26px">
+      <button class="tab" role="tab" id="tab-sortir" aria-controls="panel-sortir" aria-selected="true">1 · Sortir</button>
+      <button class="tab" role="tab" id="tab-waktu" aria-controls="panel-waktu" aria-selected="false">2 · Waktu</button>
+      <button class="tab" role="tab" id="tab-behavior" aria-controls="panel-behavior" aria-selected="false">3 · Behavior</button>
+      <button class="tab" role="tab" id="tab-enhance" aria-controls="panel-enhance" aria-selected="false">Alat · Enhance</button>
+    </div>
+
+    <!-- ---------- PANEL 1: SORTIR ---------- -->
+    <div class="panel" id="panel-sortir" role="tabpanel" aria-labelledby="tab-sortir">
+      <div class="bench">
+        <!-- kiri -->
+        <div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">Data mentah</span></div>
+            <div class="drop" id="drop">
+              <h3>Letakkan folder data raw di sini</h3>
+              <p>Seluruh isi folder dibaca sampai ke subfolder, dan tiap citra langsung diganti namanya sesuai tanggal &amp; jam bidikan. Berkas tidak diunggah ke mana pun sampai kamu menjalankan sortir.</p>
+              <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap">
+                <button class="btn btn-primary" id="pickBtn">Pilih folder</button>
+                <button class="btn btn-ghost" id="pickFilesBtn">Pilih berkas satuan</button>
+                <button class="btn btn-primary" id="demoBtn" hidden>Muat foto contoh</button>
+              </div>
+              <p id="demoNote" hidden style="margin-top:10px; font-size:12px">Demo online: foto contoh diproses oleh model asli lewat GitHub Actions. Foto lain butuh backend yang berjalan.</p>
+              <input type="file" id="dirInput" accept="image/*" webkitdirectory directory multiple hidden>
+              <input type="file" id="fileInput" accept="image/*" multiple hidden>
+              <small>JPG · PNG · maks 5.000 berkas per batch</small>
+            </div>
+            <div class="tree" id="tree" hidden></div>
+            <div class="progress" hidden id="progWrap"><i id="progBar"></i></div>
+            <div class="run-log" id="runLog"></div>
+            <div style="display:flex; gap:10px; margin-top:16px; flex-wrap:wrap">
+              <button class="btn btn-primary btn-sm" id="runSort" disabled>Jalankan sortir</button>
+              <button class="btn btn-ghost btn-sm" id="clearSort" disabled>Kosongkan</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Status data raw</span>
+              <button class="btn btn-ghost btn-sm" id="dlSort" disabled>Unduh folder sortir</button>
+            </div>
+            <div class="total"><b id="totRaw">0</b><span>berkas terbaca</span></div>
+            <div class="counts" id="countsSort">
+              <div class="count-row"><span class="label"><i class="swatch" style="background:var(--phosphor)"></i>Kukang</span><span class="track"><i data-k="kukang" style="background:var(--phosphor)"></i></span><span class="num" data-n="kukang">0</span></div>
+              <div class="count-row"><span class="label"><i class="swatch" style="background:var(--slate)"></i>Unknown</span><span class="track"><i data-k="unknown" style="background:var(--slate)"></i></span><span class="num" data-n="unknown">0</span></div>
+              <div class="count-row"><span class="label"><i class="swatch" style="background:var(--coral)"></i>Delete</span><span class="track"><i data-k="delete" style="background:var(--coral)"></i></span><span class="num" data-n="delete">0</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Ringkasan</span>
+              <span class="card-title" id="stripCount">0 citra</span>
+            </div>
+            <div class="strip-outer">
+              <div class="strip" id="stripSort">
+                <div class="empty" style="flex:1"><b>Belum ada citra</b>Jalankan sortir dulu, hasilnya muncul di sini.</div>
+              </div>
+              <div class="strip-nav" hidden id="stripNav">
+                <button aria-label="Geser kiri" data-dir="-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 5-7 7 7 7"/></svg></button>
+                <button aria-label="Geser kanan" data-dir="1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 5 7 7-7 7"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- kanan -->
+        <div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">Diagram jumlah data</span></div>
+            <div class="chart" id="chartSort">
+              <div class="col"><span class="val" data-v="kukang">0</span><i class="bar" data-b="kukang" style="background:var(--phosphor)"></i></div>
+              <div class="col"><span class="val" data-v="unknown">0</span><i class="bar" data-b="unknown" style="background:var(--slate)"></i></div>
+              <div class="col"><span class="val" data-v="delete">0</span><i class="bar" data-b="delete" style="background:var(--coral)"></i></div>
+            </div>
+            <div class="chart-x"><div>Kukang</div><div>Unknown</div><div>Delete</div></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Hasil sortir</span>
+              <span class="card-title" id="detailName">—</span>
+            </div>
+            <div id="detailBody">
+              <div class="empty"><b>Belum ada citra terpilih</b>Klik salah satu citra di Ringkasan untuk melihat perbandingan dan probabilitas kelas.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- PANEL 2: WAKTU ---------- -->
+    <div class="panel" id="panel-waktu" role="tabpanel" aria-labelledby="tab-waktu" hidden>
+      <div class="bench">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Saring seluruh data raw</span></div>
+          <div class="field">
+            <label>Rentang tanggal</label>
+            <div style="display:flex; align-items:center; gap:10px">
+              <input type="date" id="fDateFrom" style="flex:1">
+              <span style="color:var(--ir-dim)">–</span>
+              <input type="date" id="fDateTo" style="flex:1">
+            </div>
+            <p class="hint">Isi tanggal mulai dan selesai (mis. 21 Mei – 25 Mei). Isi salah satu saja untuk satu tanggal. Kosongkan keduanya untuk semua tanggal.</p>
+          </div>
+          <div class="field">
+            <label>Rentang jam</label>
+            <div style="display:flex; align-items:center; gap:10px">
+              <input type="time" id="fFrom" step="1" style="flex:1">
+              <span style="color:var(--ir-dim)">–</span>
+              <input type="time" id="fTo" step="1" style="flex:1">
+            </div>
+            <p class="hint">Isi jam mulai dan selesai (mis. 19:00 – 22:30). Boleh melewati tengah malam, mis. 22:00 – 03:00. Kosongkan keduanya untuk semua jam.</p>
+          </div>
+          <p class="hint" style="margin-top:-6px">Kosongkan tanggal dan jam untuk memakai seluruh data raw tanpa saringan.</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <button class="btn btn-primary btn-sm" id="runWaktu" disabled>Generate data waktu</button>
+            <button class="btn btn-ghost btn-sm" id="resetWaktu">Hapus tanggal &amp; jam</button>
+          </div>
+          <div class="note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22L12 2Zm-1 6h2v7h-2V8Zm0 9h2v2h-2v-2Z"/></svg>
+            <span>Saringan ini mengambil ketiga kelas — kukang, unknown, dan delete. Rentang waktu yang kamu pilih di sini juga jadi sumber tahap Behavior.</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Hasil generate</span>
+              <button class="btn btn-ghost btn-sm" id="dlWaktu" disabled>Unduh folder waktu</button>
+            </div>
+            <div class="total"><b id="totWaktu">0</b><span id="waktuScope">belum digenerate</span></div>
+            <div class="counts">
+              <div class="count-row"><span class="label"><i class="swatch" style="background:var(--phosphor)"></i>Kukang</span><span class="track"><i data-kw="kukang" style="background:var(--phosphor)"></i></span><span class="num" data-nw="kukang">0</span></div>
+              <div class="count-row"><span class="label"><i class="swatch" style="background:var(--slate)"></i>Unknown</span><span class="track"><i data-kw="unknown" style="background:var(--slate)"></i></span><span class="num" data-nw="unknown">0</span></div>
+              <div class="count-row"><span class="label"><i class="swatch" style="background:var(--coral)"></i>Delete</span><span class="track"><i data-kw="delete" style="background:var(--coral)"></i></span><span class="num" data-nw="delete">0</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Ringkasan</span>
+              <span class="card-title" id="stripCountW">0 citra</span>
+            </div>
+            <div class="strip" id="stripWaktu">
+              <div class="empty" style="flex:1"><b>Belum ada hasil generate</b>Pilih tanggal dan jam, lalu jalankan Generate data waktu.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- PANEL 3: BEHAVIOR ---------- -->
+    <div class="panel" id="panel-behavior" role="tabpanel" aria-labelledby="tab-behavior" hidden>
+      <div class="bench">
+        <div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">Klasifikasi perilaku</span></div>
+            <p class="lede" style="font-size:14px; margin-bottom:16px">
+              Hanya citra kelas kukang yang dibaca di sini. Unknown dan delete tidak ikut serta.
+              Tiga kelas perilaku: makan, bergerak, grooming.
+            </p>
+            <div class="field">
+              <label>Sumber citra</label>
+              <div style="display:flex; align-items:center; gap:10px; padding:12px 14px; border:1px solid var(--moss); border-radius:10px; background:#0D1A14">
+                <i class="swatch" style="width:9px; height:9px; border-radius:2px; background:var(--phosphor); flex:none"></i>
+                <span id="behScope" style="font-family:var(--mono); font-size:13px">Seluruh data raw · kelas kukang</span>
+              </div>
+              <p class="hint">Ikut rentang tanggal dan jam di tahap Waktu. Hapus tanggal &amp; jam di sana untuk memakai seluruh data raw.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" id="runBehavior" disabled>Generate data behavior</button>
+            <div class="progress" hidden id="progWrapB"><i id="progBarB"></i></div>
+            <div class="run-log" id="runLogB"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Status perilaku</span>
+              <button class="btn btn-ghost btn-sm" id="dlBehavior" disabled>Unduh folder behavior</button>
+            </div>
+            <div class="total"><b id="totBeh">0</b><span>citra terklasifikasi</span></div>
+            <div class="counts">
+              <div class="count-row"><span class="label"><i class="swatch" style="background:var(--phosphor)"></i>Makan</span><span class="track"><i data-kb="makan" style="background:var(--phosphor)"></i></span><span class="num" data-nb="makan">0</span></div>
+              <div class="count-row"><span class="label"><i class="swatch" style="background:var(--slate)"></i>Bergerak</span><span class="track"><i data-kb="bergerak" style="background:var(--slate)"></i></span><span class="num" data-nb="bergerak">0</span></div>
+              <div class="count-row"><span class="label"><i class="swatch" style="background:var(--amber)"></i>Grooming</span><span class="track"><i data-kb="grooming" style="background:var(--amber)"></i></span><span class="num" data-nb="grooming">0</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Ringkasan</span>
+              <span class="card-title" id="stripCountB">0 citra</span>
+            </div>
+            <div class="strip" id="stripBeh">
+              <div class="empty" style="flex:1"><b>Belum ada perilaku terbaca</b>Jalankan klasifikasi perilaku untuk mengisi bagian ini.</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">Diagram jumlah data</span></div>
+            <div class="chart" id="chartBeh">
+              <div class="col"><span class="val" data-vb="makan">0</span><i class="bar" data-bb="makan" style="background:var(--phosphor)"></i></div>
+              <div class="col"><span class="val" data-vb="bergerak">0</span><i class="bar" data-bb="bergerak" style="background:var(--slate)"></i></div>
+              <div class="col"><span class="val" data-vb="grooming">0</span><i class="bar" data-bb="grooming" style="background:var(--amber)"></i></div>
+            </div>
+            <div class="chart-x"><div>Makan</div><div>Bergerak</div><div>Grooming</div></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Hasil</span>
+              <span class="card-title" id="detailNameB">—</span>
+            </div>
+            <div id="detailBodyB">
+              <div class="empty"><b>Belum ada citra terpilih</b>Klik citra di Ringkasan untuk melihat probabilitas perilaku.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- PANEL 4: ENHANCE (alat mandiri) ---------- -->
+    <div class="panel" id="panel-enhance" role="tabpanel" aria-labelledby="tab-enhance" hidden>
+      <div class="bench">
+        <div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">Alat enhance mandiri</span></div>
+            <p class="lede" style="font-size:14px; margin-bottom:16px">
+              Perjelas citra untuk dilihat mata manusia — tanpa sortir, tanpa model. Masukkan folder
+              atau berkas apa pun (hasil sorting yang sudah diunduh, folder kukang, atau lainnya),
+              enhance, lalu unduh. Pipeline sama dengan yang dipakai model: CLAHE → unsharp → normalize.
+            </p>
+            <div class="drop" id="dropEnh">
+              <h3>Letakkan folder atau berkas</h3>
+              <p>Enhance tidak mengubah berkas asli — hasilnya berkas baru berawalan <code>enhanced_</code>.</p>
+              <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap">
+                <button class="btn btn-primary" id="pickEnhDir">Pilih folder</button>
+                <button class="btn btn-ghost" id="pickEnhFiles">Pilih berkas</button>
+              </div>
+              <input type="file" id="enhDir" accept="image/*" webkitdirectory directory multiple hidden>
+              <input type="file" id="enhFiles" accept="image/*" multiple hidden>
+              <small>JPG · PNG · BMP</small>
+            </div>
+            <div class="progress" hidden id="progWrapE"><i id="progBarE"></i></div>
+            <div class="run-log" id="runLogE"></div>
+            <div style="display:flex; gap:10px; margin-top:16px; flex-wrap:wrap">
+              <button class="btn btn-primary btn-sm" id="runEnh" disabled>Enhance semua</button>
+              <button class="btn btn-ghost btn-sm" id="dlEnh" disabled>Unduh hasil enhance</button>
+              <button class="btn btn-ghost btn-sm" id="clearEnh" disabled>Kosongkan</button>
+            </div>
+            <div class="note">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22L12 2Zm-1 6h2v7h-2V8Zm0 9h2v2h-2v-2Z"/></svg>
+              <span>Citra enhance bagus untuk dilihat, tapi bukan arsip bukti. Untuk penelitian, simpan tetap versi asli — enhance hanya alat bantu visual.</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Perbandingan</span>
+              <span class="card-title" id="enhName">—</span>
+            </div>
+            <div id="enhPreview">
+              <div class="empty"><b>Belum ada citra</b>Masukkan folder atau berkas, jalankan Enhance, lalu klik salah satu hasil untuk membandingkan original dan enhanced.</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Ringkasan</span>
+              <span class="card-title" id="enhCount">0 citra</span>
+            </div>
+            <div class="strip" id="stripEnh">
+              <div class="empty" style="flex:1"><b>Belum ada hasil</b>Hasil enhance muncul di sini.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <span>KukangSort AI · Tugas Akhir STEI ITB</span>
+  <span>YOLO11n-cls · CLAHE + unsharp masking</span>
+  <span id="osdClock2">--:--:--</span>
+</footer>
+
+<script>
+/* ============================================================
+   SUMBER HASIL
+   1. Backend FastAPI (model asli). Default: http://localhost:8000 saat
+      halaman dibuka dari komputer sendiri. Bisa diganti lewat ?api=URL.
+   2. Mode demo (GitHub Pages): hasil ASLI model untuk foto contoh,
+      dibuat oleh GitHub Actions (scripts/build_demo.py -> demo/results.json).
+   3. Simulasi acak hanya bila diminta secara eksplisit lewat ?simulasi=1.
+   ============================================================ */
+const params = new URLSearchParams(location.search);
+const IS_LOCAL = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+const API_BASE = params.get('api') || (IS_LOCAL ? 'http://localhost:8000' : '');
+const SIMULATE = params.get('simulasi') === '1';
+let backendOn = false;
+let DEMO = null;   // {files: {nama: {size, sort, behavior}}} bila mode demo aktif
+
+async function loadDemo(){
+  try {
+    const r = await fetch('demo/results.json', {cache: 'no-store'});
+    if (!r.ok) return null;
+    return await r.json();
+  } catch { return null; }
+}
+
+async function pingBackend(){
+  if (!API_BASE) return false;
+  try {
+    const r = await fetch(API_BASE + '/health', {signal: AbortSignal.timeout(2500)});
+    const d = await r.json();
+    backendOn = d.models && d.models.sortir && d.models.behavior;
+    return backendOn;
+  } catch { backendOn = false; return false; }
+}
+
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+
+/* ---------- Jam OSD + status backend ---------- */
+setInterval(() => {
+  const t = new Date().toTimeString().slice(0,8);
+  $('#osdClock').textContent = t;
+  $('#osdClock2').textContent = t;
+}, 1000);
+
+pingBackend().then(async on => {
+  const el = $('#runLog');
+  if (on){ el.textContent = 'Backend tersambung — memakai model asli.'; return; }
+  DEMO = await loadDemo();
+  if (DEMO){
+    const n = Object.keys(DEMO.files).length;
+    el.textContent = `Mode demo: hasil ASLI model untuk ${n} foto camera trap contoh. Klik "Muat foto contoh". Untuk foto sendiri, jalankan backend (lihat README).`;
+    $('#demoBtn').hidden = false;
+    $('#demoNote').hidden = false;
+  } else if (SIMULATE){
+    el.textContent = 'Mode simulasi: probabilitas ACAK, bukan hasil model.';
+  } else {
+    el.textContent = API_BASE ? 'Backend tidak terjangkau di ' + API_BASE + '. Jalankan backend dulu (lihat README).'
+                              : 'Backend belum diatur. Tambahkan ?api=URL-backend di alamat halaman.';
+  }
+});
+
+/* ---------- Nav: state saat scroll + scroll-spy ---------- */
+const navWrap = $('#navWrap');
+addEventListener('scroll', () => navWrap.classList.toggle('is-scrolled', scrollY > 24), {passive:true});
+
+const spy = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    $$('.nav-links a').forEach(a =>
+      a.classList.toggle('is-active', a.getAttribute('href') === '#' + e.target.id));
+  });
+}, {rootMargin:'-45% 0px -50% 0px'});
+$$('section[id]').forEach(s => spy.observe(s));
+
+const navLinks = $('#navLinks'), navToggle = $('#navToggle');
+navToggle.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('is-open');
+  navToggle.setAttribute('aria-expanded', open);
+});
+navLinks.addEventListener('click', e => {
+  if (e.target.tagName === 'A') navLinks.classList.remove('is-open');
+});
+
+/* ---------- Tabs ---------- */
+$$('.tab').forEach(tab => tab.addEventListener('click', () => {
+  $$('.tab').forEach(t => {
+    const on = t === tab;
+    t.setAttribute('aria-selected', on);
+    $('#' + t.getAttribute('aria-controls')).hidden = !on;
+  });
+}));
+
+/* ---------- State ---------- */
+const state = {
+  items: [],        // seluruh data raw setelah disortir
+  filtered: [],     // data raw yang lolos tanggal + jam (ketiga kelas)
+  behavior: [],     // citra kukang yang sudah dibaca perilakunya
+  filterActive: false,
+  scope: 'Seluruh data raw'
+};
+
+/* ---------- Baca folder ---------- */
+const dirInput = $('#dirInput'), fileInput = $('#fileInput'), drop = $('#drop');
+let skipped = 0;
+
+$('#pickBtn').addEventListener('click', () => dirInput.click());
+$('#demoBtn').addEventListener('click', async () => {
+  if (!DEMO) return;
+  log('Mengambil foto contoh…');
+  const files = [];
+  for (const name of Object.keys(DEMO.files)){
+    const r = await fetch('demo/' + encodeURIComponent(name));
+    if (!r.ok) continue;
+    files.push(new File([await r.blob()], name, {type: 'image/jpeg', lastModified: Date.now()}));
+  }
+  addFiles(files);
+});
+$('#pickFilesBtn').addEventListener('click', () => fileInput.click());
+dirInput.addEventListener('change', e => addFiles([...e.target.files]));
+fileInput.addEventListener('change', e => addFiles([...e.target.files]));
+
+['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.add('is-over');
+}));
+['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.remove('is-over');
+}));
+
+/* Drop folder: telusuri seluruh subfolder lewat FileSystem API */
+drop.addEventListener('drop', async e => {
+  e.preventDefault();
+  const entries = [...e.dataTransfer.items]
+    .map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
+  if (!entries.length) return addFiles([...e.dataTransfer.files]);
+  log('Membaca isi folder…');
+  const files = [];
+  for (const en of entries) await walk(en, files);
+  addFiles(files);
+});
+
+async function walk(entry, out, base=''){
+  if (entry.isFile){
+    const f = await new Promise(res => entry.file(res));
+    f.relPath = base + entry.name;                 // jejak folder asal
+    out.push(f);
+  } else if (entry.isDirectory){
+    const reader = entry.createReader();
+    let batch;
+    do {
+      batch = await new Promise(res => reader.readEntries(res));
+      for (const child of batch) await walk(child, out, base + entry.name + '/');
+    } while (batch.length);                        // readEntries hanya balas 100 per panggilan
+  }
+}
+
+async function addFiles(list){
+  let all = [...list];
+  if (!backendOn && DEMO){
+    const ok = all.filter(f => DEMO.files[f.name] && DEMO.files[f.name].size === f.size);
+    if (ok.length < all.length)
+      alert((all.length - ok.length) + ' berkas tidak bisa diproses di demo online. ' +
+            'Demo hanya punya hasil model untuk foto contoh. Untuk foto sendiri, jalankan backend di komputermu (lihat README).');
+    all = ok;
+    if (!all.length) return renderTree();
+  }
+  const files = all.filter(f => f.type.startsWith('image/'));
+  skipped += all.length - files.length;
+  if (!files.length){
+    log('Tidak ada citra di folder itu. Pastikan isinya JPG atau PNG.');
+    return renderTree();
+  }
+
+  log('Membaca waktu bidikan dari ' + files.length + ' citra…');
+  for (let n = 0; n < files.length; n++){
+    const f = files[n];
+    const rel = f.relPath || f.webkitRelativePath || f.name;
+    const { taken, src } = await readTaken(f);
+    state.items.push({
+      file: f,
+      orig: f.name,                                // nama asli, mis. EAK01.JPG
+      name: f.name,                                // diisi nama baru di bawah
+      path: rel,
+      folder: rel.includes('/') ? rel.slice(0, rel.lastIndexOf('/')) : '(akar)',
+      url: URL.createObjectURL(f),
+      taken, timeSrc: src,
+      kelas: null, prob: null, blur: null
+    });
+    if (n % 25 === 0){
+      log('Membaca waktu… ' + (n+1) + '/' + files.length);
+      await new Promise(r => setTimeout(r, 0));   // biar UI tidak beku
+    }
+  }
+
+  renameAll();
+  $('#totRaw').textContent = state.items.length;
+  $('#runSort').disabled = false;
+  $('#clearSort').disabled = false;
+  const buta = state.items.filter(i => i.timeSrc === 'tidak terbaca').length;
+  log(files.length + ' citra terbaca dan sudah diganti nama.' +
+      (buta ? ' ' + buta + ' citra tanpa waktu terbaca — lihat daftar di bawah.' : ''));
+  renderTree();
+}
+
+/* ---------- Sumber waktu bidikan ----------
+   1. EXIF DateTimeOriginal — paling sahih, ditulis kamera saat memotret
+   2. Pola MMDD pada nama berkas — cadangan, tanpa jam, tahun ditebak
+   3. Gagal — citra ditandai dan tidak ikut filter waktu
+   Strip OSD Bushnell tidak dibaca di sini; kalau EXIF sudah dicopot,
+   OCR baris terbawah adalah langkah berikutnya (lihat catatan). */
+async function readTaken(f){
+  // 1. EXIF — coba beberapa tag tanggal yang mungkin dipakai kamera
+  try {
+    const ex = await exifr.parse(f, {
+      pick: ['DateTimeOriginal', 'CreateDate', 'DateTimeDigitized', 'ModifyDate', 'DateTime'],
+      reviveValues: true
+    });
+    if (ex){
+      const d = ex.DateTimeOriginal || ex.CreateDate || ex.DateTimeDigitized || ex.ModifyDate || ex.DateTime;
+      if (d instanceof Date && !isNaN(d)) return { taken: d, src: 'exif' };
+      if (typeof d === 'string'){
+        const p = d.match(/(\d{4})\D(\d{2})\D(\d{2})\D(\d{2})\D(\d{2})\D(\d{2})/);
+        if (p) return { taken: new Date(+p[1], +p[2]-1, +p[3], +p[4], +p[5], +p[6]), src: 'exif' };
+      }
+    }
+  } catch (_) {}
+
+  // 2. Pola nama berkas MMDD (tanpa jam)
+  const m = f.name.match(/(\d{2})(\d{2})(\d{4})/);
+  if (m){
+    const bulan = +m[1], tgl = +m[2];
+    if (bulan >= 1 && bulan <= 12 && tgl >= 1 && tgl <= 31)
+      return { taken: new Date(new Date().getFullYear(), bulan-1, tgl), src: 'nama berkas' };
+  }
+  return { taken: null, src: 'tidak terbaca' };
+}
+/* ---------- Ganti nama: YYYYMMDD_HHMMSS__<nama asli> ----------
+   Awalan waktu bikin berkas terurut kronologis di file explorer,
+   nama asli dipertahankan di belakang supaya tetap bisa dilacak. */
+function renameAll(){
+  const used = new Set();
+  state.items.forEach(it => {
+    const stem = it.orig.replace(/\.[^.]+$/, '');
+    const ext  = (it.orig.match(/\.[^.]+$/) || ['.jpg'])[0].toLowerCase();
+    let base;
+    if (it.taken){
+      const t = it.taken;
+      base = t.getFullYear()
+           + String(t.getMonth()+1).padStart(2,'0')
+           + String(t.getDate()).padStart(2,'0') + '_'
+           + String(t.getHours()).padStart(2,'0')
+           + String(t.getMinutes()).padStart(2,'0')
+           + String(t.getSeconds()).padStart(2,'0')
+           + '__' + safeName(stem);
+    } else {
+      base = 'TANPA-WAKTU__' + safeName(stem);
+    }
+    let n = base + ext, i = 1;
+    while (used.has(n)) n = base + '_' + String(++i).padStart(2,'0') + ext;  // burst detik yang sama
+    used.add(n);
+    it.name = n;
+  });
+}
+
+/* Ringkasan struktur folder yang terbaca */
+function renderTree(){
+  const tree = $('#tree');
+  if (!state.items.length && !skipped){ tree.hidden = true; return; }
+
+  flagWaktuDiragukan();
+
+  const byFolder = state.items.reduce((a,i) => (a[i.folder] = (a[i.folder]||0)+1, a), {});
+  const folders = Object.entries(byFolder).sort((a,b) => b[1]-a[1]);
+  const src = state.items.reduce((a,i) => (a[i.timeSrc] = (a[i.timeSrc]||0)+1, a), {});
+  const buta = src['tidak terbaca'] || 0;
+  const ragu = state.items.filter(i => i.waktuRagu).length;
+  const contoh = state.items[0];
+
+  const waktu = state.items.filter(i => i.taken && !i.waktuRagu)
+                           .map(i => i.taken).sort((a,b) => a - b);
+  const fmtFull = dt => dt.toLocaleString('id-ID', {
+    day:'2-digit', month:'short', year:'numeric',
+    hour:'2-digit', minute:'2-digit', second:'2-digit'
+  });
+  let rentangHTML = '';
+  if (waktu.length){
+    const awal = waktu[0], akhir = waktu[waktu.length-1];
+    const hari = Math.round((akhir - awal) / 86400000);
+    rentangHTML =
+      `<div class="row" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--moss)">
+         <span>Bidikan paling awal</span><span><b>${fmtFull(awal)}</b></span></div>` +
+      `<div class="row"><span>Bidikan paling akhir</span><span><b>${fmtFull(akhir)}</b></span></div>` +
+      `<div class="row"><span>Rentang</span><span>${hari <= 0 ? 'dalam 1 hari' : hari + ' hari'}</span></div>`;
+  }
+
+  tree.hidden = false;
+  tree.innerHTML =
+    `<div class="row"><span><b>${folders.length}</b> folder terbaca</span><span><b>${state.items.length}</b> citra</span></div>` +
+    folders.slice(0,6).map(([f,n]) =>
+      `<div class="row"><span>${f}/</span><span>${n}</span></div>`).join('') +
+    (folders.length > 6 ? `<div class="row"><span>…dan ${folders.length-6} folder lain</span><span></span></div>` : '') +
+    rentangHTML +
+    `<div class="row" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--moss)">
+       <span>Waktu dari EXIF</span><span>${src.exif || 0}</span></div>` +
+    (src['nama berkas'] ? `<div class="row"><span>Waktu dari nama berkas</span><span>${src['nama berkas']}</span></div>` : '') +
+    (contoh ? `<div class="row" style="margin-top:6px"><span><b>${contoh.orig}</b> → <b>${contoh.name}</b></span><span></span></div>` : '') +
+    (ragu ? `<div class="skip">${ragu} citra berwaktu diragukan (mis. reset pabrik 01-01-2019 atau tanggal menyimpang) — tetap disortir, tapi dikeluarkan dari rentang &amp; filter waktu.</div>` : '') +
+    (buta ? `<div class="skip">${buta} citra tanpa waktu terbaca — diberi awalan TANPA-WAKTU dan tidak ikut filter tanggal/jam.</div>` : '') +
+    (skipped ? `<div class="skip">${skipped} berkas bukan citra dilewati (video, .DAT, thumbnail).</div>` : '');
+}
+
+const TAHUN_MIN = 2020;
+function flagWaktuDiragukan(){
+  state.items.forEach(i => {
+    i.waktuRagu = false;
+    if (!i.taken) return;
+    if (i.taken.getFullYear() < TAHUN_MIN) i.waktuRagu = true;
+  });
+}
+
+function log(msg, el='#runLog'){ $(el).textContent = msg; }
+
+/* ---------- Sortir ---------- */
+$('#clearSort').addEventListener('click', () => {
+  state.items.forEach(i => URL.revokeObjectURL(i.url));
+  state.items = []; state.filtered = []; state.behavior = [];
+  state.filterActive = false; state.scope = 'Seluruh data raw';
+  skipped = 0; $('#tree').hidden = true;
+  $('#totRaw').textContent = '0'; $('#totWaktu').textContent = '0'; $('#totBeh').textContent = '0';
+  ['#runSort','#clearSort','#dlSort','#runWaktu','#dlWaktu','#runBehavior','#dlBehavior']
+    .forEach(s => $(s).disabled = true);
+  drawCounts({kukang:0, unknown:0, delete:0});
+  $('#stripSort').innerHTML = '<div class="empty" style="flex:1"><b>Belum ada citra</b>Jalankan sortir dulu, hasilnya muncul di sini.</div>';
+  $('#stripNav').hidden = true;
+  $('#stripCount').textContent = '0 citra';
+  log('Data dikosongkan.');
+});
+
+$('#runSort').addEventListener('click', async () => {
+  $('#runSort').disabled = true;
+  $('#progWrap').hidden = false;
+  for (let i = 0; i < state.items.length; i++){
+    try { await classifyBatch(state.items[i]); }
+    catch (e){
+      log(e.message + '. Jalankan backend (lihat README) lalu muat ulang halaman.');
+      $('#progWrap').hidden = true; $('#runSort').disabled = false;
+      return;
+    }
+    $('#progBar').style.width = ((i+1)/state.items.length*100) + '%';
+    log('Memproses ' + (i+1) + ' dari ' + state.items.length + ' · ' + state.items[i].name);
+    if (i % 4 === 0) await new Promise(r => setTimeout(r, 16));
+  }
+  log('Sortir selesai. ' + state.items.length + ' citra terklasifikasi.');
+  $('#progWrap').hidden = true;
+  $('#dlSort').disabled = false;
+  $('#runWaktu').disabled = false;
+  $('#runBehavior').disabled = false;
+  renderSort();
+  renderTree(); 
+});
+
+/* Terapkan hasil /api/sort (dari backend atau dari hasil demo). */
+function applySort(item, d){
+  item.prob = d.prob;                      // {kukang, unknown, delete}
+  item.kelas = d.kelas;
+  item.reviewS = !!d.perlu_review;         // kukang yg tak lolos verifikasi crop
+  item.blur = d.blur;
+  item.blurAfter = d.blur_after != null ? d.blur_after : null;
+  if (d.waktu){ item.taken = new Date(d.waktu); item.timeSrc = d.sumber_waktu || 'exif'; }
+  if (d.nama_baru) item.name = d.nama_baru;
+}
+
+/* Sortir satu citra: backend -> hasil demo -> (simulasi hanya jika ?simulasi=1). */
+async function classifyBatch(item){
+  if (!backendOn && DEMO && DEMO.files[item.orig]){
+    applySort(item, DEMO.files[item.orig].sort);
+    return;
+  }
+  if (backendOn){
+    try {
+      const fd = new FormData();
+      fd.append('file', item.file, item.name);
+      const r = await fetch(API_BASE + '/api/sort', {method:'POST', body:fd});
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+     const d = await r.json();
+      item.prob = d.prob;                      // {kukang, unknown, delete}
+      item.kelas = d.kelas;
+      item.reviewS = !!d.perlu_review;         // kukang yg tak lolos verifikasi crop
+      item.blur = d.blur;
+      item.blurAfter = d.blur_after != null ? d.blur_after : null;
+      // Waktu dari backend (Pillow EXIF) lebih andal daripada exifr browser.
+      if (d.waktu){
+        item.taken = new Date(d.waktu);
+        item.timeSrc = d.sumber_waktu || 'exif';
+      } else if (d.sumber_waktu === 'tidak terbaca' && item.timeSrc === 'exif'){
+        // backend gagal tapi browser berhasil -> pertahankan hasil browser
+      } else if (d.sumber_waktu){
+        item.timeSrc = d.sumber_waktu;
+      }
+      if (d.nama_baru) item.name = d.nama_baru;
+      return;
+    } catch (e){ /* jatuh ke bawah */ }
+  }
+  if (!SIMULATE) throw new Error('Tidak ada backend untuk memproses ' + item.orig);
+  const p = [Math.random(), Math.random(), Math.random()];
+  const sum = p.reduce((a,b)=>a+b);
+  const prob = { kukang:p[0]/sum, unknown:p[1]/sum, delete:p[2]/sum };
+  item.prob = prob;
+  item.kelas = Object.keys(prob).reduce((a,b) => prob[a] > prob[b] ? a : b);
+  item.blur = (40 + Math.random()*280).toFixed(1);
+  item.blurAfter = (+item.blur + 120 + Math.random()*200).toFixed(1);
+}
+
+const COLOR = {kukang:'var(--phosphor)', unknown:'var(--slate)', delete:'var(--coral)',
+               makan:'var(--phosphor)', bergerak:'var(--slate)', grooming:'var(--amber)'};
+
+function tally(arr, key='kelas'){
+  return arr.reduce((a,i) => (a[i[key]] = (a[i[key]]||0)+1, a), {});
+}
+
+function renderSort(){
+  const c = tally(state.items);
+  const counts = {kukang:c.kukang||0, unknown:c.unknown||0, delete:c.delete||0};
+  drawCounts(counts);
+  $('#totRaw').textContent = state.items.length;
+
+  const strip = $('#stripSort'); strip.innerHTML = '';
+  state.items.forEach((it, idx) => strip.appendChild(thumb(it, idx, 'kelas')));
+  $('#stripCount').textContent = state.items.length + ' citra';
+  $('#stripNav').hidden = state.items.length < 3;
+  if (state.items.length) showDetail(state.items[0], 0);
+}
+
+function drawCounts(counts){
+  const max = Math.max(1, ...Object.values(counts));
+  Object.entries(counts).forEach(([k,v]) => {
+    $(`[data-k="${k}"]`).style.width = (v/max*100) + '%';
+    $(`[data-n="${k}"]`).textContent = v;
+    $(`[data-b="${k}"]`).style.height = (v/max*100) + '%';
+    $(`[data-v="${k}"]`).textContent = v;
+  });
+}
+
+function fmt(dt){ return dt ? dt.toLocaleString('id-ID') : 'waktu tidak terbaca'; }
+
+function thumb(it, idx, key){
+  const b = document.createElement('button');
+  b.className = 'thumb'; b.dataset.idx = idx;
+  b.innerHTML = `
+    <span class="tag" style="background:${COLOR[it[key]]}">${it[key]}</span>
+    <img src="${it.url}" alt="Citra ${it.name}, terklasifikasi ${it[key]}">
+    <span class="meta">${it.name.slice(0,22)}<br>${fmt(it.taken)}</span>`;
+  b.addEventListener('click', () => {
+    $$('.thumb').forEach(t => t.classList.remove('is-active'));
+    b.classList.add('is-active');
+    key === 'kelas' ? showDetail(it, idx) : showDetailB(it);
+  });
+  return b;
+}
+
+/* ---------- Geser filmstrip ---------- */
+$$('#stripNav button').forEach(btn => btn.addEventListener('click', () => {
+  $('#stripSort').scrollBy({left: 180 * +btn.dataset.dir, behavior:'smooth'});
+}));
+
+/* ---------- Detail hasil ---------- */
+function showDetail(it){
+  $('#detailName').textContent = it.name.slice(0,22);
+  $('#detailBody').innerHTML = `
+    <div class="detail">
+      <div class="frame">
+        <img src="${it.url}" alt="Citra asli">
+        <span class="cap"><span>Original</span><span>Blur ${it.blur}</span></span>
+      </div>
+      <div class="frame">
+        <img src="${it.url}" style="filter:grayscale(1) contrast(1.5) brightness(1.15)" alt="Citra setelah CLAHE dan unsharp masking">
+        <span class="cap"><span style="color:var(--phosphor)">Enhanced</span><span>Blur ${it.blurAfter ?? '—'}</span></span>
+      </div>
+    </div>
+    <div class="probs">
+      ${['kukang','unknown','delete'].map(k => `
+        <div class="prob">
+          <span>${k}</span>
+          <span class="track"><i style="width:${(it.prob[k]*100).toFixed(1)}%; background:${COLOR[k]}"></i><span class="threshold"></span></span>
+          <span class="num">${(it.prob[k]*100).toFixed(1)}%</span>
+        </div>`).join('')}
+      <p class="hint">Garis putus-putus amber = ambang keputusan 0,70. Di bawah ambang, citra masuk unknown untuk diperiksa manual.</p>
+    </div>`;
+}
+
+/* ---------- Panel Waktu — menyaring SELURUH data raw (3 kelas) ---------- */
+$('#resetWaktu').addEventListener('click', () => {
+  $('#fDateFrom').value = ''; $('#fDateTo').value = ''; $('#fFrom').value = ''; $('#fTo').value = '';  state.filterActive = false;
+  state.scope = 'Seluruh data raw';
+  $('#behScope').textContent = 'Seluruh data raw · kelas kukang';
+  log('Tanggal dan jam dihapus. Generate berikutnya memakai seluruh data raw.', '#runLogB');
+});
+
+$('#runWaktu').addEventListener('click', () => {
+  let dFrom = $('#fDateFrom').value, dTo = $('#fDateTo').value;
+  // kalau cuma salah satu diisi, pakai sebagai satu tanggal
+  if (dFrom && !dTo) dTo = dFrom;
+  if (dTo && !dFrom) dFrom = dTo;
+  const tglAktif = !!(dFrom && dTo);
+  // pastikan urutan benar (kalau peneliti membalik)
+  if (tglAktif && dFrom > dTo){ const t = dFrom; dFrom = dTo; dTo = t; }
+
+  const from = $('#fFrom').value, to = $('#fTo').value;   // "HH:MM" atau "HH:MM:SS"
+  const jamAktif = !!(from && to);
+
+  let pool = state.items;                                 // ketiga kelas ikut
+  if (tglAktif) pool = pool.filter(i => {
+    if (!i.taken || i.waktuRagu) return false;
+    const hari = localDate(i.taken);
+    return hari >= dFrom && hari <= dTo;                  // perbandingan string YYYY-MM-DD aman
+  });
+  if (jamAktif) pool = pool.filter(i => i.taken && !i.waktuRagu && inRange(i.taken, from, to));
+
+  state.filtered = pool;
+  state.filterActive = !!(tglAktif || jamAktif);
+  const jamLabel = jamAktif ? (from.slice(0,5) + ' – ' + to.slice(0,5)) : 'semua jam';
+  let tglLabel = 'Semua tanggal';
+  if (tglAktif){
+    const f = new Date(dFrom + 'T00:00').toLocaleDateString('id-ID');
+    const t = new Date(dTo + 'T00:00').toLocaleDateString('id-ID');
+    tglLabel = (dFrom === dTo) ? f : (f + ' – ' + t);
+  }
+  state.scope = state.filterActive ? [tglLabel, jamLabel].join(' · ') : 'Seluruh data raw';
+  $('#behScope').textContent = state.scope + ' · kelas kukang';
+
+  const c = tally(pool);
+  const counts = {kukang:c.kukang||0, unknown:c.unknown||0, delete:c.delete||0};
+  const max = Math.max(1, ...Object.values(counts));
+  Object.entries(counts).forEach(([k,v]) => {
+    $(`[data-kw="${k}"]`).style.width = (v/max*100) + '%';
+    $(`[data-nw="${k}"]`).textContent = v;
+  });
+
+  $('#totWaktu').textContent = pool.length;
+  $('#waktuScope').textContent = state.filterActive ? 'citra pada rentang ini' : 'seluruh data raw';
+  $('#dlWaktu').disabled = !pool.length;
+
+  const strip = $('#stripWaktu');
+  strip.innerHTML = pool.length ? '' :
+    '<div class="empty" style="flex:1"><b>Tidak ada citra pada rentang ini</b>Longgarkan jam, atau hapus tanggal &amp; jam untuk memakai seluruh data raw.</div>';
+  pool.forEach((it, i) => strip.appendChild(thumb(it, i, 'kelas')));
+  $('#stripCountW').textContent = pool.length + ' citra';
+});
+
+function localDate(dt){
+  return dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0');
+}
+/* Bandingkan waktu bidikan terhadap rentang jam bebas.
+   'from' dan 'to' berformat "HH:MM" atau "HH:MM:SS".
+   Dihitung dalam detik sejak tengah malam supaya presisi sampai detik.
+   Kalau from > to, rentang dianggap melewati tengah malam (mis. 22:00–03:00). */
+function toSec(hhmmss){
+  const p = hhmmss.split(':').map(Number);
+  return (p[0]||0)*3600 + (p[1]||0)*60 + (p[2]||0);
+}
+function inRange(dt, from, to){
+  const t  = dt.getHours()*3600 + dt.getMinutes()*60 + dt.getSeconds();
+  const f  = toSec(from), e = toSec(to);
+  return f <= e ? (t >= f && t <= e) : (t >= f || t <= e);
+}
+
+/* ---------- Panel Behavior — hanya kelas kukang ---------- */
+$('#runBehavior').addEventListener('click', async () => {
+  const source = state.filterActive ? state.filtered : state.items;
+  const pool = source.filter(i => i.kelas === 'kukang');
+  if (!pool.length){
+    log('Tidak ada citra kukang pada rentang ini. Hapus tanggal & jam untuk memakai seluruh data raw.', '#runLogB');
+    return;
+  }
+  $('#progWrapB').hidden = false;
+  for (let i = 0; i < pool.length; i++){
+    try { await classifyBehavior(pool[i]); }
+    catch (e){
+      log(e.message + '. Jalankan backend (lihat README) lalu muat ulang halaman.', '#runLogB');
+      $('#progWrapB').hidden = true;
+      return;
+    }
+    $('#progBarB').style.width = ((i+1)/pool.length*100) + '%';
+    log('Membaca perilaku ' + (i+1) + ' dari ' + pool.length, '#runLogB');
+    if (i % 4 === 0) await new Promise(r => setTimeout(r, 16));
+  }
+  state.behavior = pool;
+  $('#progWrapB').hidden = true;
+  log('Klasifikasi perilaku selesai.', '#runLogB');
+  $('#dlBehavior').disabled = false;
+  renderBehavior();
+});
+
+/* Behavior satu citra: backend -> hasil demo -> (simulasi hanya jika ?simulasi=1). */
+async function classifyBehavior(item){
+  const demo = !backendOn && DEMO && DEMO.files[item.orig];
+  if (demo){
+    const d = demo.behavior;
+    item.probB = d.prob; item.perilaku = d.kelas; item.reviewB = !!d.perlu_review;
+    return;
+  }
+  if (backendOn){
+    try {
+      const fd = new FormData();
+      fd.append('file', item.file, item.name);
+      const r = await fetch(API_BASE + '/api/behavior', {method:'POST', body:fd});
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const d = await r.json();
+      item.probB = d.prob;                     // {bergerak, grooming, makan}
+      item.perilaku = d.kelas;
+      item.reviewB = !!d.perlu_review;         // beda antar 2 model / ragu / tak terdeteksi
+      return;
+    } catch (e){ /* jatuh ke bawah */ }
+  }
+  if (!SIMULATE) throw new Error('Tidak ada backend untuk memproses ' + item.orig);
+  const p = [Math.random(), Math.random(), Math.random()];
+  const s = p.reduce((a,b)=>a+b);
+  item.probB = {makan:p[0]/s, bergerak:p[1]/s, grooming:p[2]/s};
+  item.perilaku = Object.keys(item.probB).reduce((a,b) => item.probB[a] > item.probB[b] ? a : b);
+}
+
+function renderBehavior(){
+  const c = tally(state.behavior, 'perilaku');
+  const counts = {makan:c.makan||0, bergerak:c.bergerak||0, grooming:c.grooming||0};
+  const max = Math.max(1, ...Object.values(counts));
+  Object.entries(counts).forEach(([k,v]) => {
+    $(`[data-kb="${k}"]`).style.width = (v/max*100) + '%';
+    $(`[data-nb="${k}"]`).textContent = v;
+    $(`[data-bb="${k}"]`).style.height = (v/max*100) + '%';
+    $(`[data-vb="${k}"]`).textContent = v;
+  });
+  $('#totBeh').textContent = state.behavior.length;
+
+  const strip = $('#stripBeh'); strip.innerHTML = '';
+  state.behavior.forEach((it, i) => strip.appendChild(thumb(it, i, 'perilaku')));
+  $('#stripCountB').textContent = state.behavior.length + ' citra';
+  if (state.behavior.length) showDetailB(state.behavior[0]);
+}
+
+function showDetailB(it){
+  $('#detailNameB').textContent = it.name.slice(0,22);
+  $('#detailBodyB').innerHTML = `
+    <div class="frame" style="max-width:340px">
+      <img src="${it.url}" alt="Citra ${it.name}, perilaku ${it.perilaku}">
+      <span class="cap"><span>${fmt(it.taken)}</span><span style="color:var(--phosphor)">${it.perilaku}</span></span>
+    </div>
+    <div class="probs">
+      ${['makan','bergerak','grooming'].map(k => `
+        <div class="prob">
+          <span>${k}</span>
+          <span class="track"><i style="width:${(it.probB[k]*100).toFixed(1)}%; background:${COLOR[k]}"></i></span>
+          <span class="num">${(it.probB[k]*100).toFixed(1)}%</span>
+        </div>`).join('')}
+    </div>`;
+}
+
+/* ============================================================
+   UNDUH — dikemas di browser jadi satu folder utama berisi
+   subfolder per kelas, plus manifest.csv.
+
+   hasil_sortir_<stamp>/
+     ├── kukang/   ├── unknown/   ├── delete/   └── manifest.csv
+
+   Untuk batch besar (>2.000 citra) pengemasan sebaiknya pindah
+   ke backend; browser menahan seluruh berkas di memori.
+   ============================================================ */
+const stamp = () => new Date().toISOString().slice(0,16).replace(/[-:T]/g,'');
+
+async function zipFolders(rootName, groups, manifest, btn){
+  const label = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Mengemas…';
+
+  const all = [];
+  for (const [folder, items] of Object.entries(groups))
+    items.forEach(it => all.push({ folder, it }));
+
+  if (backendOn){
+    try {
+      const fd = new FormData();
+      fd.append('root_name', rootName);
+      const meta = all.map(({folder, it}) => ({
+        nama_baru: it.name, folder, nama_asli: (it.orig || it.name),
+        kelas: it.kelas || '', perilaku: it.perilaku || '',
+        waktu: it.taken ? it.taken.toISOString() : '',
+        tanggal: tglOf(it.taken), jam: jamOf(it.taken),
+        sumber_waktu: it.timeSrc || '', path_asal: it.path || ''
+      }));
+      fd.append('manifest', JSON.stringify(meta));
+      all.forEach(({it}) => fd.append('files', it.file, it.name));
+
+      btn.textContent = 'Mengemas di server…';
+      const r = await fetch(API_BASE + '/api/pack', {method:'POST', body:fd});
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const blob = await r.blob();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = rootName + '.zip'; a.click();
+      URL.revokeObjectURL(a.href);
+      btn.disabled = false; btn.textContent = label;
+      return;
+    } catch (e){
+      btn.textContent = 'Server sibuk, coba di browser…';
+    }
+  }
+
+  try {
+    if (all.length > 1200)
+      throw new Error(all.length + ' citra terlalu besar untuk dikemas di browser. Nyalakan backend untuk batch sebesar ini.');
+    const zip = new JSZip();
+    const root = zip.folder(rootName);
+    for (const [folder, items] of Object.entries(groups)){
+      const f = root.folder(folder);
+      items.forEach(it => f.file(it.name, it.file));
+      if (!items.length) f.file('_kosong.txt', 'Tidak ada citra pada kelas ini.');
+    }
+    root.file('manifest.csv', '\ufeff' + manifest);
+    const blob = await zip.generateAsync({type:'blob'}, m =>
+      btn.textContent = 'Mengemas… ' + m.percent.toFixed(0) + '%');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = rootName + '.zip'; a.click();
+    URL.revokeObjectURL(a.href);
+  } catch (err){
+    alert('Pengemasan gagal: ' + err.message);
+  } finally {
+    btn.disabled = false; btn.textContent = label;
+  }
+}
+
+const safeName = n => n.replace(/[\\/:*?"<>|]/g, '_');
+const csv = (header, rows) => [header.join(','), ...rows].join('\n');
+const group = (arr, key) => arr.reduce((a,i) => ((a[i[key]] ||= []).push(i), a), {});
+// Kelompokkan dengan override 'need_review': item ber-flag review masuk folder tinjau.
+const groupRV = (arr, key, flag) => arr.reduce((a,i) => {
+  const f = i[flag] ? 'need_review' : i[key];
+  (a[f] ||= []).push(i); return a;
+}, {});
+/* Pisahkan tanggal (YYYY-MM-DD) dan jam (HH:MM:SS) waktu lokal, untuk pivot di Excel */
+const tglOf = dt => dt ? dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0') : '';
+const jamOf = dt => dt ? String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0') + ':' + String(dt.getSeconds()).padStart(2,'0') : '';
+
+/* 1 · Folder sortir — seluruh data raw, tiga kelas */
+$('#dlSort').addEventListener('click', e => {
+  const g = groupRV(state.items, 'kelas', 'reviewS');
+  zipFolders('hasil_sortir_' + stamp(),
+    {kukang:g.kukang||[], unknown:g.unknown||[], delete:g.delete||[], need_review:g.need_review||[]},
+  csv(['nama_baru','nama_asli','path_asal','kelas','probabilitas','waktu','tanggal','jam','sumber_waktu','waktu_diragukan'],
+        state.items.map(i => [i.name, safeName(i.orig), '"'+i.path+'"', i.kelas,
+          i.prob[i.kelas].toFixed(4), i.taken ? i.taken.toISOString() : '',
+          tglOf(i.taken), jamOf(i.taken), i.timeSrc, i.waktuRagu ? 'ya' : ''].join(','))),
+    e.currentTarget);
+});
+
+/* 2 · Folder waktu — tiga kelas, hanya yang lolos tanggal & jam */
+$('#dlWaktu').addEventListener('click', e => {
+  const g = group(state.filtered, 'kelas');
+  zipFolders('hasil_waktu_' + stamp(),
+    {kukang:g.kukang||[], unknown:g.unknown||[], delete:g.delete||[]},
+csv(['nama_baru','nama_asli','path_asal','kelas','waktu','tanggal','jam','sumber_waktu','rentang'],
+        state.filtered.map(i => [i.name, safeName(i.orig), '"'+i.path+'"', i.kelas,
+          i.taken ? i.taken.toISOString() : '', tglOf(i.taken), jamOf(i.taken),
+          i.timeSrc, '"'+state.scope+'"'].join(','))),
+    e.currentTarget);
+});
+
+/* 3 · Folder behavior — hanya kukang, dipecah per perilaku */
+$('#dlBehavior').addEventListener('click', e => {
+  const g = groupRV(state.behavior, 'perilaku', 'reviewB');
+  zipFolders('hasil_behavior_' + stamp(),
+    {makan:g.makan||[], bergerak:g.bergerak||[], grooming:g.grooming||[], need_review:g.need_review||[]},
+  csv(['nama_baru','nama_asli','path_asal','perilaku','probabilitas','waktu','tanggal','jam','sumber_waktu','waktu_diragukan','rentang'],
+        state.behavior.map(i => [i.name, safeName(i.orig), '"'+i.path+'"', i.perilaku,
+          i.probB[i.perilaku].toFixed(4), i.taken ? i.taken.toISOString() : '',
+          tglOf(i.taken), jamOf(i.taken), i.timeSrc, i.waktuRagu ? 'ya' : '', '"'+state.scope+'"'].join(','))),
+    e.currentTarget);
+});
+
+/* ============================================================
+   ALAT ENHANCE MANDIRI — terpisah dari sortir.
+   Masukkan folder/berkas apa pun -> enhance -> unduh.
+   Butuh backend hidup (enhance dikerjakan server, pipeline sama
+   dengan model). Kalau backend mati, tombol memberi tahu.
+   ============================================================ */
+const enhState = { items: [] };
+const enhDir = $('#enhDir'), enhFiles = $('#enhFiles'), dropEnh = $('#dropEnh');
+
+$('#pickEnhDir').addEventListener('click', () => enhDir.click());
+$('#pickEnhFiles').addEventListener('click', () => enhFiles.click());
+enhDir.addEventListener('change', e => addEnh([...e.target.files]));
+enhFiles.addEventListener('change', e => addEnh([...e.target.files]));
+
+['dragenter','dragover'].forEach(ev => dropEnh.addEventListener(ev, e => {
+  e.preventDefault(); dropEnh.classList.add('is-over');
+}));
+['dragleave','drop'].forEach(ev => dropEnh.addEventListener(ev, e => {
+  e.preventDefault(); dropEnh.classList.remove('is-over');
+}));
+dropEnh.addEventListener('drop', async e => {
+  e.preventDefault();
+  const entries = [...e.dataTransfer.items]
+    .map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
+  if (!entries.length) return addEnh([...e.dataTransfer.files]);
+  const files = [];
+  for (const en of entries) await walk(en, files);
+  addEnh(files);
+});
+
+function addEnh(list){
+  const files = [...list].filter(f => f.type.startsWith('image/'));
+  if (!files.length){ $('#runLogE').textContent = 'Tidak ada citra terbaca.'; return; }
+  files.forEach(f => enhState.items.push({
+    file: f, name: f.name, url: URL.createObjectURL(f),
+    enhancedUrl: null, blurBefore: null, blurAfter: null
+  }));
+  $('#runEnh').disabled = false;
+  $('#clearEnh').disabled = false;
+  $('#runLogE').textContent = enhState.items.length + ' citra siap di-enhance.';
+}
+
+$('#clearEnh').addEventListener('click', () => {
+  enhState.items.forEach(i => {
+    URL.revokeObjectURL(i.url);
+    if (i.enhancedUrl) URL.revokeObjectURL(i.enhancedUrl);
+  });
+  enhState.items = [];
+  ['#runEnh','#dlEnh','#clearEnh'].forEach(s => $(s).disabled = true);
+  $('#stripEnh').innerHTML = '<div class="empty" style="flex:1"><b>Belum ada hasil</b>Hasil enhance muncul di sini.</div>';
+  $('#enhPreview').innerHTML = '<div class="empty"><b>Belum ada citra</b>Masukkan folder atau berkas, jalankan Enhance, lalu klik salah satu hasil.</div>';
+  $('#enhName').textContent = '—';
+  $('#enhCount').textContent = '0 citra';
+  $('#runLogE').textContent = 'Dikosongkan.';
+});
+
+$('#runEnh').addEventListener('click', async () => {
+  if (!backendOn){
+    $('#runLogE').textContent = 'Enhance butuh backend hidup. Jalankan server lalu muat ulang.';
+    return;
+  }
+  $('#runEnh').disabled = true;
+  $('#progWrapE').hidden = false;
+  for (let i = 0; i < enhState.items.length; i++){
+    const it = enhState.items[i];
+    try {
+      const fd = new FormData();
+      fd.append('file', it.file, it.name);
+      const r = await fetch(API_BASE + '/api/enhance', {method:'POST', body:fd});
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      it.blurBefore = r.headers.get('X-Blur-Before');
+      it.blurAfter = r.headers.get('X-Blur-After');
+      const blob = await r.blob();
+      it.enhancedUrl = URL.createObjectURL(blob);
+    } catch (e){
+      $('#runLogE').textContent = 'Gagal pada ' + it.name + ': ' + e.message;
+    }
+    $('#progBarE').style.width = ((i+1)/enhState.items.length*100) + '%';
+    $('#runLogE').textContent = 'Enhance ' + (i+1) + '/' + enhState.items.length;
+  }
+  $('#progWrapE').hidden = true;
+  $('#runEnh').disabled = false;
+  $('#dlEnh').disabled = false;
+  renderEnh();
+  $('#runLogE').textContent = 'Enhance selesai.';
+});
+
+function renderEnh(){
+  const strip = $('#stripEnh'); strip.innerHTML = '';
+  enhState.items.forEach((it) => {
+    if (!it.enhancedUrl) return;
+    const b = document.createElement('button');
+    b.className = 'thumb';
+    b.innerHTML = `
+      <img src="${it.enhancedUrl}" alt="Hasil enhance ${it.name}">
+      <span class="meta">${it.name.slice(0,22)}<br>blur ${it.blurBefore} → ${it.blurAfter}</span>`;
+    b.addEventListener('click', () => {
+      $$('#stripEnh .thumb').forEach(t => t.classList.remove('is-active'));
+      b.classList.add('is-active');
+      showEnh(it);
+    });
+    strip.appendChild(b);
+  });
+  $('#enhCount').textContent = enhState.items.filter(i => i.enhancedUrl).length + ' citra';
+  const first = enhState.items.find(i => i.enhancedUrl);
+  if (first) showEnh(first);
+}
+
+function showEnh(it){
+  $('#enhName').textContent = it.name.slice(0,22);
+  $('#enhPreview').innerHTML = `
+    <div class="detail">
+      <div class="frame">
+        <img src="${it.url}" alt="Original">
+        <span class="cap"><span>Original</span><span>blur ${it.blurBefore}</span></span>
+      </div>
+      <div class="frame">
+        <img src="${it.enhancedUrl}" alt="Enhanced">
+        <span class="cap"><span style="color:var(--phosphor)">Enhanced</span><span>blur ${it.blurAfter}</span></span>
+      </div>
+    </div>`;
+}
+
+/* Unduh ZIP hasil enhance — dikemas server (endpoint /api/enhance/pack) */
+$('#dlEnh').addEventListener('click', async e => {
+  const btn = e.currentTarget, label = btn.textContent;
+  const done = enhState.items.filter(i => i.enhancedUrl);
+  if (!done.length) return;
+  btn.disabled = true; btn.textContent = 'Mengemas…';
+  try {
+    const fd = new FormData();
+    done.forEach(i => fd.append('files', i.file, i.name));
+    fd.append('root_name', 'hasil_enhance');
+    const r = await fetch(API_BASE + '/api/enhance/pack', {method:'POST', body:fd});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const blob = await r.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'hasil_enhance_' + stamp() + '.zip';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  } catch (err){
+    $('#runLogE').textContent = 'Unduh gagal: ' + err.message;
+  } finally {
+    btn.disabled = false; btn.textContent = label;
+  }
+});
+</script>
+</body>
+</html>
