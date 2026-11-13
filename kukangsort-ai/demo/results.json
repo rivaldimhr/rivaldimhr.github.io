@@ -1,0 +1,211 @@
+{
+ "generated_at": "2026-11-13T15:56:11+00:00",
+ "models": {
+  "sortir": true,
+  "behavior": true,
+  "behavior_crop": true,
+  "detektor": true,
+  "verifier": true
+ },
+ "threshold": 0.7,
+ "files": {
+  "05210910.JPG": {
+   "size": 847875,
+   "sort": {
+    "kelas": "delete",
+    "confidence": 0.8599,
+    "prob": {
+     "kukang": 0.1379,
+     "unknown": 0.0022,
+     "delete": 0.8599
+    },
+    "diterima": true,
+    "blur": 53.61,
+    "blur_label": "cukup blur",
+    "blur_after": 661.34,
+    "dikoreksi": false,
+    "perlu_review": false,
+    "waktu": "2026-05-21T21:42:56",
+    "sumber_waktu": "exif",
+    "nama_baru": "20260521_214256__05210910.jpg"
+   },
+   "behavior": {
+    "kelas": "makan",
+    "confidence": 0.4654,
+    "prob": {
+     "bergerak": 0.2622,
+     "grooming": 0.3123,
+     "makan": 0.4255
+    },
+    "crop": true,
+    "sepakat": false,
+    "full": "grooming",
+    "crop_pred": "makan",
+    "perlu_review": true,
+    "diterima": false
+   }
+  },
+  "05210926.JPG": {
+   "size": 945225,
+   "sort": {
+    "kelas": "kukang",
+    "confidence": 0.849,
+    "prob": {
+     "kukang": 0.849,
+     "unknown": 0.1309,
+     "delete": 0.0201
+    },
+    "diterima": true,
+    "blur": 56.3,
+    "blur_label": "cukup blur",
+    "blur_after": 1031.02,
+    "dikoreksi": false,
+    "perlu_review": false,
+    "verifikasi": {
+     "status": "ok",
+     "is_kukang": true,
+     "confidence": 0.9507,
+     "prob": {
+      "bukan_kukang": 0.0493,
+      "kukang": 0.9507
+     }
+    },
+    "waktu": "2026-05-21T21:43:45",
+    "sumber_waktu": "exif",
+    "nama_baru": "20260521_214345__05210926.jpg"
+   },
+   "behavior": {
+    "kelas": "makan",
+    "confidence": 0.9864,
+    "prob": {
+     "bergerak": 0.0017,
+     "grooming": 0.0,
+     "makan": 0.9982
+    },
+    "crop": true,
+    "sepakat": true,
+    "full": "makan",
+    "crop_pred": "makan",
+    "perlu_review": false,
+    "diterima": true
+   }
+  },
+  "05210936.JPG": {
+   "size": 964880,
+   "sort": {
+    "kelas": "kukang",
+    "confidence": 0.993,
+    "prob": {
+     "kukang": 0.993,
+     "unknown": 0.0044,
+     "delete": 0.0026
+    },
+    "diterima": true,
+    "blur": 58.96,
+    "blur_label": "cukup blur",
+    "blur_after": 1159.9,
+    "dikoreksi": false,
+    "perlu_review": true,
+    "verifikasi": {
+     "status": "ok",
+     "is_kukang": false,
+     "confidence": 0.9989,
+     "prob": {
+      "bukan_kukang": 0.9989,
+      "kukang": 0.0011
+     }
+    },
+    "waktu": "2026-05-21T21:48:54",
+    "sumber_waktu": "exif",
+    "nama_baru": "20260521_214854__05210936.jpg"
+   },
+   "behavior": {
+    "kelas": "makan",
+    "confidence": 0.892,
+    "prob": {
+     "bergerak": 0.07,
+     "grooming": 0.0009,
+     "makan": 0.9291
+    },
+    "crop": true,
+    "sepakat": true,
+    "full": "makan",
+    "crop_pred": "makan",
+    "perlu_review": false,
+    "diterima": true
+   }
+  },
+  "05210953.JPG": {
+   "size": 848071,
+   "sort": {
+    "kelas": "delete",
+    "confidence": 0.9147,
+    "prob": {
+     "kukang": 0.0806,
+     "unknown": 0.0048,
+     "delete": 0.9147
+    },
+    "diterima": true,
+    "blur": 54.25,
+    "blur_label": "cukup blur",
+    "blur_after": 785.74,
+    "dikoreksi": false,
+    "perlu_review": false,
+    "waktu": "2026-05-21T22:00:26",
+    "sumber_waktu": "exif",
+    "nama_baru": "20260521_220026__05210953.jpg"
+   },
+   "behavior": {
+    "kelas": "makan",
+    "confidence": 0.9756,
+    "prob": {
+     "bergerak": 0.0004,
+     "grooming": 0.0485,
+     "makan": 0.9511
+    },
+    "crop": true,
+    "sepakat": false,
+    "full": "grooming",
+    "crop_pred": "makan",
+    "perlu_review": true,
+    "diterima": false
+   }
+  },
+  "SUNP0468.JPG": {
+   "size": 4810510,
+   "sort": {
+    "kelas": "unknown",
+    "confidence": 0.7938,
+    "prob": {
+     "kukang": 0.1889,
+     "unknown": 0.7938,
+     "delete": 0.0172
+    },
+    "diterima": true,
+    "blur": 14.99,
+    "blur_label": "sangat blur",
+    "blur_after": 661.4,
+    "dikoreksi": false,
+    "perlu_review": false,
+    "waktu": "2026-06-03T19:47:24",
+    "sumber_waktu": "exif",
+    "nama_baru": "20260603_194724__SUNP0468.jpg"
+   },
+   "behavior": {
+    "kelas": "bergerak",
+    "confidence": 0.9316,
+    "prob": {
+     "bergerak": 0.8633,
+     "grooming": 0.1105,
+     "makan": 0.0263
+    },
+    "crop": true,
+    "sepakat": false,
+    "full": "grooming",
+    "crop_pred": "bergerak",
+    "perlu_review": true,
+    "diterima": false
+   }
+  }
+ }
+}
