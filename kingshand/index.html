@@ -175,7 +175,9 @@ td small{color:var(--mute)}
   #login{grid-template-columns:1fr}
   .login-side{padding:32px}
   .login-side h1{font-size:32px}
-  .stats,.grid2,.detail-grid,.reports,.profile-grid,.form-grid{grid-template-columns:1fr}
+  .stats,.grid2,.detail-grid,.reports,.profile-grid,.form-grid{grid-template-columns:minmax(0,1fr)}
+  .grid2>*,.form-grid>*,.detail-grid>*,.reports>*{min-width:0}
+  input,textarea,select{min-width:0;max-width:100%}
   .top-in{gap:10px;flex-wrap:wrap}
   nav.main{order:3;flex-basis:100%;overflow-x:auto}
   .top-actions{margin-left:auto}
