@@ -221,7 +221,7 @@
             Siapa yang Benar-Benar Mengunjungi Hutan Jawa Barat?
         </h1>
         <p class="text-xl md:text-2xl text-blue-100/80 font-medium">
-            Analisis 310 kawasan wisata alam selama 7 tahun — termasuk era pandemi yang mengubah segalanya.
+            Analisis <span data-stat="kawasan">296</span> nama kawasan wisata alam selama 7 tahun — termasuk era pandemi yang mengubah segalanya.
         </p>
         <div class="pt-8">
             <a href="#section-2" class="bg-primary-container text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-primary transition-all shadow-xl inline-block">
@@ -240,7 +240,7 @@
     <section id="section-2" class="py-16 md:py-24 space-y-12 fade-in-section">
         <div>
             <div class="chapter-label">01 — KONTEKS</div>
-            <h2 class="text-3xl font-black text-slate-800">Dari 310 kawasan yang terdaftar, hanya sebagian kecil yang benar-benar dikunjungi. Dan datanya? Tidak sempurna.</h2>
+            <h2 class="text-3xl font-black text-slate-800">Dari <span data-stat="kawasan">296</span> nama kawasan yang terdaftar, hanya sebagian kecil yang benar-benar dikunjungi. Dan datanya? Tidak sempurna.</h2>
             <div class="section-divider"></div>
         </div>
 
@@ -251,8 +251,8 @@
             </div>
             <div class="hidden md:block w-px h-16 bg-slate-200"></div>
             <div class="text-center flex-1">
-                <p class="text-4xl font-black text-primary">310</p>
-                <p class="text-slate-500 font-medium mt-2">Kawasan Terdaftar di Jawa Barat</p>
+                <p class="text-4xl font-black text-primary" data-stat="kawasan">296</p>
+                <p class="text-slate-500 font-medium mt-2">Nama kawasan tercatat (sebagian ganda, lihat bagian Kualitas Data)</p>
             </div>
             <div class="hidden md:block w-px h-16 bg-slate-200"></div>
             <div class="text-center flex-1">
@@ -276,6 +276,25 @@
             </div>
         </div>
     </section>
+
+
+    <!-- FILTER GLOBAL -->
+    <div id="filter-bar" class="md:sticky top-0 z-40 -mx-6 px-6 py-3 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="flex flex-wrap items-center gap-3 text-sm">
+            <span class="font-bold text-slate-700">Saring grafik bagian 02–05:</span>
+            <label class="flex items-center gap-2">Tipe pengelola
+                <select id="f-tipe" class="rounded-lg border-slate-300 text-sm py-1">
+                    <option value="all">Semua</option><option>TWA</option><option>TN</option><option>TAHURA</option><option>PERHUTANI</option><option>KPH</option><option>BKSDA</option><option>LAINNYA</option>
+                </select></label>
+            <label class="flex items-center gap-2">Dari
+                <select id="f-from" class="rounded-lg border-slate-300 text-sm py-1"></select></label>
+            <label class="flex items-center gap-2">sampai
+                <select id="f-to" class="rounded-lg border-slate-300 text-sm py-1"></select></label>
+            <label class="flex items-center gap-2"><input type="checkbox" id="f-2020" class="rounded" checked> Sertakan 2020 (data disalin dari 2019)</label>
+            <button id="f-reset" class="ml-auto text-primary font-semibold hover:underline">Reset filter</button>
+        </div>
+        <p id="f-summary" class="text-xs text-slate-500 mt-1" aria-live="polite"></p>
+    </div>
 
     <!-- SECTION 3: TREN KESELURUHAN -->
     <section class="py-16 md:py-24 space-y-12 fade-in-section">
@@ -314,7 +333,7 @@
             <div class="chapter-label">03 — KETIMPANGAN</div>
             <h2 class="text-3xl font-black text-slate-800">Satu kawasan, sepertiga seluruh kunjungan Jawa Barat.</h2>
             <div class="section-divider"></div>
-            <p class="text-slate-500 mt-4 max-w-2xl">TWA Tangkubanparahu mendominasi 33.4% dari seluruh kunjungan tercatat. Ketimpangan ini menunjukkan bahwa pengembangan pariwisata Jawa Barat sangat bergantung pada satu destinasi.</p>
+            <p class="text-slate-500 mt-4 max-w-2xl">TWA Tangkubanparahu mendominasi <span id="stat-top1-share-text">33.4%</span> dari seluruh kunjungan tercatat. Ketimpangan ini menunjukkan bahwa pengembangan pariwisata Jawa Barat sangat bergantung pada satu destinasi.</p>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div class="glass-card p-8 rounded-2xl shadow-sm">
@@ -322,17 +341,17 @@
             </div>
             <div class="space-y-6">
                 <div class="takeaway-card space-y-2 border-l-4 border-primary pl-6 bg-white rounded-xl p-6 shadow-sm">
-                    <p class="text-4xl font-black text-primary">33.4%</p>
-                    <p class="font-bold">TWA Tangkubanparahu</p>
-                    <p class="text-sm text-slate-500">dari seluruh kunjungan Jawa Barat 2016–2022</p>
+                    <p class="text-4xl font-black text-primary" id="stat-top1-share">33.4%</p>
+                    <p class="font-bold" id="stat-top1-name">TWA Tangkubanparahu</p>
+                    <p class="text-sm text-slate-500" id="stat-scope">dari seluruh kunjungan Jawa Barat 2016–2022</p>
                 </div>
                 <div class="takeaway-card space-y-2 border-l-4 border-slate-300 pl-6 bg-white rounded-xl p-6 shadow-sm">
-                    <p class="text-4xl font-black text-slate-400">75.6%</p>
-                    <p class="font-bold">Top 5 Kawasan</p>
-                    <p class="text-sm text-slate-500">mengambil tiga perempat dari total kunjungan</p>
+                    <p class="text-4xl font-black text-slate-400" id="stat-top5-share">65.0%</p>
+                    <p class="font-bold">5 kawasan teratas</p>
+                    <p class="text-sm text-slate-500">porsi dari total kunjungan tercatat</p>
                 </div>
                 <div class="takeaway-card space-y-2 border-l-4 border-error pl-6 bg-white rounded-xl p-6 shadow-sm">
-                    <p class="text-4xl font-black text-error">224</p>
+                    <p class="text-4xl font-black text-error" id="stat-zero">224</p>
                     <p class="font-bold">Kawasan = 0 Pengunjung</p>
                     <p class="text-sm text-slate-500">tidak pernah tercatat satu pengunjung pun</p>
                 </div>
@@ -355,6 +374,22 @@
         <div id="fun-facts-container" class="fun-fact-scroll">
             <!-- Rendered by JS -->
         </div>
+    </section>
+
+
+    <!-- SECTION 4C: PETA -->
+    <section id="peta" class="py-16 md:py-24 space-y-8 fade-in-section">
+        <div>
+            <div class="chapter-label">04B — PETA KELOMPOK KAWASAN</div>
+            <h2 class="text-3xl font-black text-slate-800">Kawasan unggulan berkumpul di Bandung Raya dan Bogor–Puncak. Banyak kawasan lain hampir tidak pernah melapor.</h2>
+            <div class="section-divider"></div>
+            <p class="text-slate-500 max-w-3xl">Warna menunjukkan kelompok hasil K-Means (k = 4), ukuran titik menunjukkan rata-rata pengunjung per tahun. Klik nama kelompok di legenda untuk menyembunyikan atau menampilkannya.</p>
+        </div>
+        <div class="glass-card p-4 md:p-6 rounded-2xl shadow-sm">
+            <div id="map-chart" style="height: 540px; width: 100%;"></div>
+            <p id="map-note" class="text-xs text-slate-500 mt-3"></p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="cluster-cards"></div>
     </section>
 
     <!-- SECTION 4B: PROFIL WISATAWAN -->
@@ -485,12 +520,12 @@
                     📅 Temuan Musiman
                 </p>
                 <p class="font-bold text-slate-800">
-                    Desember paling ramai, Mei paling sepi
+                    Desember paling ramai, April paling sepi
                 </p>
                 <p class="text-sm text-slate-500 mt-2">
-                    Pola musiman menunjukkan puncak di akhir tahun (Desember: ~47%) 
-                    dan awal tahun (Januari–Februari: ~40%). Bulan Mei adalah titik 
-                    paling sepi (~32%). Ini relevan untuk perencanaan promosi wisata alam 
+                    Pola musiman menunjukkan puncak di akhir tahun (Desember: ~46%) 
+                    dan awal tahun (Januari–Februari: ~40%). April–Mei adalah titik 
+                    paling sepi (~32–34%). Ini relevan untuk perencanaan promosi wisata alam 
                     yang harus mendorong kunjungan di bulan-bulan sepi.
                 </p>
             </div>
@@ -575,6 +610,21 @@
                 </p>
             </div>
         </div>
+    
+        <div class="glass-card p-8 rounded-2xl shadow-sm space-y-4" id="model-compare">
+            <h3 class="font-bold text-lg text-slate-800">Apakah model ini lebih baik daripada tebakan sederhana?</h3>
+            <p class="text-sm text-slate-500" id="model-compare-text">Memuat perbandingan…</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <div id="model-mae-chart" style="height: 320px; width: 100%;"></div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm" id="model-table">
+                        <thead><tr class="text-left text-slate-500 border-b"><th class="py-2 pr-2">#</th><th class="py-2 pr-2">Model</th><th class="py-2 pr-2 text-right">MAE</th><th class="py-2 pr-2 text-right">RMSE</th><th class="py-2 text-right">MAE tanpa Mar</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                    <p class="text-xs text-slate-500 mt-3">MAE = rata-rata selisih prediksi dengan hunian sebenarnya, dalam poin persen (semakin kecil semakin baik). Maret 2025 anjlok ke 24%, jauh di luar pola, sehingga ditampilkan juga MAE tanpa bulan itu.</p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- SECTION 5: EKSPLORASI MANDIRI -->
@@ -620,6 +670,53 @@
         </div>
     </section>
 
+
+    <!-- SECTION 7B: KUALITAS DATA -->
+    <section id="kualitas-data" class="py-16 md:py-24 space-y-8 fade-in-section">
+        <div>
+            <div class="chapter-label">07B — KUALITAS DATA PELAPORAN</div>
+            <h2 class="text-3xl font-black text-slate-800">Masalah terbesar data ini bukan pandemi, tetapi pelaporan.</h2>
+            <div class="section-divider"></div>
+            <p class="text-slate-500 max-w-3xl">Setiap kawasan diberi skor 0–100: persentase dari 6 tahun (2016–2022, tanpa 2020 yang disalin) yang mencatat pengunjung, dikurangi 10 bila namanya terindikasi tercatat ganda. Dalam praktik skor tertinggi sekitar 67, karena data 2021 kosong untuk semua kawasan dan data 2022 hanya memuat satu kawasan. Skor rendah tidak berarti kawasannya sepi; bisa jadi pengelolanya tidak melapor.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="dq-cards"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6">
+                <p class="text-3xl font-black text-amber-700" id="dq-copied">–</p>
+                <p class="font-bold text-slate-800">kawasan dengan data 2020 persis sama dengan 2019</p>
+                <p class="text-sm text-slate-600 mt-1">Hampir mustahil terjadi di tahun pandemi; kemungkinan besar angka 2019 disalin.</p>
+            </div>
+            <div class="bg-red-50 border border-red-200 rounded-2xl p-6">
+                <p class="text-3xl font-black text-red-700" id="dq-dup">–</p>
+                <p class="font-bold text-slate-800">kawasan tercatat dengan lebih dari satu nama</p>
+                <p class="text-sm text-slate-600 mt-1" id="dq-dup-example">Misalnya Taman Nasional Gede Pangrango muncul dengan beberapa ejaan.</p>
+            </div>
+        </div>
+        <div class="glass-card p-6 rounded-2xl shadow-sm space-y-4">
+            <div class="flex flex-wrap gap-3 items-center">
+                <input id="dq-search" type="search" placeholder="Cari kawasan…" aria-label="Cari kawasan" class="rounded-lg border-slate-300 text-sm py-2 px-3 w-56">
+                <select id="dq-cat" aria-label="Filter kategori" class="rounded-lg border-slate-300 text-sm py-2">
+                    <option value="all">Semua kategori</option><option>Baik</option><option>Sedang</option><option>Buruk</option><option>Tidak pernah melapor</option>
+                </select>
+                <label class="text-sm flex items-center gap-2"><input type="checkbox" id="dq-dup-only" class="rounded"> Hanya yang terindikasi ganda</label>
+                <a id="dq-download" href="data/data_quality.csv" download class="ml-auto inline-flex items-center gap-1 bg-primary text-white text-sm font-semibold rounded-lg px-4 py-2 hover:opacity-90">Unduh CSV lengkap</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm" id="dq-table">
+                    <thead><tr class="text-left text-slate-500 border-b">
+                        <th class="py-2 pr-3">Kawasan</th><th class="py-2 pr-3">Tipe</th><th class="py-2 pr-3 text-right">Skor</th><th class="py-2 pr-3">Kategori</th><th class="py-2 pr-3">Tahun ada pengunjung</th><th class="py-2 pr-3 text-right">Total pengunjung*</th><th class="py-2">Catatan</th>
+                    </tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="flex items-center justify-between text-xs text-slate-500">
+                <span id="dq-count"></span>
+                <button id="dq-more" class="text-primary font-semibold hover:underline">Tampilkan semua</button>
+            </div>
+            <p class="text-xs text-slate-400">*2016–2022 tanpa 2020. Perhitungan: <code>notebooks/07_data_quality.py</code>.</p>
+        </div>
+    </section>
+
     <!-- SECTION 6: DATA VALID -->
     <section class="py-16 md:py-24 space-y-12 fade-in-section">
         <div>
@@ -640,9 +737,10 @@
                         <p class="text-2xl">📋</p>
                         <p class="font-bold">Perbaiki Sistem Pelaporan</p>
                         <p class="text-sm text-blue-100">
-                            224 kawasan tidak pernah melaporkan data. 
-                            Standardisasi sistem pelaporan digital 
-                            adalah prioritas utama Dinas Kehutanan.
+                            224 kawasan tidak pernah melaporkan data, 
+                            dan 13 kawasan tercatat dengan beberapa nama. 
+                            Satu kode kawasan baku dan pelaporan digital 
+                            adalah prioritas utama.
                         </p>
                     </div>
                     <div class="bg-white/10 rounded-2xl p-6 space-y-3">
@@ -651,8 +749,8 @@
                         <p class="text-sm text-blue-100">
                             Ketergantungan pada Tangkubanparahu (33.4%) 
                             membuat pariwisata Jabar rentan. 
-                            Perlu pengembangan kawasan potensial 
-                            seperti TWA Telagawarna.
+                            Kelompok "Potensi tersembunyi" (mis. TN Gede 
+                            Pangrango, Halimun-Salak) layak dikembangkan.
                         </p>
                     </div>
                     <div class="bg-white/10 rounded-2xl p-6 space-y-3">
@@ -668,6 +766,10 @@
                 </div>
             </div>
         </div>
+            <div class="text-center">
+            <a href="ringkasan-kebijakan.pdf" class="inline-flex items-center gap-2 bg-on-secondary-fixed text-white font-semibold rounded-full px-6 py-3 hover:opacity-90" id="brief-link">Unduh ringkasan 1 halaman (PDF)</a>
+            <p class="text-xs text-slate-500 mt-2">Tiga temuan dan tiga rekomendasi, untuk pembuat kebijakan.</p>
+        </div>
     </section>
 
 </main>
@@ -677,12 +779,12 @@
         <div class="flex flex-col md:flex-row justify-between items-center gap-8">
             <div>
                 <p class="font-black text-2xl tracking-widest text-primary-container">KELOMPOK 12</p>
-                <p class="text-sm opacity-50">Analisis Data Pariwisata Alam Jawa Barat 2024</p>
+                <p class="text-sm opacity-50">Analisis Data Pariwisata Alam Jawa Barat 2016–2025</p>
             </div>
             <div class="flex gap-8 text-sm font-medium">
-                <a href="#" class="hover:text-primary-container transition-colors">Metodologi</a>
-                <a href="#" class="hover:text-primary-container transition-colors">Sumber Data</a>
-                <a href="#" class="hover:text-primary-container transition-colors">Laporan Final</a>
+                <a href="https://github.com/rivaldimhr/Data-Analytics#alur-pengerjaan-osemn" class="hover:text-primary-container transition-colors">Metodologi</a>
+                <a href="https://github.com/rivaldimhr/Data-Analytics/tree/main/data/raw" class="hover:text-primary-container transition-colors">Sumber Data</a>
+                <a href="ringkasan-kebijakan.pdf" class="hover:text-primary-container transition-colors">Ringkasan (PDF)</a>
             </div>
         </div>
         <div class="pt-8 border-t border-white/10 text-center text-xs opacity-40">
@@ -729,8 +831,7 @@ const DataLoader = (() => {
    MODULE 2: DATA PROCESSOR  
 ============================================ */
 const DataProcessor = (() => {
-    function getAggregateTrend(rawData) {
-        const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022];
+    function getAggregateTrend(rawData, years = [2016, 2017, 2018, 2019, 2020, 2021, 2022]) {
         const wisnus = years.map(y => rawData.filter(d => d.tahun === y && d.jenis_wisatawan === "WISATAWAN NUSANTARA").reduce((s, c) => s + (c.jumlah_wisatawan || 0), 0));
         const wisman = years.map(y => rawData.filter(d => d.tahun === y && d.jenis_wisatawan === "WISATAWAN MANCANEGARA").reduce((s, c) => s + (c.jumlah_wisatawan || 0), 0));
         return { years, wisnus, wisman };
@@ -764,7 +865,7 @@ const ChartRenderer = (() => {
         margin: { t: 40, r: 20, b: 60, l: 75 }, font: { family: 'Inter', size: 12 },
         xaxis: { gridcolor: '#f0f4f8', zeroline: false }, yaxis: { gridcolor: '#f0f4f8', zeroline: false, tickformat: ',' }
     };
-    function renderOverview(data) {
+    function renderOverview(data, showNotes = true) {
         const traces = [
             { x: data.years, y: data.wisnus, name: 'Wisnus', line: { color: '#006591', width: 4 }, type: 'scatter' },
             { x: data.years, y: data.wisman, name: 'Wisman', line: { color: '#de8712', width: 3 }, type: 'scatter' }
@@ -777,6 +878,7 @@ const ChartRenderer = (() => {
                 { x: 2022, y: 0.4, xref: 'x', yref: 'paper', text: '↗ TN Ciremai Recovery', showarrow: true, font: { color: '#006591', size: 10 }, ax: -40, ay: -20 }
             ]
         };
+        if (!showNotes) { layout.annotations = []; layout.xaxis = { ...commonLayout.xaxis, dtick: 1, tickformat: 'd' }; }
         Plotly.newPlot('overview-chart', traces, layout, { responsive: true, displayModeBar: false });
     }
     function renderExplorer(data, regionName) {
@@ -836,7 +938,7 @@ const ChartRenderer = (() => {
         const top5 = sorted.slice(0, 5);
         const others = sorted.slice(5).reduce((s, [,v]) => s + v, 0);
         
-        const labels = [...top5.map(s => s[0]), 'Kawasan Lainnya (305)'];
+        const labels = [...top5.map(s => s[0]), `Kawasan Lainnya (${sorted.length - 5})`];
         const values = [...top5.map(s => s[1]), others];
         
         const trace = {
@@ -853,7 +955,7 @@ const ChartRenderer = (() => {
             showlegend: true,
             legend: { orientation: 'v', x: 1, y: 0.5 },
             annotations: [{
-                text: '33.4%<br><span style="font-size:11px">Tangkuban</span>',
+                text: (sorted.length ? (sorted[0][1] / (sorted.reduce((a,[,v]) => a + v, 0) || 1) * 100).toFixed(1) : '0') + '%<br><span style="font-size:11px">' + (sorted[0] ? (w => { w = w.charAt(0) + w.slice(1).toLowerCase(); return w.length > 10 ? w.slice(0, 9) + '.' : w; })(sorted[0][0].replace(/^(TWA|TAHURA|TN\.?|BALAI( BESAR)?( TN\.?)?)\s+/,'').replace(/^GN\.\s*/,'').split(' ')[0]) : '') + '</span>',
                 x: 0.5, y: 0.5, xref: 'paper', yref: 'paper',
                 showarrow: false,
                 font: { size: 16, color: '#0C4A6E', family: 'Inter' }
@@ -865,7 +967,9 @@ const ChartRenderer = (() => {
 
     // Chart baru 2: Wisnus vs Wisman per tipe pengelola (stacked bar)
     function renderProfilWisatawan(rawData) {
-        const tipeList = ['TWA', 'TN', 'LAINNYA', 'TAHURA', 'PERHUTANI'];
+        const tipeTotals = {};
+        rawData.forEach(d => { tipeTotals[d.tipe_pengelola] = (tipeTotals[d.tipe_pengelola] || 0) + (d.jumlah_wisatawan || 0); });
+        const tipeList = Object.entries(tipeTotals).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([t]) => t);
         const wisnus = tipeList.map(t => 
             rawData.filter(d => d.tipe_pengelola === t && 
                            d.jenis_wisatawan === 'WISATAWAN NUSANTARA')
@@ -1352,6 +1456,210 @@ function renderFunFacts() {
   });
 }
 
+
+/* ============================================
+   MODULE 6: FILTER GLOBAL + ANGKA KUNCI
+============================================ */
+const ALL_YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022];
+const FilterModule = (() => {
+    const st = { tipe: 'all', from: 2016, to: 2022, inc2020: true };
+    function years() { return ALL_YEARS.filter(y => y >= st.from && y <= st.to && (st.inc2020 || y !== 2020)); }
+    function isDefault() { return st.tipe === 'all' && st.from === 2016 && st.to === 2022 && st.inc2020; }
+    function apply(raw) {
+        const ys = new Set(years());
+        return raw.filter(d => ys.has(d.tahun) && (st.tipe === 'all' || d.tipe_pengelola === st.tipe));
+    }
+    function setup(onChange) {
+        const from = document.getElementById('f-from'), to = document.getElementById('f-to');
+        ALL_YEARS.forEach(y => { from.add(new Option(y, y)); to.add(new Option(y, y)); });
+        from.value = 2016; to.value = 2022;
+        const read = () => {
+            st.tipe = document.getElementById('f-tipe').value;
+            st.from = +from.value; st.to = +to.value;
+            if (st.from > st.to) { [st.from, st.to] = [st.to, st.from]; from.value = st.from; to.value = st.to; }
+            st.inc2020 = document.getElementById('f-2020').checked;
+            onChange();
+        };
+        ['f-tipe', 'f-from', 'f-to', 'f-2020'].forEach(id => document.getElementById(id).addEventListener('change', read));
+        document.getElementById('f-reset').addEventListener('click', () => {
+            document.getElementById('f-tipe').value = 'all'; from.value = 2016; to.value = 2022;
+            document.getElementById('f-2020').checked = true; read();
+        });
+    }
+    return { st, years, isDefault, apply, setup };
+})();
+
+const StatsModule = (() => {
+    const pct = (a, b) => (b ? (a / b * 100) : 0).toFixed(1) + '%';
+    function compute(rows) {
+        const totals = {};
+        rows.forEach(d => { totals[d.pengelola_kawasan] = (totals[d.pengelola_kawasan] || 0) + (d.jumlah_wisatawan || 0); });
+        const sorted = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+        const total = sorted.reduce((a, [, v]) => a + v, 0);
+        return {
+            kawasan: sorted.length,
+            total,
+            top1: sorted[0] || ['-', 0],
+            top1Share: pct(sorted[0] ? sorted[0][1] : 0, total),
+            top5Share: pct(sorted.slice(0, 5).reduce((a, [, v]) => a + v, 0), total),
+            zero: sorted.filter(([, v]) => v === 0).length
+        };
+    }
+    function title(name) { return name.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()).replace(/\bTwa\b/, 'TWA').replace(/\bTn\b/g, 'TN').replace(/\bGn\b/g, 'Gn'); }
+    function render(full, filtered) {
+        const all = compute(full), f = compute(filtered);
+        document.querySelectorAll('[data-stat="kawasan"]').forEach(el => el.textContent = all.kawasan);
+        document.getElementById('stat-top1-share').textContent = f.top1Share;
+        document.getElementById('stat-top1-share-text').textContent = all.top1Share;
+        document.getElementById('stat-top1-name').textContent = title(f.top1[0]);
+        document.getElementById('stat-top5-share').textContent = f.top5Share;
+        document.getElementById('stat-zero').textContent = f.zero;
+        const ys = FilterModule.years();
+        document.getElementById('stat-scope').textContent = FilterModule.isDefault()
+            ? 'dari seluruh kunjungan Jawa Barat 2016–2022'
+            : `dari kunjungan ${FilterModule.st.tipe === 'all' ? 'semua tipe' : 'tipe ' + FilterModule.st.tipe}, tahun ${ys.join(', ')}`;
+        const sum = document.getElementById('f-summary');
+        sum.textContent = FilterModule.isDefault()
+            ? `Menampilkan seluruh data: ${all.kawasan} nama kawasan, ${all.total.toLocaleString('id-ID')} kunjungan tercatat.`
+            : `Filter aktif: ${f.kawasan} kawasan, ${f.total.toLocaleString('id-ID')} kunjungan tercatat (dari ${all.total.toLocaleString('id-ID')}).`;
+        return { all, f };
+    }
+    return { compute, render };
+})();
+
+/* ============================================
+   MODULE 7: PETA KELOMPOK KAWASAN
+============================================ */
+const MapModule = (() => {
+    const CLUSTER_PATH = 'data/wisata_alam_clustered.csv';
+    const COORD_PATH = 'data/koordinat_kawasan.csv';
+    const META = {
+        1: { name: 'Unggulan terkelola', color: '#0C4A6E', desc: 'Ramai dan rutin melapor.' },
+        3: { name: 'Potensi tersembunyi', color: '#10B981', desc: 'Cukup ramai, tapi jarang melapor.' },
+        2: { name: 'Andalan lokal', color: '#F59E0B', desc: 'Sepi, tapi rutin melapor.' },
+        0: { name: 'Perlu evaluasi', color: '#EF4444', desc: 'Sepi dan hampir tidak pernah melapor.' }
+    };
+    const parse = path => new Promise(res => Papa.parse(path, { download: true, header: true, dynamicTyping: true, skipEmptyLines: true, complete: r => res(r.data), error: () => res([]) }));
+    async function render() {
+        const [cl, co] = await Promise.all([parse(CLUSTER_PATH), parse(COORD_PATH)]);
+        if (!cl.length) return;
+        const coord = Object.fromEntries(co.map(c => [c.pengelola_kawasan, c]));
+        const traces = [1, 3, 2, 0].map(k => {
+            const rows = cl.filter(r => r.cluster === k && coord[r.pengelola_kawasan]);
+            return {
+                type: 'scattermapbox', mode: 'markers', name: META[k].name,
+                lat: rows.map(r => coord[r.pengelola_kawasan].lat), lon: rows.map(r => coord[r.pengelola_kawasan].lon),
+                text: rows.map(r => `<b>${r.pengelola_kawasan}</b><br>${coord[r.pengelola_kawasan].wilayah}<br>Rata-rata ${Math.round(r.avg_pengunjung).toLocaleString('id-ID')} pengunjung/tahun<br>Aktif melapor ${r.years_active} dari 5 tahun`),
+                hovertemplate: '%{text}<extra>' + META[k].name + '</extra>',
+                marker: { color: META[k].color, opacity: 0.8, size: rows.map(r => Math.max(7, Math.min(40, Math.sqrt(r.avg_pengunjung) / 12))) }
+            };
+        });
+        Plotly.newPlot('map-chart', traces, {
+            mapbox: { style: 'open-street-map', center: { lat: -6.95, lon: 107.55 }, zoom: 7.2 },
+            margin: { t: 0, r: 0, b: 0, l: 0 }, showlegend: true,
+            legend: { x: 0.01, y: 0.99, bgcolor: 'rgba(255,255,255,0.9)', font: { family: 'Inter', size: 12 } },
+            paper_bgcolor: 'rgba(0,0,0,0)'
+        }, { responsive: true, displayModeBar: false, scrollZoom: false });
+        const mapped = cl.filter(r => coord[r.pengelola_kawasan]);
+        const share = mapped.reduce((a, r) => a + r.avg_pengunjung, 0) / cl.reduce((a, r) => a + r.avg_pengunjung, 0) * 100;
+        document.getElementById('map-note').textContent =
+            `${mapped.length} dari ${cl.length} kawasan aktif dipetakan, mewakili ${share.toFixed(0)}% pengunjung. Lokasi adalah perkiraan manual tingkat kecamatan (data asli tidak memuat koordinat); kawasan yang lokasinya belum pasti tidak dipetakan.`;
+        document.getElementById('cluster-cards').innerHTML = [1, 3, 2, 0].map(k => {
+            const rows = cl.filter(r => r.cluster === k).sort((a, b) => b.avg_pengunjung - a.avg_pengunjung);
+            const avg = rows.reduce((a, r) => a + r.avg_pengunjung, 0) / (rows.length || 1);
+            return `<div class="bg-white rounded-2xl p-5 border border-slate-200" style="border-top:4px solid ${META[k].color}">
+                <p class="font-bold text-slate-800">${META[k].name}</p>
+                <p class="text-3xl font-black" style="color:${META[k].color}">${rows.length}</p>
+                <p class="text-xs text-slate-500">kawasan · rata-rata ${Math.round(avg).toLocaleString('id-ID')} pengunjung/tahun</p>
+                <p class="text-sm text-slate-600 mt-2">${META[k].desc}</p>
+                <p class="text-xs text-slate-500 mt-2">Contoh: ${rows.slice(0, 3).map(r => r.pengelola_kawasan).join(', ')}</p></div>`;
+        }).join('');
+    }
+    return { render };
+})();
+
+/* ============================================
+   MODULE 8: PERBANDINGAN MODEL
+============================================ */
+const ModelCompareModule = (() => {
+    const PATH = 'data/model_comparison.csv';
+    async function render() {
+        const rows = await new Promise(res => Papa.parse(PATH, { download: true, header: true, dynamicTyping: true, skipEmptyLines: true, complete: r => res(r.data), error: () => res([]) }));
+        if (!rows.length) { document.getElementById('model-compare-text').textContent = 'Data perbandingan model tidak tersedia.'; return; }
+        const fmt = v => Number(v).toFixed(2).replace('.', ',');
+        const best = rows[0], base = rows.find(r => r.model.startsWith('Musiman naif'));
+        const better = base ? ((1 - best.MAE / base.MAE) * 100).toFixed(0) : null;
+        document.getElementById('model-compare-text').innerHTML =
+            `Lima pembanding dilatih pada data yang sama (2019–2024) dan diuji pada 2025. <b>${best.model}</b> paling akurat dengan MAE ${fmt(best.MAE)} poin` +
+            (base ? `, ${better}% lebih kecil daripada tebakan "bulan yang sama tahun lalu" (${fmt(base.MAE)})` : '') +
+            `. Holt-Winters justru paling buruk karena data 2022–2023 sebagian besar hasil interpolasi, sehingga pola musimnya tidak bisa dipelajari.`;
+        document.querySelector('#model-table tbody').innerHTML = rows.map(r => `<tr class="border-b border-slate-100${r.peringkat === 1 ? ' font-bold text-primary' : ''}" title="${r.keterangan}">
+            <td class="py-2 pr-2">${r.peringkat}</td><td class="py-2 pr-2">${r.model}</td><td class="py-2 pr-2 text-right">${fmt(r.MAE)}</td><td class="py-2 pr-2 text-right">${fmt(r.RMSE)}</td><td class="py-2 text-right">${fmt(r.MAE_tanpa_Mar)}</td></tr>`).join('');
+        const rev = [...rows].reverse();
+        Plotly.newPlot('model-mae-chart', [{
+            type: 'bar', orientation: 'h', y: rev.map(r => r.model.replace(/ \(.*\)$/, '')), x: rev.map(r => r.MAE),
+            marker: { color: rev.map(r => r.peringkat === 1 ? '#0C4A6E' : '#94A3B8') },
+            text: rev.map(r => fmt(r.MAE)), textposition: 'outside', cliponaxis: false,
+            hovertemplate: '%{y}<br>MAE %{x:.2f} poin<extra></extra>'
+        }], {
+            paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)', font: { family: 'Inter', size: 11 },
+            margin: { t: 10, r: 50, b: 40, l: 10 }, xaxis: { title: { text: 'MAE uji 2025 (poin persen)', font: { size: 11 } }, gridcolor: '#f0f4f8' },
+            yaxis: { automargin: true }
+        }, { responsive: true, displayModeBar: false });
+    }
+    return { render };
+})();
+
+/* ============================================
+   MODULE 9: KUALITAS DATA
+============================================ */
+const DataQualityModule = (() => {
+    const PATH = 'data/data_quality.csv';
+    const CAT = { 'Baik': '#10B981', 'Sedang': '#F59E0B', 'Buruk': '#EF4444', 'Tidak pernah melapor': '#64748B' };
+    let rows = [], showAll = false;
+    const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    function table() {
+        const q = document.getElementById('dq-search').value.trim().toLowerCase();
+        const cat = document.getElementById('dq-cat').value;
+        const dupOnly = document.getElementById('dq-dup-only').checked;
+        const list = rows.filter(r => (cat === 'all' || r.kategori === cat) && (!dupOnly || r.kemungkinan_nama_ganda) && (!q || r.kawasan.toLowerCase().includes(q)));
+        const shown = showAll ? list : list.slice(0, 25);
+        document.querySelector('#dq-table tbody').innerHTML = shown.map(r => {
+            const notes = [r.data_2020_sama_dengan_2019 ? '2020 = 2019' : '', r.kemungkinan_nama_ganda ? 'Mirip: ' + r.kemungkinan_nama_ganda : ''].filter(Boolean).join(' · ');
+            return `<tr class="border-b border-slate-100"><td class="py-2 pr-3 font-medium">${esc(r.kawasan)}</td><td class="py-2 pr-3">${esc(r.tipe_pengelola)}</td>
+              <td class="py-2 pr-3 text-right font-bold">${r.skor_kualitas}</td>
+              <td class="py-2 pr-3"><span class="inline-block text-xs font-bold rounded-full px-2 py-0.5 text-white" style="background:${CAT[r.kategori]}">${esc(r.kategori)}</span></td>
+              <td class="py-2 pr-3">${esc(r.daftar_tahun_ada_pengunjung || '–')}</td>
+              <td class="py-2 pr-3 text-right">${Number(r.total_pengunjung_2016_2022).toLocaleString('id-ID')}</td>
+              <td class="py-2 text-xs text-slate-500">${esc(notes)}</td></tr>`;
+        }).join('') || '<tr><td colspan="7" class="py-6 text-center text-slate-400">Tidak ada kawasan yang cocok.</td></tr>';
+        document.getElementById('dq-count').textContent = `Menampilkan ${shown.length} dari ${list.length} kawasan`;
+        const more = document.getElementById('dq-more');
+        more.hidden = list.length <= 25;
+        more.textContent = showAll ? 'Tampilkan 25 teratas' : 'Tampilkan semua';
+    }
+    async function render() {
+        rows = await new Promise(res => Papa.parse(PATH, { download: true, header: true, dynamicTyping: true, skipEmptyLines: true, complete: r => res(r.data), error: () => res([]) }));
+        if (!rows.length) return;
+        rows.forEach(r => { r.kemungkinan_nama_ganda = r.kemungkinan_nama_ganda || ''; r.data_2020_sama_dengan_2019 = String(r.data_2020_sama_dengan_2019).toLowerCase() === 'true'; });
+        document.getElementById('dq-download').href = PATH;
+        const counts = Object.keys(CAT).map(k => [k, rows.filter(r => r.kategori === k).length]);
+        document.getElementById('dq-cards').innerHTML = counts.map(([k, n]) => `<div class="bg-white rounded-2xl p-5 border border-slate-200" style="border-left:4px solid ${CAT[k]}">
+            <p class="text-3xl font-black" style="color:${CAT[k]}" data-dq-cat="${k}">${n}</p><p class="font-bold text-slate-800">${k}</p>
+            <p class="text-xs text-slate-500">${(n / rows.length * 100).toFixed(0)}% dari ${rows.length} nama kawasan</p></div>`).join('');
+        document.getElementById('dq-copied').textContent = rows.filter(r => r.data_2020_sama_dengan_2019).length;
+        const dups = rows.filter(r => r.kemungkinan_nama_ganda);
+        const groups = new Set(dups.map(r => [r.kawasan, ...r.kemungkinan_nama_ganda.split('; ')].sort().join('|')));
+        document.getElementById('dq-dup').textContent = `${groups.size} kawasan (${dups.length} nama)`;
+        const gede = dups.find(r => /GEDE ?PANGRANGO/.test(r.kawasan));
+        if (gede) document.getElementById('dq-dup-example').textContent = `Contoh: ${[gede.kawasan, ...gede.kemungkinan_nama_ganda.split('; ')].join(' · ')}. Akibatnya jumlah "kawasan terdaftar" terlalu tinggi dan kunjungannya terpecah.`;
+        ['dq-search', 'dq-cat', 'dq-dup-only'].forEach(id => document.getElementById(id).addEventListener(id === 'dq-search' ? 'input' : 'change', table));
+        document.getElementById('dq-more').addEventListener('click', () => { showAll = !showAll; table(); });
+        table();
+    }
+    return { render };
+})();
+
 /* ============================================
    MODULE 5: UI CONTROLLER
 ============================================ */
@@ -1370,9 +1678,22 @@ const UIController = (() => {
             select.appendChild(opt);
         });
 
-        // Render dengan delay bertahap
+        // Grafik bagian 02–05 mengikuti filter global
+        const renderFiltered = () => {
+            const rows = FilterModule.apply(rawData);
+            ChartRenderer.renderOverview(DataProcessor.getAggregateTrend(rows, FilterModule.years()), FilterModule.isDefault());
+            ChartRenderer.renderComparison(DataProcessor.getTop10(rows), DataProcessor.getYearlyValid(rawData));
+            ChartRenderer.renderDominasi(rows);
+            ChartRenderer.renderProfilWisatawan(rows);
+            StatsModule.render(rawData, rows);
+        };
+        FilterModule.setup(renderFiltered);
+        StatsModule.render(rawData, rawData);
         ChartRenderer.renderOverview(DataProcessor.getAggregateTrend(rawData));
-        
+        MapModule.render();
+        ModelCompareModule.render();
+        DataQualityModule.render();
+
         setTimeout(() => {
             ChartRenderer.renderComparison(
                 DataProcessor.getTop10(rawData), 

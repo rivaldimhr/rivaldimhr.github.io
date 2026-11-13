@@ -1,0 +1,7 @@
+peringkat,model,MAE,RMSE,MAPE_%,R2,keterangan,MAE_tanpa_Mar
+1,Regresi linear + musim (04_model),3.305,4.496,10.083,0.107,"Model awal proyek: tren tahun, pola bulan (sin/cos), penanda COVID.",2.49
+2,Musiman naif (bulan sama tahun lalu),4.147,4.807,11.888,-0.021,"Januari 2025 = Januari 2024, dan seterusnya.",3.786
+3,Rata-rata bulan yang sama (tanpa masa COVID),4.993,6.308,15.207,-0.758,Rata-rata tiap bulan pada 2019 dan 2022–2024.,3.934
+4,Naif (nilai bulan terakhir),10.144,11.204,29.556,-4.547,Semua bulan 2025 ditebak sama dengan Desember 2024.,8.922
+5,Holt-Winters tren diredam (latih 2022–2024),12.376,13.509,35.708,-7.064,"Sama, tetapi tren diredam (phi=0.8); alpha=0.75, beta=0.01, gamma=0.95.",11.153
+6,Holt-Winters (latih 2022–2024),17.989,18.476,50.393,-14.085,"Pemulusan eksponensial musiman; alpha=0.75, beta=0.1, gamma=0.95. Tren naik 2024 terbawa terus ke 2025.",17.02

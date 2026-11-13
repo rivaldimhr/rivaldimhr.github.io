@@ -1,0 +1,297 @@
+kawasan,tipe_pengelola,tahun_tercantum,tahun_ada_pengunjung,daftar_tahun_ada_pengunjung,total_pengunjung_2016_2022,data_2020_sama_dengan_2019,kemungkinan_nama_ganda,skor_kualitas,kategori
+TWA TANGKUBANPARAHU,TWA,6,4,2016 2017 2018 2019,1688876,True,,67,Baik
+TAHURA IR. H. DJUANDA,TAHURA,6,4,2016 2017 2018 2019,573564,True,,67,Baik
+TWA GUNUNG PANCAR,TWA,6,4,2016 2017 2018 2019,97597,True,,67,Baik
+TWA PAPANDAYAN,TWA,6,4,2016 2017 2018 2019,69624,True,,67,Baik
+CURUG CIMAHI,LAINNYA,6,4,2016 2017 2018 2019,38038,True,,67,Baik
+TWA TELAGAWARNA,TWA,6,4,2016 2017 2018 2019,33707,True,,67,Baik
+CITUMANG,LAINNYA,6,4,2016 2017 2018 2019,33369,True,,67,Baik
+TWA TALAGABODAS,TWA,6,4,2016 2017 2018 2019,20522,True,,67,Baik
+TWA CIMANGGU,TWA,6,4,2016 2017 2018 2019,113653,True,CIMANGGU,57,Baik
+TWA PANGANDARAN,TWA,6,4,2016 2017 2018 2019,52737,True,PANGANDARAN,57,Baik
+TWA KAMOJANG,TWA,6,4,2016 2017 2018 2019,38256,True,KAMOJANG,57,Baik
+TWA TELAGA PATENGAN,TWA,6,3,2016 2017 2019,202177,True,,50,Baik
+TB MASIGIT KAREUMBI,LAINNYA,6,3,2016 2017 2018,3741,False,,50,Baik
+CURUG PANJANG,LAINNYA,6,3,2016 2018 2019,1444,True,,50,Baik
+BALAI TN. GN. CIREMAI,TN,6,3,2016 2018 2019,405780,True,TN. GN. CIREMAI; TN. GN.CIREMAI,40,Sedang
+TN. GN. GEDE PANGRANGO,TN,5,3,2017 2018 2019,2882,True,BALAI BESAR TN. GN. GEDE PANGRANGO; BALAI BESAR TN.GN. GEDEPANGRANGO; TN.GN.GEDEPANGRANGO,40,Sedang
+KARANGNINI,LAINNYA,3,3,2016 2017 2018,1108,False,KARANG NINI,40,Sedang
+BALAI TN. GN. HALIMUN SALAK,TN,5,3,2017 2018 2019,520,True,BALAI TN.GN.HALIMUN-SALAK; TN. GN. HALIMUN SALAK; TN.GN.HALIMUN SALAK,40,Sedang
+TWA GUNUNG GUNTUR,TWA,6,2,2016 2019,22906,True,,33,Sedang
+CURUG CIPAMINGLIS,LAINNYA,3,2,2016 2017,16074,False,,33,Sedang
+CIHURANG,LAINNYA,3,2,2016 2017,9103,False,,33,Sedang
+TWA SANGIANG,TWA,2,2,2016 2017,3601,False,,33,Sedang
+GUA BUNIAYU,LAINNYA,3,2,2016 2017,2426,False,,33,Sedang
+WH CURUG CILEMBER,PERHUTANI,3,2,2017 2018,105280,False,CURUG CILEMBER,23,Buruk
+PANGANDARAN,LAINNYA,3,2,2016 2018,42231,False,TWA PANGANDARAN,23,Buruk
+CURUG CISUREN,LAINNYA,3,1,2016,145916,False,,17,Buruk
+CURUG CIGENTIS,LAINNYA,6,1,2016,87694,False,,17,Buruk
+CURUG PANGANTEN,LAINNYA,6,1,2016,82904,False,,17,Buruk
+CURUG CILEAT,LAINNYA,6,1,2016,40074,False,,17,Buruk
+TWA LINGGARJATI,TWA,6,1,2016,38821,False,,17,Buruk
+LHI JAYAGIRI,LAINNYA,6,1,2016,27140,False,,17,Buruk
+CURUG KEMBAR BATULAYANG,LAINNYA,6,1,2016,23729,False,,17,Buruk
+CURUG CILENGKRANG,LAINNYA,6,1,2016,21781,False,,17,Buruk
+GUNUNG BUNDER,LAINNYA,3,1,2016,18263,False,,17,Buruk
+CURUG TUJUH CIBOLANG,LAINNYA,6,1,2016,17442,False,,17,Buruk
+CIBUNGUR,LAINNYA,3,1,2016,9958,False,,17,Buruk
+BUPER CITAMIANG,PERHUTANI,6,1,2016,9171,False,,17,Buruk
+TWA SUKAWAYANA,TWA,6,1,2016,7683,False,,17,Buruk
+JOGING TRACK,LAINNYA,3,1,2016,7524,False,,17,Buruk
+CURUG LAYUNG,LAINNYA,6,1,2016,7260,False,,17,Buruk
+CITEKO,LAINNYA,3,1,2016,4904,False,,17,Buruk
+CIPANTEUNEUN,LAINNYA,6,1,2016,4020,False,,17,Buruk
+REST AREA URUG,LAINNYA,6,1,2016,3835,False,,17,Buruk
+SITU MUSTIKA,LAINNYA,6,1,2016,3008,False,,17,Buruk
+CURUG ARCA,LAINNYA,3,1,2016,2608,False,,17,Buruk
+BUPER CIKOLE,PERHUTANI,3,1,2016,1651,False,,17,Buruk
+BUPER KAWAH SIMAUT,PERHUTANI,3,1,2016,1250,False,,17,Buruk
+KAMPUNG CAI RANCA UPAS,LAINNYA,3,1,2019,1117,True,,17,Buruk
+CIKOLE JAYAGIRI RESORT & TREETOP,LAINNYA,3,1,2016,953,False,,17,Buruk
+CURUG NANGKA,LAINNYA,3,1,2016,900,False,,17,Buruk
+PATUHA RESORT,LAINNYA,6,1,2018,643,False,,17,Buruk
+BP RANCAUPAS,LAINNYA,3,1,2018,553,False,,17,Buruk
+SUKAMANTRI,LAINNYA,3,1,2016,445,False,,17,Buruk
+CIPADAYUNGAN,LAINNYA,6,1,2016,345,False,,17,Buruk
+PULAU CANGKIR,LAINNYA,6,1,2016,276,False,,17,Buruk
+TWA PASIR PUTIH PANGANDARAN,TWA,3,1,2017,233,False,,17,Buruk
+GALUNGGUNG,LAINNYA,6,1,2019,150,True,,17,Buruk
+CURUG CIPAMINGKIS,LAINNYA,3,1,2019,97,True,,17,Buruk
+GUNUNG PUNTANG,LAINNYA,6,1,2019,20,True,,17,Buruk
+PANORAMA PABANGBON,LAINNYA,3,1,2019,16,True,,17,Buruk
+TAHURA GN. KUNCI DAN PALASARI,TAHURA,4,1,2018,4,False,,17,Buruk
+WH CARIU,PERHUTANI,3,1,2017,1,False,,17,Buruk
+TN. GN. CIREMAI,TN,5,1,2022,440785,False,BALAI TN. GN. CIREMAI; TN. GN.CIREMAI,7,Buruk
+BALAI BESAR TN.GN. GEDEPANGRANGO,TN,1,1,2016,162184,False,BALAI BESAR TN. GN. GEDE PANGRANGO; TN. GN. GEDE PANGRANGO; TN.GN.GEDEPANGRANGO,7,Buruk
+BALAI TN.GN.HALIMUN-SALAK,TN,1,1,2016,131281,False,BALAI TN. GN. HALIMUN SALAK; TN. GN. HALIMUN SALAK; TN.GN.HALIMUN SALAK,7,Buruk
+WH CIBOLANG,PERHUTANI,3,1,2018,62775,False,CIBOLANG,7,Buruk
+CURUG CILEMBER,LAINNYA,3,1,2019,40565,True,WH CURUG CILEMBER,7,Buruk
+BUPER PAKEMBANGAN,PERHUTANI,3,1,2016,28101,False,PAKEMBANGAN,7,Buruk
+KAWAH PUTIH,LAINNYA,3,1,2019,16103,True,WH KAWAH PUTIH,7,Buruk
+WH KAWAH PUTIH,PERHUTANI,3,1,2017,11696,False,KAWAH PUTIH,7,Buruk
+KARANG NINI,LAINNYA,3,1,2019,34,True,KARANGNINI,7,Buruk
+CIMANGGU,LAINNYA,3,1,2019,4,True,TWA CIMANGGU,7,Buruk
+AMPAH NANGKA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+ASTOR,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BADEGA PARANG CIRANGKONG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BADEGLA GUNUNG PARANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BALAI BESAR KSDA JABAR,BKSDA,6,0,,0,False,,0,Tidak pernah melapor
+BALAI BESAR TN. GN. GEDE PANGRANGO,TN,5,0,,0,False,BALAI BESAR TN.GN. GEDEPANGRANGO; TN. GN. GEDE PANGRANGO; TN.GN.GEDEPANGRANGO,0,Tidak pernah melapor
+BALAI PENGELOLAAN TAHURA IR. H. DJUANDA,TAHURA,2,0,,0,False,,0,Tidak pernah melapor
+BARU JERUK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BATU BUBUT,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BATU KUDA,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+BATU LAWANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BIHBUL FOREST PARK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BLANAKAN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BUBULAK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BUKIT BINTANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BUKIT CINTA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BUKIT KEMBAR,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BUKIT NANGKLAK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BUKIT PALASARI CIATER,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BUKIT PANEMBONGAN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BUKIT TAMAN LANGIT,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+BUPER CIPELANG,PERHUTANI,3,0,,0,False,,0,Tidak pernah melapor
+BUPER CIWIDIG,PERHUTANI,3,0,,0,False,,0,Tidak pernah melapor
+BUPER TALAGA PANCAR,PERHUTANI,6,0,,0,False,,0,Tidak pernah melapor
+BUPER TANGSI,PERHUTANI,6,0,,0,False,,0,Tidak pernah melapor
+BURANGRANG SELATAN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CADAS GANTUNG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CAFÃÂ DE FORET,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CAPAR,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CARIU/ PENANGKARAN RUSA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CENGKRONG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CIBOLANG,LAINNYA,3,0,,0,False,WH CIBOLANG,0,Tidak pernah melapor
+CIGENDEL,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CIKOLE JAYAGIRI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CIMIRUNG GH PARK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CIPACET,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CIPATUH (CIPANAS ATMAJI PANCURAN 7),LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CIPUTRAWANGI,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+CISALADA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CITOJANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CIWANGUN INDAH CAM (PARKIR),LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG 3 LEUWI 4,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG BADAK HANOMAN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG BARONG LEUWI HEJO,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG BATU BLEK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG BOJONG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CIBAREUBEUY,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CIBAREUHBEUY,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CIBEUREUM,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CIBODAS,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CIHANJAWAR,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CIHARUS,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CIHERANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CIJALU,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+CURUG CIMANINTIN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CIPANUNDA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CIPARAY,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CISARUA BYB,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG CITAMBUR,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+CURUG DENGDENG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG GADO BANGKONG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG MALELA PARKIR,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG NGEBUL,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG NGEBUL CKJ,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG OROK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG PAMEUNGPEUK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG PUTRI KENCANA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG SAWER,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+CURUG SH TARAJE,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG TILU,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG TILU LEUWI OPAT,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+CURUG TUJUH,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+CURUG WANGUN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+D'REUNGIT FOREST,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+DARMACAANG,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+DEWA DEWI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+DUSUN BAMBU,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+DUSUN KOPI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+EMTE HIGHLAND,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+EMTE HIGHLAND (PARKIR),LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GALUH,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GEGARA MENYAN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GEGER BINTANG MATAHARI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GEGER SUNTEN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GENDENG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GN. KENCANA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GN. PADANG,LAINNYA,3,0,,0,False,GUNUNG PADANG,0,Tidak pernah melapor
+GOA BUNIAYU,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GOA DAYEH,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GOA PUTRI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GOBANG GREEN PINUS,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GRAFIKA CIKOLE,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+GREEN CANYON,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GREENTING,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GUA PUTRI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GUNUNG BONGKOK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GUNUNG BURATA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GUNUNG DAGO,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GUNUNG DAGUAN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GUNUNG KARANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GUNUNG KUNCI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GUNUNG LEMBU,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GUNUNG PABEASAN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+GUNUNG PADANG,LAINNYA,3,0,,0,False,GN. PADANG,0,Tidak pernah melapor
+GUNUNG PARANG VIA FERATA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+HULU SUNGAI CITARUM (CISANTI),LAINNYA,3,0,,0,False,HULU SUNGAI CITARUM / CISANTI,0,Tidak pernah melapor
+HULU SUNGAI CITARUM / CISANTI,LAINNYA,3,0,,0,False,HULU SUNGAI CITARUM (CISANTI),0,Tidak pernah melapor
+JOGGING TRACK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+JPP '40,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+KAMOJANG,LAINNYA,3,0,,0,False,TWA KAMOJANG,0,Tidak pernah melapor
+KAMOJANG ECOPARK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+KAMPUNG CIHERANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+KAMPUNG SUNDA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+KARACAK VALLEY,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+KARAHA BODAS,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+KATUMBIRI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+KBM-AEJ/KBM/JLPL,PERHUTANI,6,0,,0,False,,0,Tidak pernah melapor
+KEBON KOPI BANJARWANGI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+KPH BANDUNG SELATAN,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KPH BANDUNG UTARA,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KPH BOGOR,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KPH CIAMIS,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KPH CIANJUR,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KPH GARUT,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KPH INDRAMAYU,KPH,3,0,,0,False,,0,Tidak pernah melapor
+KPH KUNINGAN,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KPH MAJALENGKA,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KPH PURWAKARTA,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KPH SUKABUMI,KPH,3,0,,0,False,,0,Tidak pernah melapor
+KPH SUMEDANG,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KPH TASIKMALAYA,KPH,6,0,,0,False,,0,Tidak pernah melapor
+KRAMAT GANTUNG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+LAWANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+LEGOK ODAH,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+LEMBAH PINUS SUKAWANA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+LENGKOP PARANGBONG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+LEUWI HEJO CIBADAK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+MALABAR ECOTOURISM,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+MALELA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+NANGKLAK STAYLAND,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+NIRWANA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+NYAWANG BANDUNG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+NYIMAS CINCIN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+OFF ROAD,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+ORAY TAPA,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+PAKEMBANGAN,LAINNYA,3,0,,0,False,BUPER PAKEMBANGAN,0,Tidak pernah melapor
+PAL 16,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PALINTANG DOWNHILL,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PALUTUNGAN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PANIIS,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PANIISAN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PAPANDAYAN CAMPING GROUND,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PAPANDAYAN LEISURE PARK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PARKIR ORCHID FOREST,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PASIR BATARA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PASIR KARATON,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PATROL VALLEY,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PATUHA BIKE PARK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PAWAJA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PENDAKIAN GUNUNG CIKURAY,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PERUM PERHUTANI DIVISI REGIONAL JABAR-BANTEN,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+PESONA CAKRA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PESONA JATI CIWANGI LELES,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PESONA LW. OKO,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PINUS PANANJUNG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+POKLAND,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PONDOK BALI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PT BRICK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PT JALA ENERGY (ORCHID FOREST),LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK ANGIN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK BINTANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK BULUH,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK DAMAR,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK EURAD,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK GANTOLE,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK KALANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK KONDANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK LANGIT,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK PINUS,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK PUSPA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCAK SEMPUR,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+PUNCELING,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+PUSAKA MULYA (PASIR PANYAWANGAN),LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+RAHONG,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+REST AREA BALEGEDE,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+REST AREA SELAGEDANG,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+REST AREA SUKAMANAH,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+SANGGABUANA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+SANGHYANG HEULEUT,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+SEDARI,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+SENTUL EETF,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+SITU CIBEUREUM,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+SITU CIMEUHMAL,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+SITU KABUYUTAN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+SITU WULUKUT,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+SUKADANA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+SUKAMEKAR,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TALAGA CIKAHURIPAN,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+TALAGA REMIS (SHARING DARI PEMDA),LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TALAGA WARNA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TAMAN LANGIT,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TAMBAK ALAS,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TANGGA CINTA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TANJAKAN BUHUN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TANJUNG DURIAT,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TANJUNG PAKIS,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TANJUNG PANORAMASARI,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+THE LODGE PINE TRACK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TN. GN. HALIMUN SALAK,TN,5,0,,0,False,BALAI TN. GN. HALIMUN SALAK; BALAI TN.GN.HALIMUN-SALAK; TN.GN.HALIMUN SALAK,0,Tidak pernah melapor
+TN. GN.CIREMAI,TN,1,0,,0,False,BALAI TN. GN. CIREMAI; TN. GN. CIREMAI,0,Tidak pernah melapor
+TN.GN.GEDEPANGRANGO,TN,1,0,,0,False,BALAI BESAR TN. GN. GEDE PANGRANGO; BALAI BESAR TN.GN. GEDEPANGRANGO; TN. GN. GEDE PANGRANGO,0,Tidak pernah melapor
+TN.GN.HALIMUN SALAK,TN,1,0,,0,False,BALAI TN. GN. HALIMUN SALAK; BALAI TN.GN.HALIMUN-SALAK; TN. GN. HALIMUN SALAK,0,Tidak pernah melapor
+TONJONG GOLOK,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TRACK SEPEDA CIKOLE ADV,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+TWA JEMBER,TWA,6,0,,0,False,,0,Tidak pernah melapor
+TWA TAMPOMAS,TWA,6,0,,0,False,,0,Tidak pernah melapor
+UPTD TAHURA IR. H. DJUANDA,TAHURA,4,0,,0,False,,0,Tidak pernah melapor
+WA GN SEUREUH,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+WAHANA LW. OKO,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+WAR GAMES,LAINNYA,6,0,,0,False,,0,Tidak pernah melapor
+WARUJIMUN,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+WARUNG PUNCAK LANCANG LELES,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
+WH BLAAKAN,PERHUTANI,3,0,,0,False,,0,Tidak pernah melapor
+WILHELMINA,LAINNYA,3,0,,0,False,,0,Tidak pernah melapor
