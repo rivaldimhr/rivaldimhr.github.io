@@ -546,11 +546,18 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
       </article>
 
       <article class="card" data-cat="soft">
-        <div class="thumb"><img src="assets/pvz-gameplay.jpg" alt="Gameplay of the Java Plants vs. Zombies game" loading="lazy" style="image-rendering:pixelated"></div>
-        <div class="tags"><span class="pill">Game</span><span class="pill soft">Java</span><span class="pill soft">OOP</span><span class="pill soft">CI</span></div>
+        <a class="thumb" href="pvz/" aria-label="Play Plants vs. Zombies in the browser"><img src="assets/pvz-gameplay.jpg" alt="Gameplay of the Java Plants vs. Zombies game: sunflowers, peashooters and a wall-nut holding off zombies" loading="lazy"></a>
+        <div class="tags"><span class="pill">Game</span><span class="pill soft">Java</span><span class="pill soft">OOP</span><span class="pill soft">WebAssembly</span><span class="pill soft">CI</span></div>
         <div class="bottom">
-          <div><h3>Plants vs. Zombies</h3><p>Tower-defence game in pure Java Swing. Started as a 5-person OOP project, then I kept improving it with tests, a JAR build and CI.</p></div>
-          <a class="arrow" href="https://github.com/rivaldimhr/plants-vs-zombies-java" aria-label="Plants vs. Zombies on GitHub"><svg><use href="#arrow"/></svg></a>
+          <div>
+            <h3>Plants vs. Zombies</h3>
+            <p>Tower-defence game in pure Java Swing, playable in the browser: the same JAR runs on a JVM in WebAssembly (CheerpJ). Started as a 5-person OOP project; I added 119 unit tests, a bot that plays Level 1 as an end-to-end test, and a browser test in CI.</p>
+            <div class="card-links">
+              <a class="btn-mini solid" href="pvz/">Play in browser</a>
+              <a class="btn-mini" href="https://github.com/rivaldimhr/plants-vs-zombies-java/releases/latest">Download</a>
+              <a class="btn-mini" href="https://github.com/rivaldimhr/plants-vs-zombies-java">Code</a>
+            </div>
+          </div>
         </div>
       </article>
 
