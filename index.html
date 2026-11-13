@@ -203,6 +203,10 @@ section.block{padding:110px 0}
 .card .bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;padding:12px 8px 8px;flex:1}
 .card h3{font-size:21px;font-weight:800}
 .card p{font-size:15.5px;color:var(--muted);margin-top:6px}
+.card-links{display:flex;gap:8px;margin-top:14px}
+.btn-mini{font-size:14px;font-weight:700;padding:8px 16px;border-radius:999px;border:2px solid var(--green);color:var(--green)}
+.btn-mini.solid{background:var(--green);color:var(--yellow)}
+.btn-mini:hover{transform:translateY(-1px)}
 .card .arrow{flex:none;width:46px;height:46px;border-radius:50%;background:var(--green);color:var(--yellow);display:grid;place-items:center;transition:transform .2s}
 .card .arrow svg{width:20px;height:20px}
 .card:hover .arrow{transform:rotate(-45deg)}
@@ -495,16 +499,18 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
     </article>
 
     <div class="grid">
-      <article class="card" data-cat="ai">
-        <div class="thumb text">
-          <div><i>1</i>XGBoost demand forecast</div>
-          <div><i>2</i>Apriori market-basket rules</div>
-          <div><i>3</i>LLM chat for stock advice</div>
-        </div>
-        <div class="tags"><span class="pill">AI</span><span class="pill soft">React</span><span class="pill soft">FastAPI</span><span class="pill soft">Team of 5</span></div>
+      <article class="card" data-cat="ai web">
+        <a class="thumb" href="https://rivaldimhr.github.io/retail-inventory-ai/" aria-label="Open the Retail Inventory AI live demo"><img src="assets/retail-inventory-ai.jpg" alt="Retail Inventory AI dashboard with reorder suggestions, risk cards and demand charts" loading="lazy"></a>
+        <div class="tags"><span class="pill">AI &amp; Data</span><span class="pill soft">Python</span><span class="pill soft">FastAPI</span><span class="pill soft">React</span><span class="pill soft">CI</span></div>
         <div class="bottom">
-          <div><h3>AIforBusiness</h3><p>Retail inventory dashboard that predicts demand, flags stockout and overstock risk, and finds products that sell together.</p></div>
-          <a class="arrow" href="https://github.com/bastianns/AIforBusiness" aria-label="AIforBusiness on GitHub"><svg><use href="#arrow"/></svg></a>
+          <div>
+            <h3>Retail Inventory AI</h3>
+            <p>Forecasts next-week demand for 300 products from 1 million real transactions (Online Retail II), recommends how much to reorder, flags stock risks and finds products bought together. Rebuilt from a team course project.</p>
+            <div class="card-links">
+              <a class="btn-mini solid" href="https://rivaldimhr.github.io/retail-inventory-ai/">Live demo</a>
+              <a class="btn-mini" href="https://github.com/rivaldimhr/retail-inventory-ai">Code</a>
+            </div>
+          </div>
         </div>
       </article>
 
@@ -513,7 +519,7 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
         <div class="tags"><span class="pill">Data</span><span class="pill soft">scikit-learn</span><span class="pill soft">Plotly</span><span class="pill soft">Team of 5</span></div>
         <div class="bottom">
           <div><h3>West Java Tourism Analytics</h3><p>K-Means clustering of nature-tourism areas and hotel occupancy prediction. I prepared the presentation and helped design the dashboard.</p></div>
-          <a class="arrow" href="https://github.com/bastianns/DataAnalytics" aria-label="West Java Tourism Analytics on GitHub"><svg><use href="#arrow"/></svg></a>
+          <a class="arrow" href="https://github.com/rivaldimhr/Data-Analytics" aria-label="West Java Tourism Analytics on GitHub"><svg><use href="#arrow"/></svg></a>
         </div>
       </article>
 
