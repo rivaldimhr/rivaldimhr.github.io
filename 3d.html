@@ -593,8 +593,8 @@ let cur=0,typer=0;
 function type(text){
   const t=$('#btxt');clearInterval(typer);
   if(reduce){t.textContent=text;return;}
-  let n=0;t.textContent='';
-  typer=setInterval(()=>{n+=2;t.textContent=text.slice(0,n);if(n>=text.length)clearInterval(typer);},22);
+  const t0=performance.now();t.textContent='';
+  typer=setInterval(()=>{const n=Math.floor((performance.now()-t0)/11);t.textContent=text.slice(0,n);if(n>=text.length)clearInterval(typer);},22);
 }
 function pose(p){
   const side=mobile?10:24;
