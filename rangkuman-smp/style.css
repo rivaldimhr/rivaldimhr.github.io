@@ -269,3 +269,12 @@ th{background:var(--t3);color:var(--t2)}
  .babgrid{grid-template-columns:repeat(7,1fr)}
  .stats{grid-template-columns:repeat(6,1fr)}
 }
+
+.hero .top>div:first-child{margin-right:auto}
+.porto{position:relative;z-index:1;margin-right:10px;font-size:12px;font-weight:600;color:#fff;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:6px 12px;border-radius:20px;white-space:nowrap}
+.porto:hover{background:rgba(255,255,255,.28)}
+.credit{display:flex;flex-wrap:wrap;align-items:center;gap:12px;background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:14px 16px;margin:28px 0 8px}
+.credit .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#19b3b6,#0b7d84);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.credit b{display:block;line-height:1.2}
+.credit small{display:block;font-size:12px}
+.credit .cl{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
