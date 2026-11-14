@@ -21,9 +21,14 @@
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{font-family:var(--font);color:var(--ink);background:#C9D2C1;font-size:8pt;line-height:1.36;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-.toolbar{display:flex;justify-content:center;gap:10px;padding:16px}
-.toolbar a{font-weight:800;font-size:14px;padding:10px 20px;border-radius:999px;background:var(--green);color:#fff}
-.toolbar a.y{background:var(--yellow);color:var(--green)}
+.toolbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 14px;background:var(--green);box-shadow:0 8px 24px rgba(29,36,31,.25);margin-bottom:22px;font-size:14px}
+.toolbar a{font-weight:800;padding:9px 18px;border-radius:999px;color:#fff;white-space:nowrap}
+.toolbar .back{border:2px solid rgba(255,255,255,.5)}
+.toolbar .tabs{display:flex;background:rgba(255,255,255,.12);border-radius:999px;padding:4px}
+.toolbar .tabs a{padding:7px 16px;color:#E6EDE3}
+.toolbar .tabs a[aria-current]{background:#fff;color:var(--green)}
+.toolbar .dl{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--green)}
+.toolbar .dl svg{width:16px;height:16px}
 .page{width:210mm;height:297mm;margin:0 auto 24px;background:#fff;display:grid;grid-template-columns:66mm 1fr;overflow:hidden;box-shadow:0 20px 50px rgba(29,36,31,.25)}
 
 /* ---------- sidebar ---------- */
@@ -103,9 +108,12 @@ h1 em{font-style:normal;color:var(--yellow)}
 <body>
 
 <div class="toolbar">
-  <a href="../">← Back to portfolio</a>
-  <a class="y" href="../assets/M-Rivaldi-Mahari-CV.pdf" download>Download this CV</a>
-  <a href="../assets/M-Rivaldi-Mahari-CV-ATS.pdf" download>ATS-friendly version</a>
+  <a class="back" href="../">← Portfolio</a>
+  <nav class="tabs" aria-label="CV version">
+    <a href="./" aria-current="page">Visual CV</a>
+    <a href="ats.html">ATS-friendly CV</a>
+  </nav>
+  <a class="dl" href="../assets/M-Rivaldi-Mahari-CV.pdf" download="M-Rivaldi-Mahari-CV.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Download PDF</a>
 </div>
 
 <div class="page">
