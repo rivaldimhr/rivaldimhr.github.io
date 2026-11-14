@@ -67,6 +67,9 @@ h1,h2,h3{line-height:1.12;letter-spacing:-.02em}
 .navr{display:flex;gap:8px;align-items:center}
 .mode3d{display:grid;place-items:center;height:40px;padding:0 16px;border-radius:999px;background:var(--yellow);color:var(--green);font-weight:800;font-size:15px}
 .mode3d:hover{background:#fff}
+.dlcv{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 16px;border-radius:999px;border:2px solid var(--yellow);color:var(--yellow);font-weight:800;font-size:15px;white-space:nowrap}
+.dlcv svg{width:17px;height:17px}
+.dlcv:hover{background:var(--yellow);color:var(--green)}
 
 /* ---------- hero ---------- */
 .hero{padding:64px 0 40px;position:relative;overflow-x:clip}
@@ -283,6 +286,18 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
   .tool .circle{width:76px;height:76px}
   .tool .circle b{width:44px;height:44px;font-size:15px}
   .nav .cta{padding:9px 16px;font-size:14px}
+  .navr{gap:6px}
+  .mode3d,.dlcv{padding:0 12px;font-size:14px}
+  .nav .cta{white-space:nowrap}
+}
+@media (max-width:520px){
+  .logo{font-size:0;gap:0}
+  .logo b{font-size:17px}
+}
+@media (max-width:350px){
+  .dlcv{padding:0 10px}
+  .dlcv span:not(.sr){display:none}
+  .nav .cta{padding:9px 12px}
 }
 </style>
 </head>
@@ -315,7 +330,7 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
       <li><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
     </ul>
-    <div class="navr"><a class="mode3d" href="3d.html" title="Switch to the 3D portfolio">3D</a><a class="cta" href="#contact">Contact me</a></div>
+    <div class="navr"><a class="mode3d" href="3d.html" title="Switch to the 3D portfolio">3D</a><a class="dlcv" href="assets/M-Rivaldi-Mahari-CV.pdf" download="M-Rivaldi-Mahari-CV.pdf" title="Download my CV as a PDF"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>CV</span><span class="sr"> (download PDF)</span></a><a class="cta" href="#contact">Contact me</a></div>
   </div>
 </nav>
 
