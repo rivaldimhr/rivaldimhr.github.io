@@ -139,6 +139,11 @@ function stars(best, n) {
   return `<span class="stars">${'★'.repeat(s)}${'☆'.repeat(3 - s)}</span> <small>Terbaik ${best}/${n}</small>`;
 }
 
+/* ---------- kredit & tautan portofolio ---------- */
+const PORTO = 'https://rivaldimhr.github.io/';
+const credit = () => `<div class="credit"><div class="av">RM</div><div><small>Dibuat oleh</small><b>Rivaldi Mahari</b><small>Lulusan Sistem dan Teknologi Informasi ITB</small></div>
+  <div class="cl"><a class="btn sm" href="${PORTO}#projects">Lihat portofolio ↗</a><a class="btn sm ghost" href="https://github.com/rivaldimhr/rivaldimhr.github.io/tree/main/rangkuman-smp" target="_blank" rel="noopener">Kode sumber</a></div></div>`;
+
 /* ---------- BERANDA ---------- */
 function home() {
   if (!S.nama) setTimeout(() => { if (!S.nama && !document.querySelector('.ov')) askName(); }, 300);
@@ -148,7 +153,7 @@ function home() {
   const dailyDone = S.daily === today();
   const quick = [['📚','Materi','#/materi'],['📝','Kuis & Tryout','#/kuis'],['🔬','Lab Interaktif','#/lab'],['📘','Kamus Rumus','#/rumus'],['📄','Poster A3','#/poster'],['📊','Laporan','#/laporan']];
   return `<div class="hero"><div class="top"><div><small>Selamat belajar 👋</small><h1>Hi, ${esc(S.nama || 'Pelajar')}</h1></div>
-    <button class="avatar" onclick="askName()" title="Ganti nama">${esc((S.nama || 'P')[0].toUpperCase())}</button></div></div>
+    <a class="porto" href="${PORTO}#projects" title="Portofolio pembuat">← Portofolio</a><button class="avatar" onclick="askName()" title="Ganti nama">${esc((S.nama || 'P')[0].toUpperCase())}</button></div></div>
   <div class="lvcard"><div class="lvrow"><div class="lvbadge">🏅</div><div><small>Peringkat Kamu</small><b>Level ${lv}</b></div>
     <div class="koin"><small>Koin</small><b>🪙 ${S.koin}</b></div></div>
     <div class="xpbar"><i style="width:${xin / LV * 100}%"></i></div>
@@ -166,6 +171,7 @@ function home() {
     <h3 class="sec-t">Paket Belajar <a href="#/materi/${cur}">Lihat semua</a></h3>
     <div class="seg">${MK.map(m => `<button class="${m === cur ? 'on' : ''}" onclick="S.tab='${m}';save();render()">${MAPEL[m].i} ${MAPEL[m].n}</button>`).join('')}</div>
     <div class="babgrid">${ofM(cur).map(b => `<a href="#/bab/${b.id}" style="${mvars(b.mapel)}"><div class="ic">${ring(pct(b), MAPEL[b.mapel].c)}${b.ikon}</div>${b.judul}</a>`).join('')}</div>
+    ${credit()}
   </div>`;
 }
 function cari(q) {
@@ -341,7 +347,7 @@ function laporan() {
   <h3 class="sec-t">Progres per Mapel</h3>${MK.map(m => { const l = ofM(m); const r = l.reduce((a, b) => a + readOf(b.id).length, 0), t = l.reduce((a, b) => a + b.sesi.length, 0); const q = l.filter(b => S.quiz[b.id] != null).length; return `<div class="mprog" style="${mvars(m)}"><div class="row"><b>${MAPEL[m].i} ${MAPEL[m].n}</b><span>${Math.round(r / t * 100)}% materi · ${q}/${l.length} kuis</span></div><div class="mini"><i style="width:${r / t * 100}%"></i></div></div>`; }).join('')}
   <h3 class="sec-t">Aktivitas ${selDay === today() ? 'Hari Ini' : new Date(selDay).toLocaleDateString('id-ID', {weekday: 'long', day: 'numeric', month: 'short'})}</h3>
   ${logs.length ? logs.map(l => `<div class="act"><span class="ic">${l.ic || '⭐'}</span><div>${esc(l.text)}<br><small>${new Date(l.t).toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'})}</small></div><span class="xp">+${l.xp} XP</span></div>`).join('') : '<div class="empty">Belum ada aktivitas di hari ini. Yuk mulai belajar! 🚀</div>'}
-  <p style="text-align:center;margin-top:24px"><button class="btn sm ghost" onclick="resetAll()">Atur ulang semua progres</button></p></div>`;
+  <p style="text-align:center;margin-top:24px"><button class="btn sm ghost" onclick="resetAll()">Atur ulang semua progres</button></p>${credit()}</div>`;
 }
 function resetAll() { if (confirm('Hapus semua progres, XP, dan koin di perangkat ini?')) { const n = S.nama; localStorage.removeItem(KEY); S = {nama: n, xp: 0, koin: 0, read: {}, quiz: {}, ex: {}, lab: {}, log: [], daily: '', tab: 'fisika', quizN: 0, quizBenar: 0, quizSoal: 0}; save(); render(); toast('Progres diatur ulang'); } }
 
