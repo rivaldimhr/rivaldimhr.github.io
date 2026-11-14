@@ -6,6 +6,12 @@ Live at **https://rivaldimhr.github.io**
 
 Plain HTML and CSS, no build step. Edit `index.html` and push to update the site.
 
+## 3D version
+
+`3d.html` is a guided 3D tour. The character and the rotating panels are plain CSS 3D transforms, with no
+library and no build step. Section text lives in the `<section class="panel">` blocks; the guide's lines are
+in the `STOPS` list at the bottom of the file.
+
 ## CV
 
 The "CV" button in the navigation opens a preview of either version, each with a download button

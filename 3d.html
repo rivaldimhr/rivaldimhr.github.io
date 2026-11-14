@@ -1,21 +1,553 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>3D Portfolio — coming soon</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;800&display=swap" rel="stylesheet">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M. Rivaldi Mahari — 3D Portfolio</title>
+<meta name="description" content="Interactive 3D portfolio of M. Rivaldi Mahari. A 3D character walks you through his summary, experience, projects and skills.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-body{margin:0;min-height:100vh;display:grid;place-items:center;background:#2E4A33;color:#fff;font-family:"Plus Jakarta Sans",system-ui,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
-.cube{width:90px;height:90px;margin:0 auto 34px;position:relative;transform-style:preserve-3d;transform:rotateX(-25deg) rotateY(35deg)}
-.cube div{position:absolute;inset:0;border:3px solid #F5B40A;background:rgba(245,180,10,.12)}
-.cube div:nth-child(1){transform:translateZ(45px)}.cube div:nth-child(2){transform:rotateY(180deg) translateZ(45px)}
-.cube div:nth-child(3){transform:rotateY(90deg) translateZ(45px)}.cube div:nth-child(4){transform:rotateY(-90deg) translateZ(45px)}
-.cube div:nth-child(5){transform:rotateX(90deg) translateZ(45px)}.cube div:nth-child(6){transform:rotateX(-90deg) translateZ(45px)}
-@media (prefers-reduced-motion:no-preference){.cube{animation:r 8s linear infinite}@keyframes r{to{transform:rotateX(-25deg) rotateY(395deg)}}}
-h1{font-size:clamp(34px,6vw,56px);margin:0;font-weight:800}h1 span{color:#F5B40A}
-p{color:#D3DDD0;max-width:42ch;margin:14px auto 30px;line-height:1.6}
-a{display:inline-block;background:#F5B40A;color:#2E4A33;font-weight:800;padding:14px 26px;border-radius:999px;text-decoration:none}
-</style></head><body><main>
-<div class="cube" aria-hidden="true"><div></div><div></div><div></div><div></div><div></div><div></div></div>
-<h1>3D portfolio is <span>coming soon</span></h1>
-<p>An interactive 3D version of this portfolio is being built. In the meantime, the classic version has everything.</p>
-<a href="index.html">Back to classic portfolio</a>
-</main></body></html>
+:root{
+  --green:#2E4A33;--green-2:#3C5E42;--green-3:#DCE5D3;--olive:#8C9B5A;
+  --yellow:#F5B40A;--yellow-soft:#FFF3CF;--ink:#1D241F;--muted:#5D675F;
+  --mist:#F4F5EF;--line:#E2E5DC;
+  --font:"Plus Jakarta Sans","Inter",system-ui,sans-serif;
+  --pw:540px;      /* panel width, set from JS */
+  --ph:520px;      /* panel height, set from JS */
+  --r:520px;       /* ring radius, set from JS */
+  --cs:1;          /* character scale, set from JS */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--ink);background:radial-gradient(120% 90% at 30% 20%,#3C5E42 0%,#2E4A33 45%,#22382a 100%);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px;border-radius:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.app{height:100dvh;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden}
+
+/* ---------- nav ---------- */
+.bar{width:min(1180px,100% - 28px);margin:14px auto 0;display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(20,34,24,.55);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:8px 8px 8px 12px;position:relative;z-index:20}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+.logo b{width:36px;height:36px;border-radius:50%;background:var(--yellow);color:var(--green);display:grid;place-items:center;font-size:17px}
+.bar ul{display:flex;gap:4px;list-style:none}
+.bar ul button{padding:8px 14px;border-radius:999px;font-weight:600;font-size:15px;color:#E6EDE3}
+.bar ul button:hover,.bar ul button[aria-current="true"]{background:rgba(255,255,255,.12);color:var(--yellow)}
+.navr{display:flex;gap:8px;align-items:center}
+.pillbtn{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;font-weight:800;font-size:15px;white-space:nowrap}
+.pillbtn.y{background:var(--yellow);color:var(--green)}
+.pillbtn.y:hover{background:#fff}
+.pillbtn.o{border:2px solid var(--yellow);color:var(--yellow)}
+.pillbtn.o:hover{background:var(--yellow);color:var(--green)}
+
+/* ---------- world ---------- */
+.world{position:relative;display:grid;grid-template-columns:minmax(300px,36%) minmax(0,1fr);min-height:0;min-width:0}
+.stage{position:relative;min-height:0;perspective:1000px;perspective-origin:50% 42%;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;z-index:5}
+.stage:active{cursor:grabbing}
+.stage .anchor{position:absolute;left:50%;bottom:11%;width:0;height:0;transform-style:preserve-3d;transform:scale3d(var(--cs),var(--cs),var(--cs))}
+.tilt{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;transform:rotateX(-9deg)}
+.floor{position:absolute;left:-520px;top:-520px;width:1040px;height:1040px;transform:rotateX(90deg);background:
+  repeating-linear-gradient(0deg,rgba(255,255,255,.09) 0 1px,transparent 1px 52px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.09) 0 1px,transparent 1px 52px);
+  -webkit-mask-image:radial-gradient(closest-side,#000 20%,transparent 78%);mask-image:radial-gradient(closest-side,#000 20%,transparent 78%)}
+.disc{position:absolute;left:-125px;top:-125px;width:250px;height:250px;border-radius:50%;transform:translateY(4px) rotateX(90deg);background:var(--yellow);box-shadow:0 0 0 10px rgba(245,180,10,.22),0 0 60px 20px rgba(245,180,10,.18)}
+.disc.b{transform:translateY(16px) rotateX(90deg);background:#B98505;box-shadow:none}
+.disc.s{left:-70px;top:-70px;width:140px;height:140px;transform:translateY(2px) rotateX(90deg);background:rgba(0,0,0,.28);box-shadow:none;filter:blur(6px)}
+.turn{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;transform:rotateY(var(--ry,0deg));transition:transform .7s cubic-bezier(.3,1.3,.5,1)}
+.turn.drag{transition:none}
+.char{position:absolute;left:0;top:-368px;width:0;height:0;transform-style:preserve-3d}
+
+/* cuboids */
+.box{position:absolute;top:0;transform-style:preserve-3d}
+.box>i{position:absolute;display:block;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.g{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+.headg{transform-origin:0 118px 0;transition:transform .25s ease-out}
+.arm{transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
+
+/* face */
+.face{position:absolute;inset:0}
+.face b{position:absolute;display:block}
+.eye{top:38px;width:9px;height:11px;border-radius:50%;background:#1b1b1f}
+.eye.l{left:19px}.eye.r{right:19px}
+.brow{top:23px;width:20px;height:5px;border-radius:3px;background:#15161A}
+.brow.l{left:13px;transform:rotate(-5deg)}.brow.r{right:13px;transform:rotate(5deg)}
+.nose{left:45px;top:52px;width:6px;height:9px;border-radius:3px;background:rgba(120,70,40,.28)}
+.mouth{left:31px;top:68px;width:34px;height:15px;border-radius:0 0 18px 18px;background:#fff;border:3px solid #8a4a3a;border-top-width:2px}
+.cheek{top:62px;width:13px;height:7px;border-radius:50%;background:rgba(235,120,100,.3)}
+.cheek.l{left:9px}.cheek.r{right:9px}
+.glasses{position:absolute;left:-49px;top:53px;width:98px;height:32px;transform:translateZ(49px);pointer-events:none}
+.glasses b{position:absolute;top:0;width:43px;height:32px;border-radius:12px;border:3.5px solid rgba(214,216,222,.95);background:linear-gradient(135deg,rgba(255,255,255,.34),rgba(255,255,255,.06) 55%)}
+.glasses b:first-child{left:0}.glasses b:nth-child(2){right:0}
+.glasses u{position:absolute;left:43px;top:11px;width:12px;height:4px;background:rgba(214,216,222,.95);border-radius:2px}
+
+/* suit front */
+.suit{position:absolute;inset:0;overflow:hidden}
+.suit .shirt{position:absolute;left:36px;top:0;width:44px;height:70px;background:#F4F5F2;clip-path:polygon(0 0,100% 0,50% 100%)}
+.suit .tie{position:absolute;left:50px;top:4px;width:16px;height:82px;background:linear-gradient(90deg,#0d0d10,#34343c 45%,#0d0d10);clip-path:polygon(22% 0,78% 0,70% 14%,100% 82%,50% 100%,0 82%,30% 14%)}
+.suit .lap{position:absolute;top:0;width:30px;height:76px;background:#2f333a}
+.suit .lap.l{left:14px;clip-path:polygon(72% 0,100% 0,100% 100%,0 34%)}
+.suit .lap.r{right:14px;clip-path:polygon(0 0,28% 0,100% 34%,0 100%)}
+.suit .sq{position:absolute;right:15px;top:46px;width:22px;height:5px;background:#fff;transform:rotate(-8deg);border-radius:1px}
+.suit .bt{position:absolute;left:55px;width:6px;height:6px;border-radius:50%;background:#0b0b0d}
+.suit .stole{position:absolute;inset:0;opacity:0;transition:opacity .4s}
+.suit .stole i{position:absolute;top:-6px;width:24px;height:112px;background:linear-gradient(90deg,#1E2F9A 0 26%,#F2D56B 26% 44%,#1E2F9A 44% 56%,#F2D56B 56% 74%,#1E2F9A 74%)}
+.suit .stole i:first-child{left:22px;transform:rotate(-13deg);transform-origin:top}
+.suit .stole i:nth-child(2){right:22px;transform:rotate(13deg);transform-origin:top}
+.suit .stole u{position:absolute;left:44px;top:84px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#E0A070,#9A5528 70%);border:2px solid #6d3a18}
+.grad .suit .stole{opacity:1}
+.grad .suit .tie{background:repeating-linear-gradient(135deg,#7A1F2B 0 7px,#E1B23C 7px 10px)}
+.cap{opacity:0;transition:opacity .4s}
+.grad .cap{opacity:1}
+
+/* idle motion */
+@media (prefers-reduced-motion:no-preference){
+  .bob{animation:bob 3.2s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(-6px)}}
+  .eye{animation:blink 4.6s infinite}
+  @keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+  .wave .arm.L{animation:wave .7s ease-in-out infinite alternate}
+  @keyframes wave{from{transform:translate3d(75px,130px,0) rotateZ(-158deg)}to{transform:translate3d(75px,130px,0) rotateZ(-128deg)}}
+  .deco{animation:spin 16s linear infinite}
+  @keyframes spin{to{transform:rotateX(-25deg) rotateY(395deg)}}
+  .bubble.pop{animation:pop .35s cubic-bezier(.3,1.5,.5,1)}
+  @keyframes pop{from{transform:translateX(-50%) scale(.85);opacity:.3}}
+}
+.bob{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+
+/* speech bubble */
+.bubble{position:absolute;left:50%;bottom:calc(11% + 400px * var(--cs));transform:translateX(-50%);width:min(300px,92%);background:#fff;border-radius:20px;padding:14px 18px 12px;font-weight:600;font-size:15.5px;line-height:1.45;box-shadow:0 16px 36px rgba(0,0,0,.28);z-index:6;cursor:pointer;text-align:left}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-9px;width:20px;height:20px;background:#fff;transform:translateX(-50%) rotate(45deg);border-radius:4px}
+.bubble .txt{display:block;min-height:2.9em;position:relative;z-index:1}
+.bubble .hint{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12.5px;font-weight:800;color:var(--green-2);position:relative;z-index:1}
+.bubble .hint i{width:18px;height:18px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font-style:normal;font-size:11px;color:var(--green)}
+
+/* panel ring */
+.ringwrap{position:relative;min-height:0;perspective:1500px;perspective-origin:50% 46%}
+.ring{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;transform:translateZ(calc(var(--r) * -1)) rotateY(calc(var(--i,0) * -60deg));transition:transform .9s cubic-bezier(.6,0,.2,1)}
+.panel{position:absolute;left:calc(var(--pw) / -2);top:calc(var(--ph) / -2);width:var(--pw);height:var(--ph);transform:rotateY(calc(var(--n) * 60deg)) translateZ(var(--r));background:#fff;border-radius:28px;box-shadow:0 30px 70px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;opacity:.2;transition:opacity .6s;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.panel.on{opacity:1}
+.panel:not(.on){pointer-events:none}
+.panel header{flex:none;padding:24px 28px 0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;color:var(--green-2)}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--yellow);border-radius:2px}
+.panel h1,.panel h2{font-size:clamp(26px,3.1vw,36px);font-weight:800;line-height:1.12;letter-spacing:-.02em;margin-top:6px}
+.panel h1 em,.panel h2 em{font-style:normal;color:var(--yellow)}
+.panel .body{flex:1;min-height:0;overflow-y:auto;padding:14px 28px 26px;overscroll-behavior:contain}
+.panel h1:focus,.panel h2:focus{outline:none}
+.panel p{color:var(--muted)}
+.panel p+p{margin-top:10px}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;border-radius:999px;padding:11px 20px}
+.btn.gr{background:var(--green);color:#fff}
+.btn.y{background:var(--yellow);color:var(--green)}
+.btn.l{border:2px solid var(--green);color:var(--green);padding:9px 18px}
+.btn:hover{transform:translateY(-2px)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.stats div{background:var(--mist);border-radius:16px;padding:14px;font-size:13.5px;color:var(--muted);line-height:1.35}
+.stats b{display:block;font-size:28px;font-weight:800;color:var(--green);line-height:1.1}
+.tl{list-style:none;display:grid;gap:10px}
+.tl li{background:var(--mist);border-radius:16px;padding:13px 16px}
+.tl .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.tl h3{font-size:16px;font-weight:800}
+.tl .when{font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--yellow);color:var(--green);white-space:nowrap}
+.tl .when.soft{background:var(--green-3)}
+.tl .org{font-size:13.5px;font-weight:700;color:var(--green-2)}
+.tl p{font-size:14px;margin-top:4px}
+.sub{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--green-2);margin:16px 0 8px}
+.pj{display:grid;gap:10px}
+.pj a{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:center;background:var(--mist);border-radius:16px;padding:10px;transition:background .2s,transform .2s}
+.pj a:hover{background:var(--yellow-soft);transform:translateX(4px)}
+.pj img{width:92px;height:62px;object-fit:cover;border-radius:10px;display:block;background:var(--green-3)}
+.pj b{display:block;font-size:15.5px;font-weight:800;line-height:1.25}
+.pj span{display:block;font-size:13px;color:var(--muted);line-height:1.35;margin-top:2px}
+.pj a.hl{background:var(--green);color:#fff}
+.pj a.hl span{color:#D3DDD0}
+.pj a.hl:hover{background:var(--green-2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none}
+.chips li{font-size:14px;font-weight:700;padding:7px 14px;border-radius:999px;background:var(--mist);color:var(--green)}
+.chips.y li{background:var(--yellow);}
+.chips.o li{background:none;border:1.5px solid var(--green)}
+.links{display:grid;gap:10px;margin-top:6px}
+.links a{display:flex;align-items:center;gap:14px;background:var(--mist);border-radius:16px;padding:12px 16px;font-weight:800}
+.links a:hover{background:var(--yellow-soft)}
+.links small{display:block;font-weight:500;color:var(--muted);font-size:13px}
+.links .ic{flex:none;width:40px;height:40px;border-radius:12px;background:var(--yellow);color:var(--green);display:grid;place-items:center;font-weight:800}
+
+/* decorative cubes */
+.deco{position:absolute;width:70px;height:70px;transform-style:preserve-3d;transform:rotateX(-25deg) rotateY(35deg);pointer-events:none;opacity:.5}
+.deco i{position:absolute;inset:0;border:2px solid var(--yellow);background:rgba(245,180,10,.07)}
+.deco i:nth-child(1){transform:translateZ(35px)}.deco i:nth-child(2){transform:rotateY(180deg) translateZ(35px)}
+.deco i:nth-child(3){transform:rotateY(90deg) translateZ(35px)}.deco i:nth-child(4){transform:rotateY(-90deg) translateZ(35px)}
+.deco i:nth-child(5){transform:rotateX(90deg) translateZ(35px)}.deco i:nth-child(6){transform:rotateX(-90deg) translateZ(35px)}
+.deco.a{right:4%;top:6%}.deco.b{left:3%;top:10%;width:44px;height:44px;animation-duration:22s;animation-direction:reverse}
+.deco.b i:nth-child(1){transform:translateZ(22px)}.deco.b i:nth-child(2){transform:rotateY(180deg) translateZ(22px)}
+.deco.b i:nth-child(3){transform:rotateY(90deg) translateZ(22px)}.deco.b i:nth-child(4){transform:rotateY(-90deg) translateZ(22px)}
+.deco.b i:nth-child(5){transform:rotateX(90deg) translateZ(22px)}.deco.b i:nth-child(6){transform:rotateX(-90deg) translateZ(22px)}
+
+/* ---------- controls ---------- */
+.ctrl{display:flex;justify-content:center;align-items:center;gap:14px;padding:10px 14px 16px;position:relative;z-index:20}
+.ctrl .arrow{width:46px;height:46px;border-radius:50%;background:var(--yellow);color:var(--green);display:grid;place-items:center}
+.ctrl .arrow:hover{background:#fff}
+.ctrl .arrow svg{width:20px;height:20px}
+.ctrl .arrow[disabled]{opacity:.35;cursor:default;background:var(--yellow)}
+.dots{display:flex;gap:6px;align-items:center;background:rgba(20,34,24,.55);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:8px 12px}
+.dots button{display:flex;align-items:center;gap:0;height:26px;min-width:26px;border-radius:999px;padding:0 8px;font-size:13px;font-weight:800;color:#C9D6C5;justify-content:center}
+.dots button::before{content:"";width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.35)}
+.dots button span{max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .4s,margin .4s}
+.dots button[aria-current="true"]{background:var(--yellow);color:var(--green)}
+.dots button[aria-current="true"]::before{background:var(--green)}
+.dots button[aria-current="true"] span{max-width:120px;margin-left:8px}
+.keys{position:absolute;right:20px;bottom:22px;font-size:12.5px;font-weight:600;color:#A9B8A5}
+.keys kbd{font:inherit;font-weight:800;background:rgba(255,255,255,.12);border-radius:6px;padding:2px 7px;color:#fff}
+
+/* ---------- responsive ---------- */
+@media (max-width:980px){
+  .bar ul{display:none}
+  .keys{display:none}
+}
+@media (max-width:820px){
+  .world{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(210px,34%) minmax(0,1fr)}
+  .stage .anchor{bottom:6%}
+  .bubble{left:auto;right:10px;bottom:auto;top:8px;transform:none;width:min(210px,54%);font-size:13.5px;padding:10px 13px 9px}
+  .bubble::after{left:-7px;bottom:auto;top:44px;transform:rotate(45deg)}
+  .bubble .txt{min-height:0}
+  .bubble.pop{animation:none}
+  .stage .anchor{left:27%}
+  .panel header{padding:18px 20px 0}
+  .panel .body{padding:12px 20px 20px}
+  .panel{border-radius:22px}
+  .deco{display:none}
+  .logo{font-size:16px}
+  .pillbtn{padding:0 13px;font-size:14px}
+}
+@media (max-width:420px){
+  .logo{font-size:0;gap:0}.logo b{font-size:17px}
+  .stats{gap:6px}.stats div{padding:10px}.stats b{font-size:22px}
+  .pj a{grid-template-columns:70px 1fr;gap:10px}.pj img{width:70px;height:50px}
+}
+@media (prefers-reduced-motion:reduce){
+  .ring,.turn,.arm,.headg,.panel{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<nav class="bar" aria-label="Main">
+  <a class="logo" href="index.html"><b>R</b>Rivaldi.</a>
+  <ul>
+    <li><button type="button" data-go="1">Summary</button></li>
+    <li><button type="button" data-go="2">Experience</button></li>
+    <li><button type="button" data-go="3">Projects</button></li>
+    <li><button type="button" data-go="4">Skills</button></li>
+    <li><button type="button" data-go="5">Contact</button></li>
+  </ul>
+  <div class="navr">
+    <a class="pillbtn y" href="index.html" title="Switch to the classic portfolio">Classic</a>
+    <a class="pillbtn o" href="cv/" title="Preview and download my CV">CV</a>
+  </div>
+</nav>
+
+<main class="world">
+  <div class="deco a" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="deco b" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+  <!-- the guide -->
+  <div class="stage" id="stage" role="button" tabindex="0" aria-label="Rivaldi, your guide. Activate to go to the next section. Drag to turn him around.">
+    <button class="bubble" id="bubble" type="button" tabindex="-1" aria-hidden="true">
+      <span class="txt" id="btxt"></span>
+      <span class="hint"><i>→</i><span id="bhint">Click me to start</span></span>
+    </button>
+    <div class="anchor">
+      <div class="tilt">
+        <div class="floor"></div>
+        <div class="disc b"></div><div class="disc"></div><div class="disc s"></div>
+        <div class="turn" id="turn"><div class="bob"><div class="char" id="char"></div></div></div>
+      </div>
+    </div>
+  </div>
+  <p class="sr" aria-live="polite" id="say"></p>
+
+  <!-- the sections -->
+  <div class="ringwrap">
+    <div class="ring" id="ring">
+
+      <section class="panel" style="--n:0" aria-labelledby="t0">
+        <header><span class="eyebrow">3D portfolio</span>
+          <h1 id="t0">Hi, I’m <em>Rivaldi Mahari</em>.</h1></header>
+        <div class="body">
+          <p>QA engineer and data analyst from ITB. I test web apps until they’re solid, dig into data for answers, and build AI tools that save people time.</p>
+          <p>The 3D character is me. <strong>Click him</strong> and he’ll walk you through everything, or drag to spin him around.</p>
+          <div class="cta">
+            <button class="btn gr" type="button" data-go="1">Start the tour →</button>
+            <a class="btn l" href="index.html">Classic version</a>
+          </div>
+          <div class="stats">
+            <div><b>3</b>industry roles in QA &amp; data</div>
+            <div><b>10</b>projects across courses &amp; thesis</div>
+            <div><b>ITB</b>B.S. IT Systems 2022 – 2026</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" style="--n:1" aria-labelledby="t1">
+        <header><span class="eyebrow">Summary</span>
+          <h2 id="t1">Who is <em>Rivaldi?</em></h2></header>
+        <div class="body">
+          <p>I’m an Information Technology Systems graduate from Institut Teknologi Bandung with hands-on experience in quality assurance, data analysis, web development, system analysis and AI-based image classification.</p>
+          <p>I’m good at turning requirements into test cases, reading systems and data to find what’s wrong or what matters, and working with developers, stakeholders and cross-functional teams to ship things that work.</p>
+          <div class="stats">
+            <div><b>2</b>QA roles on live web platforms</div>
+            <div><b>1</b>data analyst internship</div>
+            <div><b>2</b>YOLO11 models in my thesis app</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" style="--n:2" aria-labelledby="t2">
+        <header><span class="eyebrow">Experience</span>
+          <h2 id="t2">My professional <em>journey</em></h2></header>
+        <div class="body">
+          <ol class="tl">
+            <li><div class="top"><h3>Quality Assurance</h3><span class="when">Nov 2025 – Jan 2026</span></div>
+              <div class="org">PT Akhdani Reka Solusi · Bandung</div>
+              <p>Test cases and Selenium automation for the SIMPUS web application; reported bugs and verified fixes with developers.</p></li>
+            <li><div class="top"><h3>Quality Assurance</h3><span class="when">Jul 2025 – Sep 2025</span></div>
+              <div class="org">PT Bringin Inti Teknologi · Jakarta</div>
+              <p>Functional and usability testing for Bee-RP in a 3-person team; led QA for TrackMate and prepared for UAT.</p></li>
+            <li><div class="top"><h3>Data Analyst Intern</h3><span class="when">Jun 2024 – Jul 2024</span></div>
+              <div class="org">PT Sarana Pactindo · Bandung</div>
+              <p>Built a web-based billing forecast system and analysed data for two company websites.</p></li>
+            <li><div class="top"><h3>STEM Tutor (Maths &amp; Physics)</h3><span class="when">Mar 2023 – Apr 2023</span></div>
+              <div class="org">Private tutoring · Bandar Lampung</div></li>
+          </ol>
+          <h3 class="sub">Education &amp; activities</h3>
+          <ol class="tl">
+            <li><div class="top"><h3>B.S. Information Technology Systems</h3><span class="when soft">2022 – 2026</span></div>
+              <div class="org">Institut Teknologi Bandung · Teaching Assistant for Pancasila</div></li>
+            <li><div class="top"><h3>Incubator IT / DPP</h3><span class="when soft">Aug 2023 – Aug 2024</span></div>
+              <div class="org">Himpunan Mahasiswa Informatika</div></li>
+            <li><div class="top"><h3>Extra-campus Committee</h3><span class="when soft">Aug – Oct 2023</span></div>
+              <div class="org">OSKM ITB</div></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="panel" style="--n:3" aria-labelledby="t3">
+        <header><span class="eyebrow">Projects</span>
+          <h2 id="t3">Things I’ve <em>built</em></h2></header>
+        <div class="body">
+          <div class="pj">
+            <a class="hl" href="kukangsort-ai/"><img src="assets/kukangsort-ui.jpg" alt="" loading="lazy"><div><b>KukangSort AI</b><span>Final-year project. YOLO11 web app that sorts slow-loris camera-trap photos and labels behaviour.</span></div></a>
+            <a href="retail-inventory-ai/"><img src="assets/retail-inventory-ai.jpg" alt="" loading="lazy"><div><b>Retail Inventory AI</b><span>Demand forecasts and reorder suggestions from 1 million real transactions.</span></div></a>
+            <a href="kingshand/"><img src="assets/kingshand.jpg" alt="" loading="lazy"><div><b>King’s Hand</b><span>Project monitoring with automatic alerts and 21 Playwright tests.</span></div></a>
+            <a href="jabar-tourism/"><img src="assets/jabar-cluster.jpg" alt="" loading="lazy"><div><b>West Java Tourism Analytics</b><span>Data story with K-Means area groups and data-quality scoring.</span></div></a>
+            <a href="pvz/"><img src="assets/pvz-gameplay.jpg" alt="" loading="lazy"><div><b>Plants vs. Zombies</b><span>Java Swing game playable in the browser, with 119 unit tests.</span></div></a>
+            <a href="rangkuman-smp/"><img src="assets/rangkuman-smp.jpg" alt="" loading="lazy"><div><b>Rangkuman SMP Interaktif</b><span>Science and maths study app: 27 chapters, labs and 143 quiz questions.</span></div></a>
+            <a href="virsila/"><img src="assets/virsila.jpg" alt="" loading="lazy"><div><b>Virsila</b><span>Pancasila learning site with a practice game and timed quiz.</span></div></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" style="--n:4" aria-labelledby="t4">
+        <header><span class="eyebrow">Skills</span>
+          <h2 id="t4">What I <em>work with</em></h2></header>
+        <div class="body">
+          <h3 class="sub" style="margin-top:0">Tools</h3>
+          <ul class="chips y"><li>Selenium</li><li>Python</li><li>SQL</li><li>FastAPI</li><li>YOLO11</li><li>Java</li><li>JavaScript</li><li>Git &amp; GitHub</li></ul>
+          <h3 class="sub">What I do</h3>
+          <ul class="chips"><li>Manual &amp; automated testing</li><li>Data analysis &amp; AI</li><li>System analysis</li><li>Database design &amp; SQL</li><li>Web development</li><li>UI/UX &amp; prototyping</li></ul>
+          <h3 class="sub">Soft skills</h3>
+          <ul class="chips o"><li>Public speaking</li><li>Negotiation</li><li>Time management</li><li>Project management</li><li>Team collaboration</li><li>Problem solving</li></ul>
+        </div>
+      </section>
+
+      <section class="panel" style="--n:5" aria-labelledby="t5">
+        <header><span class="eyebrow">Contact</span>
+          <h2 id="t5">Let’s build something <em>great</em>.</h2></header>
+        <div class="body">
+          <p>I’m open to roles in quality assurance, data analysis and applied AI.</p>
+          <div class="links" style="margin-top:14px">
+            <a href="mailto:rivaldimhr@gmail.com"><span class="ic">@</span><span>rivaldimhr@gmail.com<small>Email</small></span></a>
+            <a href="https://github.com/rivaldimhr"><span class="ic">GH</span><span>github.com/rivaldimhr<small>GitHub</small></span></a>
+            <a href="cv/"><span class="ic">CV</span><span>Preview &amp; download my CV<small>Visual or ATS-friendly</small></span></a>
+          </div>
+          <div class="cta">
+            <button class="btn y" type="button" data-go="0">↺ Restart the tour</button>
+            <a class="btn l" href="index.html">Classic version</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<div class="ctrl">
+  <button class="arrow" id="prev" type="button" aria-label="Previous section"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="dots" id="dots" role="group" aria-label="Sections"></div>
+  <button class="arrow" id="next" type="button" aria-label="Next section"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <span class="keys" aria-hidden="true"><kbd>←</kbd> <kbd>→</kbd> to move · drag to spin</span>
+</div>
+
+</div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ---------- build the character out of CSS cuboids ---------- */
+const mix=(hex,t)=>{ // t>0 lighten, t<0 darken
+  const n=parseInt(hex.slice(1),16),c=[n>>16,n>>8&255,n&255].map(v=>Math.round(t>0?v+(255-v)*t:v*(1+t)));
+  return `rgb(${c.join(',')})`;
+};
+function box(w,h,d,color,o={}){
+  const el=document.createElement('div');el.className='box '+(o.cls||'');
+  el.style.cssText=`left:${-w/2}px;width:${w}px;height:${h}px;transform:translate3d(${o.x||0}px,${o.y||0}px,${o.z||0}px) ${o.rot||''}`;
+  const f=(css,bg,html)=>{const i=document.createElement('i');i.style.cssText=css+`;background:${bg}`;if(html)i.innerHTML=html;el.appendChild(i);};
+  f(`left:0;top:0;width:${w}px;height:${h}px;transform:translateZ(${d/2}px)`,color,o.front);
+  f(`left:0;top:0;width:${w}px;height:${h}px;transform:rotateY(180deg) translateZ(${d/2}px)`,mix(color,-.22));
+  f(`left:${(w-d)/2}px;top:0;width:${d}px;height:${h}px;transform:rotateY(90deg) translateZ(${w/2}px)`,mix(color,-.12));
+  f(`left:${(w-d)/2}px;top:0;width:${d}px;height:${h}px;transform:rotateY(-90deg) translateZ(${w/2}px)`,mix(color,-.16));
+  f(`left:0;top:${(h-d)/2}px;width:${w}px;height:${d}px;transform:rotateX(90deg) translateZ(${h/2}px)`,mix(color,.14));
+  f(`left:0;top:${(h-d)/2}px;width:${w}px;height:${d}px;transform:rotateX(-90deg) translateZ(${h/2}px)`,mix(color,-.35));
+  return el;
+}
+const group=(cls,css)=>{const g=document.createElement('div');g.className='g '+cls;if(css)g.style.cssText=css;return g;};
+const SKIN='#EDBE98',HAIR='#1B1C21',SUIT='#262A30',SHOE='#131417';
+const char=$('#char');
+
+// head group (turns toward the pointer)
+const head=group('headg');
+head.append(
+  box(96,92,88,SKIN,{y:26,front:'<div class="face"><b class="brow l"></b><b class="brow r"></b><b class="eye l"></b><b class="eye r"></b><b class="cheek l"></b><b class="cheek r"></b><b class="nose"></b><b class="mouth"></b></div>'}),
+  box(106,26,108,HAIR,{y:0,z:-2}),                       // top
+  box(106,74,12,HAIR,{y:26,z:-50}),                      // back
+  box(6,52,70,HAIR,{x:-51,y:26,z:-9}),                   // sides
+  box(6,52,70,HAIR,{x:51,y:26,z:-9}),
+  box(50,19,8,HAIR,{x:-27,y:23,z:48,rot:'rotateZ(-11deg)'}),   // curtain fringe, parted in the middle
+  box(50,19,8,HAIR,{x:27,y:23,z:48,rot:'rotateZ(11deg)'}),
+  box(34,12,34,HAIR,{x:-26,y:-12,z:-8,rot:'rotateY(18deg)'}),// wavy volume on top
+  box(30,14,30,HAIR,{x:8,y:-14,z:12,rot:'rotateY(-24deg)'}),
+  box(32,11,32,HAIR,{x:30,y:-11,z:-22,rot:'rotateY(34deg)'}),
+  box(14,28,14,HAIR,{x:-52,y:92,z:-40,rot:'rotateZ(20deg)'}),// flicks at the nape
+  box(14,28,14,HAIR,{x:52,y:92,z:-40,rot:'rotateZ(-20deg)'}),
+  box(6,20,14,SKIN,{x:-51,y:62,z:34}),                   // ears
+  box(6,20,14,SKIN,{x:51,y:62,z:34})
+);
+const gl=document.createElement('div');gl.className='glasses';gl.innerHTML='<b></b><b></b><u></u>';head.append(gl);
+
+// body
+const suitFront='<div class="suit"><span class="shirt"></span><span class="lap l"></span><span class="lap r"></span><span class="tie"></span><span class="sq"></span><span class="bt" style="top:92px"></span><span class="bt" style="top:106px"></span><span class="stole"><i></i><i></i><u></u></span></div>';
+const arm=(side)=>{
+  const s=side==='L'?1:-1, g=group('arm '+side);
+  g.dataset.base=`translate3d(${s*75}px,130px,0)`;
+  g.style.transform=g.dataset.base+' rotateZ(0deg)';
+  g.append(box(30,104,32,SUIT,{}),box(24,20,26,SKIN,{y:104}));
+  if(side==='R')g.append(box(54,8,54,'#12495A',{y:124,cls:'cap',rot:'rotateY(20deg)'}));
+  return g;
+};
+const armL=arm('L'),armR=arm('R');   // L = his left, on the viewer's right
+char.append(
+  head,
+  box(34,10,30,SKIN,{y:118}),
+  box(116,118,58,SUIT,{y:128,front:suitFront}),
+  armL,armR,
+  box(50,106,46,SUIT,{x:-28,y:246}),box(50,106,46,SUIT,{x:28,y:246}),
+  box(52,16,66,SHOE,{x:-28,y:352,z:10}),box(52,16,66,SHOE,{x:28,y:352,z:10})
+);
+const setArm=(g,z,x=0)=>g.style.transform=`${g.dataset.base} rotateX(${x}deg) rotateZ(${z}deg)`;
+
+/* ---------- the tour ---------- */
+const STOPS=[
+  {id:'intro',name:'Start',say:'Hi! I’m Rivaldi. Click me and I’ll walk you through my portfolio.',hint:'Click me to start',pose:'wave'},
+  {id:'summary',name:'Summary',say:'First, a bit about me. I graduated from ITB in 2026.',hint:'Click me for my experience',pose:'grad'},
+  {id:'experience',name:'Experience',say:'Here’s where I’ve worked: two QA roles and a data internship.',hint:'Click me for my projects',pose:'point'},
+  {id:'projects',name:'Projects',say:'These are things I’ve built. Every one opens a live demo.',hint:'Click me for my skills',pose:'point'},
+  {id:'skills',name:'Skills',say:'And this is the toolbox I work with every day.',hint:'Click me to get in touch',pose:'point'},
+  {id:'contact',name:'Contact',say:'That’s the tour! Want to talk? My email and CV are right here.',hint:'Click me to start over',pose:'wave'}
+];
+const ring=$('#ring'),panels=$$('.panel'),turn=$('#turn'),stage=$('#stage'),bubble=$('#bubble');
+const dots=$('#dots');
+STOPS.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.dataset.go=i;b.innerHTML=`<span>${s.name}</span>`;b.setAttribute('aria-label',s.name);dots.append(b);});
+
+let cur=0,typer=0,userRy=0,mobile=false;
+function type(text){
+  const t=$('#btxt');clearInterval(typer);
+  if(reduce){t.textContent=text;return;}
+  let n=0;t.textContent='';
+  typer=setInterval(()=>{n+=2;t.textContent=text.slice(0,n);if(n>=text.length)clearInterval(typer);},22);
+}
+function pose(p){
+  char.classList.toggle('grad',p==='grad');
+  stage.classList.toggle('wave',p==='wave');
+  const side=mobile?12:26;
+  userRy=0;turn.style.setProperty('--ry',(p==='wave'?0:side)+'deg');
+  if(p==='wave'){setArm(armL,-143);setArm(armR,6);}
+  else if(p==='grad'){setArm(armL,-62,-10);setArm(armR,8);}
+  else{setArm(armL,-78,-14);setArm(armR,6);}
+}
+function go(i,focus){
+  cur=(i+STOPS.length)%STOPS.length;
+  const s=STOPS[cur];
+  ring.style.setProperty('--i',cur);
+  panels.forEach((p,n)=>{const on=n===cur;p.classList.toggle('on',on);p.inert=!on;p.setAttribute('aria-hidden',!on);});
+  $$('[data-go]').forEach(b=>{if(b.closest('.dots,.bar'))b.setAttribute('aria-current',+b.dataset.go===cur);});
+  $('#prev').disabled=cur===0;
+  pose(s.pose);type(s.say);$('#bhint').textContent=s.hint;$('#say').textContent=s.say;
+  bubble.classList.remove('pop');void bubble.offsetWidth;bubble.classList.add('pop');
+  history.replaceState(null,'',cur?'#'+s.id:location.pathname+location.search);
+  if(focus)panels[cur].querySelector('h1,h2').focus?.();
+}
+panels.forEach(p=>p.querySelector('h1,h2').tabIndex=-1);
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(+b.dataset.go,true);});
+$('#prev').onclick=()=>go(cur-1);$('#next').onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{
+  if(e.target.closest('a,input,textarea'))return;
+  if(e.key==='ArrowRight')go(cur+1);
+  else if(e.key==='ArrowLeft'&&cur>0)go(cur-1);
+});
+stage.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go(cur+1,true);}});
+
+/* drag to spin, click to advance */
+let down=null;
+stage.addEventListener('pointerdown',e=>{down={x:e.clientX,ry:userRy,moved:0,base:parseFloat(turn.style.getPropertyValue('--ry'))||0};stage.setPointerCapture(e.pointerId);});
+stage.addEventListener('pointermove',e=>{
+  if(!down)return;const dx=e.clientX-down.x;down.moved=Math.max(down.moved,Math.abs(dx));
+  if(down.moved>6){turn.classList.add('drag');turn.style.setProperty('--ry',(down.base+dx*.7)+'deg');}
+});
+const up=e=>{if(!down)return;turn.classList.remove('drag');if(down.moved<=6)go(cur+1);down=null;};
+stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',()=>{down=null;turn.classList.remove('drag');});
+
+/* head follows the pointer */
+if(matchMedia('(hover:hover)').matches&&!reduce){
+  addEventListener('pointermove',e=>{
+    const r=stage.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.35;
+    const ry=Math.max(-28,Math.min(28,(e.clientX-cx)/14)),rx=Math.max(-12,Math.min(14,(cy-e.clientY)/22));
+    head.style.transform=`rotateY(${ry}deg) rotateX(${rx}deg)`;
+  });
+}
+
+/* sizing */
+function size(){
+  mobile=innerWidth<=820;
+  const rw=$('.ringwrap').getBoundingClientRect(),st=stage.getBoundingClientRect();
+  const pw=Math.round(Math.min(560,rw.width-(mobile?24:70)));
+  const ph=Math.round(Math.min(mobile?900:580,rw.height-(mobile?10:36)));
+  const r=Math.round(pw/2/Math.tan(Math.PI/6)+(mobile?26:44));
+  const cs=Math.max(.34,Math.min(1.05,(st.height*(mobile?.9:.86)-(mobile?0:150))/400));
+  const root=document.documentElement.style;
+  root.setProperty('--pw',pw+'px');root.setProperty('--ph',ph+'px');root.setProperty('--r',r+'px');root.setProperty('--cs',cs.toFixed(3));
+}
+addEventListener('resize',()=>{size();pose(STOPS[cur].pose);});
+size();
+const fromHash=()=>STOPS.findIndex(s=>'#'+s.id===location.hash);
+addEventListener('hashchange',()=>{const i=fromHash();if(i>=0&&i!==cur)go(i);});
+go(Math.max(0,fromHash()));
+})();
+</script>
+</body>
+</html>
