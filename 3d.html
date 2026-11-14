@@ -17,7 +17,6 @@
   --pw:540px;      /* panel width, set from JS */
   --ph:520px;      /* panel height, set from JS */
   --r:520px;       /* ring radius, set from JS */
-  --cs:1;          /* character scale, set from JS */
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -46,78 +45,25 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .world{position:relative;display:grid;grid-template-columns:minmax(300px,36%) minmax(0,1fr);min-height:0;min-width:0}
 .stage{position:relative;min-height:0;perspective:1000px;perspective-origin:50% 42%;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;z-index:5}
 .stage:active{cursor:grabbing}
-.stage .anchor{position:absolute;left:50%;bottom:11%;width:0;height:0;transform-style:preserve-3d;transform:scale3d(var(--cs),var(--cs),var(--cs))}
-.tilt{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;transform:rotateX(-9deg)}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.floorwrap{position:absolute;width:0;height:0;transform-style:preserve-3d;transform:rotateX(-14deg)}
 .floor{position:absolute;left:-520px;top:-520px;width:1040px;height:1040px;transform:rotateX(90deg);background:
   repeating-linear-gradient(0deg,rgba(255,255,255,.09) 0 1px,transparent 1px 52px),
   repeating-linear-gradient(90deg,rgba(255,255,255,.09) 0 1px,transparent 1px 52px);
   -webkit-mask-image:radial-gradient(closest-side,#000 20%,transparent 78%);mask-image:radial-gradient(closest-side,#000 20%,transparent 78%)}
-.disc{position:absolute;left:-125px;top:-125px;width:250px;height:250px;border-radius:50%;transform:translateY(4px) rotateX(90deg);background:var(--yellow);box-shadow:0 0 0 10px rgba(245,180,10,.22),0 0 60px 20px rgba(245,180,10,.18)}
-.disc.b{transform:translateY(16px) rotateX(90deg);background:#B98505;box-shadow:none}
-.disc.s{left:-70px;top:-70px;width:140px;height:140px;transform:translateY(2px) rotateX(90deg);background:rgba(0,0,0,.28);box-shadow:none;filter:blur(6px)}
-.turn{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;transform:rotateY(var(--ry,0deg));transition:transform .7s cubic-bezier(.3,1.3,.5,1)}
-.turn.drag{transition:none}
-.char{position:absolute;left:0;top:-368px;width:0;height:0;transform-style:preserve-3d}
-
-/* cuboids */
-.box{position:absolute;top:0;transform-style:preserve-3d}
-.box>i{position:absolute;display:block;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.g{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
-.headg{transform-origin:0 118px 0;transition:transform .25s ease-out}
-.arm{transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
-
-/* face */
-.face{position:absolute;inset:0}
-.face b{position:absolute;display:block}
-.eye{top:38px;width:9px;height:11px;border-radius:50%;background:#1b1b1f}
-.eye.l{left:19px}.eye.r{right:19px}
-.brow{top:23px;width:20px;height:5px;border-radius:3px;background:#15161A}
-.brow.l{left:13px;transform:rotate(-5deg)}.brow.r{right:13px;transform:rotate(5deg)}
-.nose{left:45px;top:52px;width:6px;height:9px;border-radius:3px;background:rgba(120,70,40,.28)}
-.mouth{left:31px;top:68px;width:34px;height:15px;border-radius:0 0 18px 18px;background:#fff;border:3px solid #8a4a3a;border-top-width:2px}
-.cheek{top:62px;width:13px;height:7px;border-radius:50%;background:rgba(235,120,100,.3)}
-.cheek.l{left:9px}.cheek.r{right:9px}
-.glasses{position:absolute;left:-49px;top:53px;width:98px;height:32px;transform:translateZ(49px);pointer-events:none}
-.glasses b{position:absolute;top:0;width:43px;height:32px;border-radius:12px;border:3.5px solid rgba(214,216,222,.95);background:linear-gradient(135deg,rgba(255,255,255,.34),rgba(255,255,255,.06) 55%)}
-.glasses b:first-child{left:0}.glasses b:nth-child(2){right:0}
-.glasses u{position:absolute;left:43px;top:11px;width:12px;height:4px;background:rgba(214,216,222,.95);border-radius:2px}
-
-/* suit front */
-.suit{position:absolute;inset:0;overflow:hidden}
-.suit .shirt{position:absolute;left:36px;top:0;width:44px;height:70px;background:#F4F5F2;clip-path:polygon(0 0,100% 0,50% 100%)}
-.suit .tie{position:absolute;left:50px;top:4px;width:16px;height:82px;background:linear-gradient(90deg,#0d0d10,#34343c 45%,#0d0d10);clip-path:polygon(22% 0,78% 0,70% 14%,100% 82%,50% 100%,0 82%,30% 14%)}
-.suit .lap{position:absolute;top:0;width:30px;height:76px;background:#2f333a}
-.suit .lap.l{left:14px;clip-path:polygon(72% 0,100% 0,100% 100%,0 34%)}
-.suit .lap.r{right:14px;clip-path:polygon(0 0,28% 0,100% 34%,0 100%)}
-.suit .sq{position:absolute;right:15px;top:46px;width:22px;height:5px;background:#fff;transform:rotate(-8deg);border-radius:1px}
-.suit .bt{position:absolute;left:55px;width:6px;height:6px;border-radius:50%;background:#0b0b0d}
-.suit .stole{position:absolute;inset:0;opacity:0;transition:opacity .4s}
-.suit .stole i{position:absolute;top:-6px;width:24px;height:112px;background:linear-gradient(90deg,#1E2F9A 0 26%,#F2D56B 26% 44%,#1E2F9A 44% 56%,#F2D56B 56% 74%,#1E2F9A 74%)}
-.suit .stole i:first-child{left:22px;transform:rotate(-13deg);transform-origin:top}
-.suit .stole i:nth-child(2){right:22px;transform:rotate(13deg);transform-origin:top}
-.suit .stole u{position:absolute;left:44px;top:84px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#E0A070,#9A5528 70%);border:2px solid #6d3a18}
-.grad .suit .stole{opacity:1}
-.grad .suit .tie{background:repeating-linear-gradient(135deg,#7A1F2B 0 7px,#E1B23C 7px 10px)}
-.cap{opacity:0;transition:opacity .4s}
-.grad .cap{opacity:1}
+.fallback{display:none;position:absolute;left:50%;bottom:14%;width:min(240px,60%);aspect-ratio:1;object-fit:cover;object-position:50% 10%;border-radius:50%;border:6px solid var(--yellow);transform:translateX(-50%)}
+.nogl canvas{display:none}.nogl .fallback{display:block}
 
 /* idle motion */
 @media (prefers-reduced-motion:no-preference){
-  .bob{animation:bob 3.2s ease-in-out infinite}
-  @keyframes bob{50%{transform:translateY(-6px)}}
-  .eye{animation:blink 4.6s infinite}
-  @keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
-  .wave .arm.L{animation:wave .7s ease-in-out infinite alternate}
-  @keyframes wave{from{transform:translate3d(75px,130px,0) rotateZ(-158deg)}to{transform:translate3d(75px,130px,0) rotateZ(-128deg)}}
   .deco{animation:spin 16s linear infinite}
   @keyframes spin{to{transform:rotateX(-25deg) rotateY(395deg)}}
   .bubble.pop{animation:pop .35s cubic-bezier(.3,1.5,.5,1)}
   @keyframes pop{from{transform:translateX(-50%) scale(.85);opacity:.3}}
 }
-.bob{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
 
 /* speech bubble */
-.bubble{position:absolute;left:50%;bottom:calc(11% + 400px * var(--cs));transform:translateX(-50%);width:min(300px,92%);background:#fff;border-radius:20px;padding:14px 18px 12px;font-weight:600;font-size:15.5px;line-height:1.45;box-shadow:0 16px 36px rgba(0,0,0,.28);z-index:6;cursor:pointer;text-align:left}
+.bubble{position:absolute;left:50%;bottom:70%;transform:translateX(-50%);width:min(300px,92%);background:#fff;border-radius:20px;padding:14px 18px 12px;font-weight:600;font-size:15.5px;line-height:1.45;box-shadow:0 16px 36px rgba(0,0,0,.28);z-index:6;cursor:pointer;text-align:left}
 .bubble::after{content:"";position:absolute;left:50%;bottom:-9px;width:20px;height:20px;background:#fff;transform:translateX(-50%) rotate(45deg);border-radius:4px}
 .bubble .txt{display:block;min-height:2.9em;position:relative;z-index:1}
 .bubble .hint{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12.5px;font-weight:800;color:var(--green-2);position:relative;z-index:1}
@@ -209,12 +155,10 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 }
 @media (max-width:820px){
   .world{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(210px,34%) minmax(0,1fr)}
-  .stage .anchor{bottom:6%}
-  .bubble{left:auto;right:10px;bottom:auto;top:8px;transform:none;width:min(210px,54%);font-size:13.5px;padding:10px 13px 9px}
+  .bubble{left:auto;right:10px;bottom:auto!important;top:8px;transform:none;width:min(210px,54%);font-size:13.5px;padding:10px 13px 9px}
   .bubble::after{left:-7px;bottom:auto;top:44px;transform:rotate(45deg)}
   .bubble .txt{min-height:0}
   .bubble.pop{animation:none}
-  .stage .anchor{left:27%}
   .panel header{padding:18px 20px 0}
   .panel .body{padding:12px 20px 20px}
   .panel{border-radius:22px}
@@ -228,7 +172,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
   .pj a{grid-template-columns:70px 1fr;gap:10px}.pj img{width:70px;height:50px}
 }
 @media (prefers-reduced-motion:reduce){
-  .ring,.turn,.arm,.headg,.panel{transition:none}
+  .ring,.panel{transition:none}
 }
 </style>
 </head>
@@ -260,13 +204,9 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
       <span class="txt" id="btxt"></span>
       <span class="hint"><i>→</i><span id="bhint">Click me to start</span></span>
     </button>
-    <div class="anchor">
-      <div class="tilt">
-        <div class="floor"></div>
-        <div class="disc b"></div><div class="disc"></div><div class="disc s"></div>
-        <div class="turn" id="turn"><div class="bob"><div class="char" id="char"></div></div></div>
-      </div>
-    </div>
+    <div class="floorwrap" id="floor" aria-hidden="true"><div class="floor"></div></div>
+    <canvas id="guide" aria-hidden="true"></canvas>
+    <img class="fallback" src="assets/me-studio.jpg" alt="" aria-hidden="true">
   </div>
   <p class="sr" aria-live="polite" id="say"></p>
 
@@ -399,67 +339,243 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-/* ---------- build the character out of CSS cuboids ---------- */
-const mix=(hex,t)=>{ // t>0 lighten, t<0 darken
-  const n=parseInt(hex.slice(1),16),c=[n>>16,n>>8&255,n&255].map(v=>Math.round(t>0?v+(255-v)*t:v*(1+t)));
-  return `rgb(${c.join(',')})`;
+/* =====================================================================
+   A tiny WebGL renderer: the guide is built from smooth lathed shapes
+   (spheres, tapered limbs, a torso profile) joined at shoulders, elbows,
+   hips and knees. No library.
+   ===================================================================== */
+const M={
+  id:()=>new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]),
+  mul(a,b){const o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++)o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3];return o;},
+  T:(x,y,z)=>new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,x,y,z,1]),
+  S:(x,y,z)=>new Float32Array([x,0,0,0,0,y,0,0,0,0,z,0,0,0,0,1]),
+  X(d){const a=d*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return new Float32Array([1,0,0,0,0,c,s,0,0,-s,c,0,0,0,0,1]);},
+  Y(d){const a=d*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return new Float32Array([c,0,-s,0,0,1,0,0,s,0,c,0,0,0,0,1]);},
+  Z(d){const a=d*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return new Float32Array([c,s,0,0,-s,c,0,0,0,0,1,0,0,0,0,1]);},
+  chain(...m){return m.reduce((a,b)=>M.mul(a,b));},
+  persp(fov,asp,n,f){const t=1/Math.tan(fov*Math.PI/360);return new Float32Array([t/asp,0,0,0,0,t,0,0,0,0,(f+n)/(n-f),-1,0,0,2*f*n/(n-f),0]);},
+  look(e,c){let z=[e[0]-c[0],e[1]-c[1],e[2]-c[2]],l=Math.hypot(...z);z=z.map(v=>v/l);
+    let x=[z[2],0,-z[0]];l=Math.hypot(...x);x=x.map(v=>v/l);const y=[z[1]*x[2]-z[2]*x[1],z[2]*x[0]-z[0]*x[2],z[0]*x[1]-z[1]*x[0]];
+    return new Float32Array([x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-(x[0]*e[0]+x[1]*e[1]+x[2]*e[2]),-(y[0]*e[0]+y[1]*e[1]+y[2]*e[2]),-(z[0]*e[0]+z[1]*e[1]+z[2]*e[2]),1]);},
+  nrm(m){ // inverse-transpose of the upper 3x3
+    const a=m[0],b=m[1],c=m[2],d=m[4],e=m[5],f=m[6],g=m[8],h=m[9],i=m[10];
+    const A=e*i-f*h,B=f*g-d*i,C=d*h-e*g,det=a*A+b*B+c*C||1;
+    return new Float32Array([A/det,B/det,C/det,(c*h-b*i)/det,(a*i-c*g)/det,(b*g-a*h)/det,(b*f-c*e)/det,(c*d-a*f)/det,(a*e-b*d)/det]);},
+  pt(m,p){const w=m[3]*p[0]+m[7]*p[1]+m[11]*p[2]+m[15];return[(m[0]*p[0]+m[4]*p[1]+m[8]*p[2]+m[12])/w,(m[1]*p[0]+m[5]*p[1]+m[9]*p[2]+m[13])/w];}
 };
-function box(w,h,d,color,o={}){
-  const el=document.createElement('div');el.className='box '+(o.cls||'');
-  el.style.cssText=`left:${-w/2}px;width:${w}px;height:${h}px;transform:translate3d(${o.x||0}px,${o.y||0}px,${o.z||0}px) ${o.rot||''}`;
-  const f=(css,bg,html)=>{const i=document.createElement('i');i.style.cssText=css+`;background:${bg}`;if(html)i.innerHTML=html;el.appendChild(i);};
-  f(`left:0;top:0;width:${w}px;height:${h}px;transform:translateZ(${d/2}px)`,color,o.front);
-  f(`left:0;top:0;width:${w}px;height:${h}px;transform:rotateY(180deg) translateZ(${d/2}px)`,mix(color,-.22));
-  f(`left:${(w-d)/2}px;top:0;width:${d}px;height:${h}px;transform:rotateY(90deg) translateZ(${w/2}px)`,mix(color,-.12));
-  f(`left:${(w-d)/2}px;top:0;width:${d}px;height:${h}px;transform:rotateY(-90deg) translateZ(${w/2}px)`,mix(color,-.16));
-  f(`left:0;top:${(h-d)/2}px;width:${w}px;height:${d}px;transform:rotateX(90deg) translateZ(${h/2}px)`,mix(color,.14));
-  f(`left:0;top:${(h-d)/2}px;width:${w}px;height:${d}px;transform:rotateX(-90deg) translateZ(${h/2}px)`,mix(color,-.35));
-  return el;
+
+const canvas=$('#guide');
+const gl=canvas.getContext('webgl',{alpha:true,antialias:true,premultipliedAlpha:true});
+const stage=$('#stage');
+if(!gl)stage.classList.add('nogl');
+
+const VS=`attribute vec3 p;attribute vec3 n;uniform mat4 uMVP,uM;uniform mat3 uN;varying vec3 vN,vO,vW;
+void main(){vO=p;vN=uN*n;vec4 w=uM*vec4(p,1.);vW=w.xyz;gl_Position=uMVP*vec4(p,1.);}`;
+const FS=`precision mediump float;varying vec3 vN,vO,vW;uniform vec3 uC,uC2,uEye;uniform float uMode,uShine,uGrad;
+void main(){
+  vec3 c=uC;float shine=uShine;float a=1.;float fl=0.;
+  if(uMode>.5&&uMode<1.5){ // suit: shirt, tie, lapels painted in object space
+    float x=vO.x,y=vO.y,ax=abs(vO.x);
+    if(vO.z>0.){
+      float w=.135*clamp((y-.19)/(.565-.19),0.,1.);
+      if(y>.19&&ax<w){
+        c=vec3(.955,.96,.95);shine=.15;
+        float tw=min(.026+.012*smoothstep(.47,.53,y),w);
+        if(ax<tw){c=mix(vec3(.07,.07,.08),vec3(.2,.2,.23),smoothstep(.0,1.,1.-ax/tw)*.6);
+          if(uGrad>.5){float s=fract((x+y)*17.);c=s<.72?vec3(.48,.12,.17):vec3(.88,.7,.24);}shine=.5;}
+      }else if(y>.19&&ax<w+.05*smoothstep(.19,.45,y)+.012){c=uC*1.5+.03;}
+      if(length(vec2(x,y-.13))<.013||length(vec2(x,y-.06))<.013)c=vec3(.04);
+      if(x>.115&&x<.2&&y>.375&&y<.392+(x-.115)*.12)c=vec3(1.);
+      if(uGrad>.5&&y>.07){
+        float xs=.03+.2*clamp((y-.1)/.46,0.,1.);float d=abs(ax-xs)/.04;
+        if(d<1.){c=(d>.3&&d<.62)?vec3(.95,.84,.42):vec3(.12,.18,.6);shine=.25;}
+      }
+    }
+  }else if(uMode>1.5&&uMode<2.5){ // head: hairline, smile, blush
+    float x=vO.x,y=vO.y,z=vO.z;
+    float line=mix(-.82,.47,smoothstep(-.2,.42,z));
+    if(y>line)c=uC2;
+    else if(z>.5){
+      float ax=abs(x);
+      float low=-.66+2.0*x*x;
+      if(ax<.31&&y<-.43&&y>low){c=vec3(1.);fl=.75;if(y>-.455||y<low+.03){c=vec3(.5,.24,.2);fl=0.;}}
+      float b=length(vec2(ax-.56,y+.3));c=mix(c,vec3(.93,.52,.45),.34*smoothstep(.2,.04,b));
+    }
+  }else if(uMode>2.5){ // soft contact shadow
+    float r=length(vO.xz);a=.42*smoothstep(1.,.25,r);gl_FragColor=vec4(0.,0.,0.,a);return;
+  }
+  vec3 N=normalize(vN),L=normalize(vec3(.3,.62,.72)),V=normalize(uEye-vW);
+  float d=dot(N,L)*.5+.5;d=d*d;
+  float sky=N.y*.5+.5;
+  vec3 col=c*(.5+.6*d)+c*vec3(.05,.07,.06)*sky;
+  col+=vec3(1.)*pow(max(dot(N,normalize(L+V)),0.),24.)*shine*.5;
+  col+=vec3(.9,1.,.85)*pow(1.-max(dot(N,V),0.),3.)*.13;
+  col=mix(col,c,fl);
+  gl_FragColor=vec4(col,1.);
+}`;
+let prog,loc={};
+function shader(t,src){const s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(s));return s;}
+if(gl){
+  prog=gl.createProgram();gl.attachShader(prog,shader(gl.VERTEX_SHADER,VS));gl.attachShader(prog,shader(gl.FRAGMENT_SHADER,FS));
+  gl.bindAttribLocation(prog,0,'p');gl.bindAttribLocation(prog,1,'n');gl.linkProgram(prog);gl.useProgram(prog);
+  ['uMVP','uM','uN','uC','uC2','uEye','uMode','uShine','uGrad'].forEach(u=>loc[u]=gl.getUniformLocation(prog,u));
+  gl.enable(gl.DEPTH_TEST);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
 }
-const group=(cls,css)=>{const g=document.createElement('div');g.className='g '+cls;if(css)g.style.cssText=css;return g;};
-const SKIN='#EDBE98',HAIR='#1B1C21',SUIT='#262A30',SHOE='#131417';
-const char=$('#char');
 
-// head group (turns toward the pointer)
-const head=group('headg');
-head.append(
-  box(96,92,88,SKIN,{y:26,front:'<div class="face"><b class="brow l"></b><b class="brow r"></b><b class="eye l"></b><b class="eye r"></b><b class="cheek l"></b><b class="cheek r"></b><b class="nose"></b><b class="mouth"></b></div>'}),
-  box(106,26,108,HAIR,{y:0,z:-2}),                       // top
-  box(106,74,12,HAIR,{y:26,z:-50}),                      // back
-  box(6,52,70,HAIR,{x:-51,y:26,z:-9}),                   // sides
-  box(6,52,70,HAIR,{x:51,y:26,z:-9}),
-  box(50,19,8,HAIR,{x:-27,y:23,z:48,rot:'rotateZ(-11deg)'}),   // curtain fringe, parted in the middle
-  box(50,19,8,HAIR,{x:27,y:23,z:48,rot:'rotateZ(11deg)'}),
-  box(34,12,34,HAIR,{x:-26,y:-12,z:-8,rot:'rotateY(18deg)'}),// wavy volume on top
-  box(30,14,30,HAIR,{x:8,y:-14,z:12,rot:'rotateY(-24deg)'}),
-  box(32,11,32,HAIR,{x:30,y:-11,z:-22,rot:'rotateY(34deg)'}),
-  box(14,28,14,HAIR,{x:-52,y:92,z:-40,rot:'rotateZ(20deg)'}),// flicks at the nape
-  box(14,28,14,HAIR,{x:52,y:92,z:-40,rot:'rotateZ(-20deg)'}),
-  box(6,20,14,SKIN,{x:-51,y:62,z:34}),                   // ears
-  box(6,20,14,SKIN,{x:51,y:62,z:34})
-);
-const gl=document.createElement('div');gl.className='glasses';gl.innerHTML='<b></b><b></b><u></u>';head.append(gl);
-
-// body
-const suitFront='<div class="suit"><span class="shirt"></span><span class="lap l"></span><span class="lap r"></span><span class="tie"></span><span class="sq"></span><span class="bt" style="top:92px"></span><span class="bt" style="top:106px"></span><span class="stole"><i></i><i></i><u></u></span></div>';
-const arm=(side)=>{
-  const s=side==='L'?1:-1, g=group('arm '+side);
-  g.dataset.base=`translate3d(${s*75}px,130px,0)`;
-  g.style.transform=g.dataset.base+' rotateZ(0deg)';
-  g.append(box(30,104,32,SUIT,{}),box(24,20,26,SKIN,{y:104}));
-  if(side==='R')g.append(box(54,8,54,'#12495A',{y:124,cls:'cap',rot:'rotateY(20deg)'}));
+/* ---------- geometry ---------- */
+function mesh(pos,nor,idx){
+  if(!gl)return null;
+  const g={n:idx.length};
+  g.p=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,g.p);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(pos),gl.STATIC_DRAW);
+  g.nb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,g.nb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(nor),gl.STATIC_DRAW);
+  g.i=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,g.i);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(idx),gl.STATIC_DRAW);
   return g;
-};
-const armL=arm('L'),armR=arm('R');   // L = his left, on the viewer's right
-char.append(
-  head,
-  box(34,10,30,SKIN,{y:118}),
-  box(116,118,58,SUIT,{y:128,front:suitFront}),
-  armL,armR,
-  box(50,106,46,SUIT,{x:-28,y:246}),box(50,106,46,SUIT,{x:28,y:246}),
-  box(52,16,66,SHOE,{x:-28,y:352,z:10}),box(52,16,66,SHOE,{x:28,y:352,z:10})
-);
-const setArm=(g,z,x=0)=>g.style.transform=`${g.dataset.base} rotateX(${x}deg) rotateZ(${z}deg)`;
+}
+function lathe(prof,seg=30){ // prof: [radius,y] from bottom to top
+  const pos=[],nor=[],idx=[],n=prof.length;
+  for(let i=0;i<n;i++){
+    const a=prof[Math.max(0,i-1)],b=prof[Math.min(n-1,i+1)];
+    let nr=b[1]-a[1],ny=-(b[0]-a[0]);const l=Math.hypot(nr,ny)||1;nr/=l;ny/=l;
+    for(let s=0;s<=seg;s++){const t=s/seg*Math.PI*2,c=Math.cos(t),si=Math.sin(t);
+      pos.push(prof[i][0]*si,prof[i][1],prof[i][0]*c);nor.push(nr*si,ny,nr*c);}
+  }
+  for(let i=0;i<n-1;i++)for(let s=0;s<seg;s++){const a=i*(seg+1)+s,b=a+seg+1;idx.push(a,b,a+1,a+1,b,b+1);}
+  return mesh(pos,nor,idx);
+}
+const arc=(r,cy,a0,a1,k=7)=>Array.from({length:k+1},(_,i)=>{const a=(a0+(a1-a0)*i/k)*Math.PI/180;return[Math.max(0,r*Math.cos(a)),cy+r*Math.sin(a)];});
+const sphere=()=>lathe(arc(1,0,-90,90,18),32);
+const limb=(r0,r1,len)=>lathe([...arc(r1,-len,-90,0),...arc(r0,0,0,90)],20); // hangs down from its joint
+function ring(a,b,tube,pw=3.2,seg=44,ts=10){ // rounded-square torus for the glasses
+  const pos=[],nor=[],idx=[];
+  for(let i=0;i<=seg;i++){const t=i/seg*Math.PI*2,c=Math.cos(t),s=Math.sin(t);
+    const px=a*Math.sign(c)*Math.pow(Math.abs(c),2/pw),py=b*Math.sign(s)*Math.pow(Math.abs(s),2/pw);
+    let ox=px/a/a,oy=py/b/b;const l=Math.hypot(ox,oy)||1;ox/=l;oy/=l;
+    for(let j=0;j<=ts;j++){const u=j/ts*Math.PI*2,cu=Math.cos(u),su=Math.sin(u);
+      pos.push(px+ox*cu*tube,py+oy*cu*tube,su*tube);nor.push(ox*cu,oy*cu,su);}
+  }
+  for(let i=0;i<seg;i++)for(let j=0;j<ts;j++){const p=i*(ts+1)+j,q=p+ts+1;idx.push(p,q,p+1,p+1,q,q+1);}
+  return mesh(pos,nor,idx);
+}
+const hex=h=>{const n=parseInt(h.slice(1),16);return[(n>>16)/255,(n>>8&255)/255,(n&255)/255];};
+const SKIN=hex('#EFC09C'),HAIR=hex('#17181D'),SUIT=hex('#23262D'),PANT=hex('#1D2026'),SHOE=hex('#0E0F12'),WHITE=hex('#F4F5F2'),FRAME=hex('#D9DBE2'),GOLD=hex('#F5B40A'),BRONZE=hex('#B36A38'),DARK=hex('#141518');
+
+const G=gl?{
+  ball:sphere(),
+  torso:lathe([[0,-.13],[.17,-.125],[.262,-.07],[.278,.03],[.262,.16],[.262,.27],[.292,.4],[.3,.47],[.272,.53],[.17,.565],[.08,.58],[0,.582]],36),
+  upper:limb(.078,.066,.29),fore:limb(.064,.052,.26),
+  thigh:limb(.112,.088,.42),shin:limb(.086,.07,.4),
+  neck:limb(.062,.066,.1),
+  collar:lathe([[.064,-.012],[.088,.0],[.092,.022],[.074,.05]],26),
+  cuff:lathe([[.057,-.012],[.06,0],[.057,.012]],18),
+  lens:ring(.3,.245,.03),
+  base:lathe([[0,-.13],[.84,-.13],[.9,-.1],[.9,-.03],[.86,0],[0,0]],56),
+  disc:lathe([[0,0],[1,0]],40)
+}:{};
+
+/* ---------- pose state ---------- */
+const P={yaw:0,lz:8,lx:0,le:6,lez:0,rz:8,rx:0,re:6,hy:0,hp:0,grad:0,lean:0};   // current
+const Tg={...P};                                                             // targets
+let walkT=9,userYaw=0,dragging=false,mobile=false,view={mvp:M.id(),eye:[0,1,6]};
+
+function part(geo,m,color,o={}){
+  gl.uniformMatrix4fv(loc.uMVP,false,M.mul(view.vp,m));gl.uniformMatrix4fv(loc.uM,false,m);gl.uniformMatrix3fv(loc.uN,false,M.nrm(m));
+  gl.uniform3fv(loc.uC,color);gl.uniform3fv(loc.uC2,o.c2||color);gl.uniform1f(loc.uMode,o.mode||0);gl.uniform1f(loc.uShine,o.shine??.25);gl.uniform1f(loc.uGrad,P.grad>.5?1:0);
+  gl.bindBuffer(gl.ARRAY_BUFFER,geo.p);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(0);
+  gl.bindBuffer(gl.ARRAY_BUFFER,geo.nb);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(1);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,geo.i);gl.drawElements(gl.TRIANGLES,geo.n,gl.UNSIGNED_SHORT,0);
+}
+const blob=(parent,x,y,z,sx,sy,sz,color,o={})=>part(G.ball,M.chain(parent,M.T(x,y,z),o.rot||M.id(),M.S(sx,sy,sz)),color,o);
+
+function draw(time){
+  const t=time/1000;
+  const idle=reduce?0:1;
+  // walk-in-place while the ring turns
+  const w=walkT<.95&&!reduce?Math.sin(Math.min(1,walkT/.95)*Math.PI):0, ph=walkT*11.5;
+  const swing=Math.sin(ph)*30*w, bob=Math.abs(Math.cos(ph))*.022*w+Math.sin(t*2)*.006*idle;
+  const breath=1+Math.sin(t*2)*.008*idle;
+  const blink=idle&&(t%4.3)>4.16?.12:1;
+
+  gl.viewport(0,0,canvas.width,canvas.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  gl.uniform3fv(loc.uEye,view.eye);
+
+  part(G.base,M.S(.74,1,.74),GOLD,{shine:.35});
+
+  const root=M.chain(M.T(0,bob,0),M.Y(P.yaw+userYaw),M.X(P.lean));
+  const hips=M.mul(root,M.T(0,.9,0));
+
+  // legs
+  for(const s of[-1,1]){
+    const sw=s*swing, knee=Math.max(0,-s*Math.sin(ph-.6))*52*w;
+    const th=M.chain(hips,M.T(s*.118,-.03,0),M.X(-sw),M.Z(s*1.5));
+    part(G.thigh,th,PANT,{shine:.12});
+    const sh=M.chain(th,M.T(0,-.42,0),M.X(knee));
+    part(G.shin,sh,PANT,{shine:.12});
+    blob(sh,0,-.415,.055,.078,.058,.15,SHOE,{shine:.9});
+    blob(sh,0,-.455,.055,.08,.018,.152,DARK,{shine:.1});
+  }
+  // torso
+  const torso=M.chain(hips,M.S(1,breath,1));
+  part(G.torso,M.mul(torso,M.S(1,1,.62)),SUIT,{mode:1,shine:.18});
+  blob(torso,-.3,.47,0,.085,.08,.085,SUIT,{shine:.18});blob(torso,.3,.47,0,.085,.08,.085,SUIT,{shine:.18});
+  part(G.collar,M.chain(torso,M.T(0,.565,.004),M.S(1,1,.9)),WHITE,{shine:.1});
+  part(G.neck,M.mul(torso,M.T(0,.67,0)),SKIN,{shine:.2});
+  if(P.grad>.05)blob(torso,0,.085,.17,.05*P.grad,.05*P.grad,.016,BRONZE,{shine:1.2});
+
+  // arms (L = his left, on the viewer's right)
+  const wave=Tg.wave&&!reduce?Math.sin(t*9)*24:0;
+  for(const s of[-1,1]){
+    const L=s>0, z=L?P.lz:P.rz, x=(L?P.lx:P.rx)+(-s*swing*.7), e=L?P.le:P.re, ez=L?P.lez+wave:0;
+    const up=M.chain(torso,M.T(s*.325,.485,0),M.Z(s*z),M.X(x));
+    part(G.upper,up,SUIT,{shine:.18});
+    const fo=M.chain(up,M.T(0,-.29,0),M.Z(s*ez),M.X(-e-(w*18)));
+    part(G.fore,fo,SUIT,{shine:.18});
+    part(G.cuff,M.mul(fo,M.T(0,-.262,0)),WHITE,{shine:.1});
+    blob(fo,0,-.325,.004,.05,.066,.038,SKIN,{shine:.2});
+    blob(fo,s*-.04,-.3,.022,.02,.034,.02,SKIN,{shine:.2,rot:M.Z(s*-28)});
+  }
+
+  // head: every child is in head units (a unit sphere scaled to the skull)
+  const head=M.chain(torso,M.T(0,.875,.012),M.Y(P.hy),M.X(-P.hp),M.S(.2,.226,.212));
+  part(G.ball,head,SKIN,{mode:2,c2:HAIR,shine:.22});
+  const H=(x,y,z,sx,sy,sz,r)=>blob(head,x,y,z,sx,sy,sz,HAIR,{shine:.55,rot:r});
+  H(0,.36,-.14,1.09,.9,1.09);                                  // crown
+  H(0,-.16,-.4,.99,.8,.76);                                    // back, down to the nape
+  H(0,.93,-.04,.86,.3,.84);                                    // volume on top
+  H(-.4,1.04,.1,.42,.2,.46,M.chain(M.Y(20),M.Z(10)));H(.36,1.07,-.12,.46,.2,.5,M.chain(M.Y(-24),M.Z(-8)));
+  for(const s of[-1,1]){
+    H(s*.47,.47,.68,.56,.19,.33,M.chain(M.Y(s*22),M.Z(s*-37)));  // curtain fringe, parted in the middle
+    H(s*.42,.78,.3,.6,.24,.56,M.chain(M.Y(s*12),M.Z(s*-14)));
+    H(s*.88,.24,-.04,.22,.42,.52);                              // sides, over the top of the ears
+    H(s*.7,-.6,-.44,.17,.24,.22,M.Z(s*22));                     // flicks at the nape
+  }
+  for(const s of[-1,1]){
+    blob(head,s*.99,-.06,.02,.11,.2,.13,SKIN,{shine:.2});                       // ear
+    blob(head,s*.36,.02,.905,.082,.108*blink,.05,DARK,{shine:1.6});             // eye
+    blob(head,s*.33,.07,.955,.024,.026*blink,.014,WHITE,{shine:0});
+    blob(head,s*.37,.3,.9,.17,.036,.05,HAIR,{rot:M.Z(s*-5),shine:.2});          // brow
+    part(G.lens,M.chain(head,M.T(s*.37,.02,1.0),M.Y(s*9)),FRAME,{shine:1.4});    // glasses
+    part(G.fore,M.chain(head,M.T(s*.69,.06,.93),M.X(96),M.S(.36,3.4,.36)),FRAME,{shine:1});
+  }
+  blob(head,0,.07,1.0,.09,.024,.024,FRAME,{shine:1});                           // bridge
+  blob(head,0,-.2,.98,.085,.1,.1,[SKIN[0]*.93,SKIN[1]*.88,SKIN[2]*.85],{shine:.2}); // nose
+
+  // contact shadow
+  gl.enable(gl.BLEND);gl.depthMask(false);
+  part(G.disc,M.chain(M.T(0,.004,0),M.S(.6,1,.5)),DARK,{mode:3});
+  gl.depthMask(true);gl.disable(gl.BLEND);
+}
+
+/* ---------- animation loop ---------- */
+let last=0;
+function frame(time){
+  const dt=Math.min(.05,(time-last)/1000||0);last=time;
+  const k=reduce?1:1-Math.exp(-dt*9);
+  for(const key in P)if(typeof Tg[key]==='number')P[key]+=(Tg[key]-P[key])*k;
+  if(!dragging)userYaw+=(0-userYaw)*(reduce?1:1-Math.exp(-dt*2.2));
+  walkT+=dt;
+  draw(time);
+  requestAnimationFrame(frame);
+}
 
 /* ---------- the tour ---------- */
 const STOPS=[
@@ -470,11 +586,10 @@ const STOPS=[
   {id:'skills',name:'Skills',say:'And this is the toolbox I work with every day.',hint:'Click me to get in touch',pose:'point'},
   {id:'contact',name:'Contact',say:'That’s the tour! Want to talk? My email and CV are right here.',hint:'Click me to start over',pose:'wave'}
 ];
-const ring=$('#ring'),panels=$$('.panel'),turn=$('#turn'),stage=$('#stage'),bubble=$('#bubble');
-const dots=$('#dots');
+const ring3=$('#ring'),panels=$$('.panel'),bubble=$('#bubble'),dots=$('#dots');
 STOPS.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.dataset.go=i;b.innerHTML=`<span>${s.name}</span>`;b.setAttribute('aria-label',s.name);dots.append(b);});
 
-let cur=0,typer=0,userRy=0,mobile=false;
+let cur=0,typer=0;
 function type(text){
   const t=$('#btxt');clearInterval(typer);
   if(reduce){t.textContent=text;return;}
@@ -482,22 +597,22 @@ function type(text){
   typer=setInterval(()=>{n+=2;t.textContent=text.slice(0,n);if(n>=text.length)clearInterval(typer);},22);
 }
 function pose(p){
-  char.classList.toggle('grad',p==='grad');
-  stage.classList.toggle('wave',p==='wave');
-  const side=mobile?12:26;
-  userRy=0;turn.style.setProperty('--ry',(p==='wave'?0:side)+'deg');
-  if(p==='wave'){setArm(armL,-143);setArm(armR,6);}
-  else if(p==='grad'){setArm(armL,-62,-10);setArm(armR,8);}
-  else{setArm(armL,-78,-14);setArm(armR,6);}
+  const side=mobile?10:24;
+  Object.assign(Tg,{yaw:p==='wave'?0:side,lz:8,lx:0,le:8,lez:0,rz:8,rx:0,re:8,grad:p==='grad'?1:0,wave:p==='wave',lean:0});
+  if(p==='wave')Object.assign(Tg,{lz:128,lx:0,le:4,lez:38});
+  else if(p==='grad')Object.assign(Tg,{lz:34,lx:-28,le:62,rz:10,re:14});
+  else Object.assign(Tg,{lz:74,lx:-22,le:8,rz:9,re:12});
 }
 function go(i,focus){
+  const moved=i!==cur;
   cur=(i+STOPS.length)%STOPS.length;
   const s=STOPS[cur];
-  ring.style.setProperty('--i',cur);
+  ring3.style.setProperty('--i',cur);
   panels.forEach((p,n)=>{const on=n===cur;p.classList.toggle('on',on);p.inert=!on;p.setAttribute('aria-hidden',!on);});
   $$('[data-go]').forEach(b=>{if(b.closest('.dots,.bar'))b.setAttribute('aria-current',+b.dataset.go===cur);});
   $('#prev').disabled=cur===0;
-  pose(s.pose);type(s.say);$('#bhint').textContent=s.hint;$('#say').textContent=s.say;
+  pose(s.pose);if(moved)walkT=0;
+  type(s.say);$('#bhint').textContent=s.hint;$('#say').textContent=s.say;
   bubble.classList.remove('pop');void bubble.offsetWidth;bubble.classList.add('pop');
   history.replaceState(null,'',cur?'#'+s.id:location.pathname+location.search);
   if(focus)panels[cur].querySelector('h1,h2').focus?.();
@@ -514,39 +629,54 @@ stage.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventD
 
 /* drag to spin, click to advance */
 let down=null;
-stage.addEventListener('pointerdown',e=>{down={x:e.clientX,ry:userRy,moved:0,base:parseFloat(turn.style.getPropertyValue('--ry'))||0};stage.setPointerCapture(e.pointerId);});
+stage.addEventListener('pointerdown',e=>{down={x:e.clientX,yaw:userYaw,moved:0};stage.setPointerCapture(e.pointerId);});
 stage.addEventListener('pointermove',e=>{
   if(!down)return;const dx=e.clientX-down.x;down.moved=Math.max(down.moved,Math.abs(dx));
-  if(down.moved>6){turn.classList.add('drag');turn.style.setProperty('--ry',(down.base+dx*.7)+'deg');}
+  if(down.moved>6){dragging=true;userYaw=down.yaw+dx*.7;}
 });
-const up=e=>{if(!down)return;turn.classList.remove('drag');if(down.moved<=6)go(cur+1);down=null;};
-stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',()=>{down=null;turn.classList.remove('drag');});
+stage.addEventListener('pointerup',()=>{if(!down)return;if(down.moved<=6)go(cur+1);down=null;dragging=false;});
+stage.addEventListener('pointercancel',()=>{down=null;dragging=false;});
 
 /* head follows the pointer */
 if(matchMedia('(hover:hover)').matches&&!reduce){
   addEventListener('pointermove',e=>{
-    const r=stage.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.35;
-    const ry=Math.max(-28,Math.min(28,(e.clientX-cx)/14)),rx=Math.max(-12,Math.min(14,(cy-e.clientY)/22));
-    head.style.transform=`rotateY(${ry}deg) rotateX(${rx}deg)`;
+    const r=stage.getBoundingClientRect(),cx=r.left+r.width*(mobile?.27:.5),cy=r.top+r.height*.36;
+    Tg.hy=Math.max(-32,Math.min(32,(e.clientX-cx)/13))-P.yaw*.55;Tg.hp=Math.max(-12,Math.min(16,(cy-e.clientY)/20));
   });
 }
 
-/* sizing */
+/* sizing: panels, ring radius, camera */
 function size(){
   mobile=innerWidth<=820;
   const rw=$('.ringwrap').getBoundingClientRect(),st=stage.getBoundingClientRect();
   const pw=Math.round(Math.min(560,rw.width-(mobile?24:70)));
   const ph=Math.round(Math.min(mobile?900:580,rw.height-(mobile?10:36)));
   const r=Math.round(pw/2/Math.tan(Math.PI/6)+(mobile?26:44));
-  const cs=Math.max(.34,Math.min(1.05,(st.height*(mobile?.9:.86)-(mobile?0:150))/400));
   const root=document.documentElement.style;
-  root.setProperty('--pw',pw+'px');root.setProperty('--ph',ph+'px');root.setProperty('--r',r+'px');root.setProperty('--cs',cs.toFixed(3));
+  root.setProperty('--pw',pw+'px');root.setProperty('--ph',ph+'px');root.setProperty('--r',r+'px');
+  if(!gl)return;
+  const dpr=Math.min(2,devicePixelRatio||1);
+  canvas.width=Math.max(2,Math.round(st.width*dpr));canvas.height=Math.max(2,Math.round(st.height*dpr));
+  // frame the figure: feet near the bottom, room for the speech bubble above
+  const fov=26,fill=mobile?.86:Math.min(.7,(st.height-150)/st.height),tall=2.3;
+  const visH=tall/fill,dist=visH/(2*Math.tan(fov*Math.PI/360));
+  const cy=visH/2-.14-visH*(mobile?.04:.09);
+  const eye=[0,cy+.5,dist],proj=M.persp(fov,st.width/st.height,.1,60);
+  let vp=M.mul(proj,M.look(eye,[0,cy,0]));
+  if(mobile){const sh=M.id();sh[12]=-.46;vp=M.mul(sh,vp);}
+  view={vp,eye};
+  const top=M.pt(vp,[0,2.2,0]),ft=M.pt(vp,[0,0,0]);
+  const by=(1-(top[1]*.5+.5))*st.height;
+  bubble.style.bottom=mobile?'':Math.round(st.height-by+16)+'px';
+  const fl=$('#floor');fl.style.left=((ft[0]*.5+.5)*st.width)+'px';fl.style.top=((1-(ft[1]*.5+.5))*st.height)+'px';
 }
 addEventListener('resize',()=>{size();pose(STOPS[cur].pose);});
 size();
 const fromHash=()=>STOPS.findIndex(s=>'#'+s.id===location.hash);
 addEventListener('hashchange',()=>{const i=fromHash();if(i>=0&&i!==cur)go(i);});
 go(Math.max(0,fromHash()));
+Object.assign(P,{yaw:Tg.yaw});walkT=9;
+if(gl)requestAnimationFrame(frame);
 })();
 </script>
 </body>

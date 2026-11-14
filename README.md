@@ -8,8 +8,8 @@ Plain HTML and CSS, no build step. Edit `index.html` and push to update the site
 
 ## 3D version
 
-`3d.html` is a guided 3D tour. The character and the rotating panels are plain CSS 3D transforms, with no
-library and no build step. Section text lives in the `<section class="panel">` blocks; the guide's lines are
+`3d.html` is a guided 3D tour. The character is drawn with a small hand-written WebGL renderer and the
+rotating panels are CSS 3D transforms: no library and no build step. Section text lives in the `<section class="panel">` blocks; the guide's lines are
 in the `STOPS` list at the bottom of the file.
 
 ## CV
