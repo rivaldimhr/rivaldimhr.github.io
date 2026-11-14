@@ -26,6 +26,12 @@ list in the script; each building has an exterior draw function (`cottage`, `cas
 and an interior one (`cottageIn`, `castleIn`, `treeIn`, `hillIn`). All buildings are original designs.
 Sections are deep-linkable, e.g. `3d.html#projects`.
 
+The look is stylised and hand-painted: stone blocks, planks, slate, plaster and brush strokes are all generated
+in the fragment shader (warm light, cool shadows, lit edges), so there are no texture image files.
+
+`assets/back3d.js` is included on the demo and CV pages. When a visitor arrives from the 3D portfolio, it points
+their "back to portfolio" links at `3d.html` (and the room they left) instead of the classic page.
+
 ## CV
 
 The "CV" button in the navigation opens a preview of either version, each with a download button

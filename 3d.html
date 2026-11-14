@@ -302,7 +302,7 @@ body.nowebgl .nogl{display:grid}
           <h3 class="sub">Education &amp; activities</h3>
           <ol class="tl">
             <li><div class="top"><h3>B.S. Information Technology Systems</h3><span class="when soft">2022 – 2026</span></div>
-              <div class="org">Institut Teknologi Bandung · Teaching Assistant for Pancasila</div></li>
+              <div class="org">Institut Teknologi Bandung · Lecturer Assistant for Pancasila</div></li>
             <li><div class="top"><h3>Incubator IT / DPP</h3><span class="when soft">Aug 2023 – Aug 2024</span></div>
               <div class="org">Himpunan Mahasiswa Informatika</div></li>
             <li><div class="top"><h3>Extra-campus Committee</h3><span class="when soft">Aug – Oct 2023</span></div>
@@ -395,7 +395,7 @@ if(!gl){body.classList.add('nowebgl');return;}
 
 const VS=`attribute vec3 p;attribute vec3 n;uniform mat4 uMVP,uM,uT;uniform mat3 uN;varying vec3 vN,vO,vW,vT,vNT;
 void main(){vO=p;vN=uN*n;vec4 w=uM*vec4(p,1.);vW=w.xyz;vT=(uT*w).xyz;vNT=(uT*vec4(vN,0.)).xyz;gl_Position=uMVP*vec4(p,1.);}`;
-const FS=`precision highp float;varying vec3 vN,vO,vW,vT,vNT;uniform vec3 uC,uC2,uEye;uniform vec2 uCyl;uniform float uMode,uShine,uFlat,uTex,uToon;
+const FS=`precision highp float;varying vec3 vN,vO,vW,vT,vNT;uniform vec3 uC,uC2,uEye;uniform vec3 uS;uniform vec2 uCyl;uniform float uMode,uShine,uFlat,uTex,uToon,uPaint,uBox;
 float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
 float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1.,0.)),f.x),mix(h21(i+vec2(0.,1.)),h21(i+vec2(1.,1.)),f.x),f.y);}
 vec2 uvOf(){
@@ -427,42 +427,64 @@ void main(){
   }else if(uMode>2.5&&uMode<3.5){ // soft contact shadow
     float r=length(vO.xz);gl_FragColor=vec4(0.,0.,0.,uC.x*smoothstep(1.,.2,r));return;
   }
+  // ---- stylised hand-painted look: every surface is "painted" in the shader ----
+  float pa=uPaint*(1.-fl);
   if(uTex>.5){
     vec2 uv=uvOf();
-    if(uTex<1.5){ // stone blocks
-      float row=floor(uv.y/.44);float xx=uv.x/.86+mod(row,2.)*.5;vec2 id=vec2(floor(xx),row);vec2 f=fract(vec2(xx,uv.y/.44));
-      float e=smoothstep(0.,.05,f.x)*smoothstep(1.,.95,f.x)*smoothstep(0.,.09,f.y)*smoothstep(1.,.91,f.y);
-      c*=.84+.3*h21(id);c=mix(c*.6,c,e);
-      c*=.9+.2*vn(uv*1.4);c+=(vn(uv*.55+7.)-.5)*vec3(.07,.035,-.04);
-    }else if(uTex<2.5||uTex<3.5){ // planks: 2 = vertical boards, 3 = horizontal
+    if(uTex<1.5){ // stone: each block has its own tint, a lit top-left edge and a shaded bottom-right edge
+      float row=floor(uv.y/.44);float xx=uv.x/.86+mod(row,2.)*.5+.13*sin(row*1.7);vec2 id=vec2(floor(xx),row);vec2 f=fract(vec2(xx,uv.y/.44));
+      float e=smoothstep(0.,.07,f.x)*smoothstep(1.,.93,f.x)*smoothstep(0.,.12,f.y)*smoothstep(1.,.88,f.y);
+      c*=.82+.3*h21(id);c+=(h21(id+7.3)-.5)*vec3(.1,.04,-.07);
+      float hl=max(smoothstep(.2,.04,f.x),smoothstep(.72,.93,f.y)),sd=max(smoothstep(.8,.96,f.x),smoothstep(.3,.08,f.y));
+      c*=1.+.16*hl-.2*sd;
+      c=mix(c*vec3(.5,.46,.52),c,e);
+    }else if(uTex<3.5){ // planks: 2 = vertical boards, 3 = horizontal. Grain, knots, a lit and a shaded edge
       if(uTex>2.5)uv=uv.yx;
       float xx=uv.x/.36;float id=floor(xx);float f=fract(xx);
-      c*=.84+.26*h21(vec2(id,3.));c*=.94+.1*vn(vec2(uv.x*16.,uv.y*1.3+id*5.));
-      c*=mix(.66,1.,smoothstep(0.,.05,f)*smoothstep(1.,.95,f));
-      float end=fract(uv.y/2.3+h21(vec2(id,9.)));c*=mix(.72,1.,smoothstep(0.,.012,end));
+      c*=.82+.28*h21(vec2(id,3.));c+=(h21(vec2(id,8.))-.5)*vec3(.07,.03,-.04);
+      c*=.9+.16*vn(vec2(uv.x*18.,uv.y*1.1+id*5.));
+      c*=1.+.1*smoothstep(.3,.05,f)-.14*smoothstep(.75,.97,f);
+      vec2 kp=vec2(f-.5,(fract(uv.y/1.9+h21(vec2(id,5.)))-.5)*5.);c*=mix(.72,1.,smoothstep(.05,.2,length(kp)));
+      c*=mix(.6,1.,smoothstep(0.,.05,f)*smoothstep(1.,.95,f));
+      float end=fract(uv.y/2.3+h21(vec2(id,9.)));c*=mix(.7,1.,smoothstep(0.,.014,end));
     }else if(uTex<4.5){ // slate tiles
       float row=floor(uv.y/.3);float xx=uv.x/.38+mod(row,2.)*.5;vec2 id=vec2(floor(xx),row);vec2 f=fract(vec2(xx,uv.y/.3));
-      c*=.78+.34*h21(id);c*=mix(.58,1.,smoothstep(0.,.2,f.y));c*=mix(.8,1.,smoothstep(0.,.06,f.x));
-    }else if(uTex<5.5){ // painterly plaster
-      c*=.92+.14*vn(uv*1.2);c+=(vn(uv*.5+3.)-.5)*vec3(.06,.035,-.03);c*=.97+.06*vn(uv*7.);
-    }else{ // turf
+      c*=.76+.36*h21(id);c+=(h21(id+3.)-.5)*vec3(-.04,.02,.08);
+      c*=mix(.55,1.,smoothstep(0.,.22,f.y));c*=1.+.14*smoothstep(.7,.95,f.y);c*=mix(.8,1.,smoothstep(0.,.06,f.x));
+    }else if(uTex<5.5){ // plaster
+      c*=.94+.1*vn(uv*1.2);c+=(vn(uv*.5+3.)-.5)*vec3(.07,.04,-.04);
+    }else{ // turf with lighter dabs
       c*=.86+.24*vn(vW.xz*.8)+.08*vn(vW.xz*5.);c+=(vn(vW.xz*.3+2.)-.5)*vec3(.05,.03,-.03);
+      c=mix(c,c*vec3(1.14,1.1,.78),smoothstep(.6,.8,vn(vW.xz*2.3+5.))*.5);
+    }
+  }
+  if(pa>0.){
+    // brush strokes: broad warm and cool dabs over everything
+    float pn=vn(vec2(vT.x*1.3+vT.z*.9,vT.y*4.2)*1.5)*.55+vn(vec2(vT.z*1.2-vT.x*.7,vT.y*3.+vT.x)*2.6+11.)*.45;
+    c*=1.+(pn-.5)*.15*pa;
+    c=mix(c,c*vec3(1.06,1.01,.9),smoothstep(.6,.9,pn)*.45*pa);
+    c=mix(c,c*vec3(.9,.95,1.09),smoothstep(.4,.12,pn)*.45*pa);
+    if(uBox>.5){ // painted highlight along the edges of boxes
+      vec3 d3=(.5-abs(vO))*uS;float m1=min(d3.x,min(d3.y,d3.z)),m3=max(d3.x,max(d3.y,d3.z)),m2=d3.x+d3.y+d3.z-m1-m3;
+      float w=min(.05,.22*min(uS.x,min(uS.y,uS.z)));c*=1.+.2*pa*(1.-smoothstep(0.,w,m2));
     }
   }
   vec3 N=normalize(vN),L=normalize(vec3(.36,.72,.6)),V=normalize(uEye-vW);
   float d=dot(N,L)*.5+.5;d=d*d;
-  if(uToon>.5){d=floor(d*3.+.35)/3.;shine=0.;}
+  if(uToon>.5){d=floor(d*3.+.35)/3.;shine=0.;}else d=mix(d,floor(d*4.+.5)/4.,.3*uPaint);
   float sky=N.y*.5+.5;
-  vec3 col=c*(.5+.6*d)+c*vec3(.05,.07,.06)*sky;
+  // warm light, cool violet shadows
+  vec3 col=c*mix(vec3(.5,.5,.69),vec3(1.14,1.05,.9),d)+c*vec3(.03,.05,.07)*sky;
+  col*=mix(1.,.84+.16*smoothstep(0.,1.6,vW.y),(1.-abs(N.y))*uPaint);
   col+=vec3(1.)*pow(max(dot(N,normalize(L+V)),0.),24.)*shine*.5;
-  col+=vec3(1.,1.,.9)*pow(1.-max(dot(N,V),0.),3.)*.1*(1.-uToon);
+  col+=vec3(1.,.93,.76)*pow(1.-max(dot(N,V),0.),3.)*.12*(1.-uToon);
   col=mix(col,c,fl);
   gl_FragColor=vec4(col,1.);
 }`;
 function shader(t,src){const s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(s));return s;}
 const prog=gl.createProgram();gl.attachShader(prog,shader(gl.VERTEX_SHADER,VS));gl.attachShader(prog,shader(gl.FRAGMENT_SHADER,FS));
 gl.bindAttribLocation(prog,0,'p');gl.bindAttribLocation(prog,1,'n');gl.linkProgram(prog);gl.useProgram(prog);
-const loc={};['uMVP','uM','uT','uN','uC','uC2','uEye','uCyl','uMode','uShine','uFlat','uTex','uToon'].forEach(u=>loc[u]=gl.getUniformLocation(prog,u));
+const loc={};['uMVP','uM','uT','uN','uC','uC2','uEye','uCyl','uS','uMode','uShine','uFlat','uTex','uToon','uPaint','uBox'].forEach(u=>loc[u]=gl.getUniformLocation(prog,u));
 gl.enable(gl.DEPTH_TEST);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
 gl.enableVertexAttribArray(0);gl.enableVertexAttribArray(1);
 
@@ -539,16 +561,17 @@ const C={};Object.entries({skin:'#F2C29B',hair:'#17181D',shirt:'#F5B40A',pant:'#
 }).forEach(([k,v])=>C[k]=hex(v));
 
 /* ---------- drawing helpers ---------- */
-let view={vp:M.id(),eye:[0,1,6]},shadows=[],TF=M.id(),TOON=0;
-function part(geo,m,color,o={}){
+let view={vp:M.id(),eye:[0,1,6]},shadows=[],TF=M.id(),TOON=0,PAINT=1;
+function part(geo,m,color,o={},bs){
   gl.uniformMatrix4fv(loc.uMVP,false,M.mul(view.vp,m));gl.uniformMatrix4fv(loc.uM,false,m);gl.uniformMatrix4fv(loc.uT,false,TF);gl.uniformMatrix3fv(loc.uN,false,M.nrm(m));
   gl.uniform3fv(loc.uC,color);gl.uniform3fv(loc.uC2,o.c2||color);gl.uniform1f(loc.uMode,o.mode||0);gl.uniform1f(loc.uShine,o.shine??.12);gl.uniform1f(loc.uFlat,o.flat||0);
   gl.uniform1f(loc.uTex,o.tex||0);gl.uniform2fv(loc.uCyl,o.cyl||[0,0]);gl.uniform1f(loc.uToon,o.toon??TOON);
+  gl.uniform1f(loc.uPaint,PAINT);gl.uniform1f(loc.uBox,bs?1:0);if(bs)gl.uniform3fv(loc.uS,bs);
   gl.bindBuffer(gl.ARRAY_BUFFER,geo.p);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
   gl.bindBuffer(gl.ARRAY_BUFFER,geo.nb);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,geo.i);gl.drawElements(gl.TRIANGLES,geo.n,gl.UNSIGNED_SHORT,0);
 }
-const bx=(P,x,y,z,sx,sy,sz,c,o={})=>part(G.box,M.chain(P,M.T(x,y,z),o.rot||M.id(),M.S(sx,sy,sz)),c,o);
+const bx=(P,x,y,z,sx,sy,sz,c,o={})=>part(G.box,M.chain(P,M.T(x,y,z),o.rot||M.id(),M.S(sx,sy,sz)),c,o,[sx,sy,sz]);
 const blob=(P,x,y,z,sx,sy,sz,c,o={})=>part(G.ball,M.chain(P,M.T(x,y,z),o.rot||M.id(),M.S(sx,sy,sz)),c,o);
 const cyl=(P,x,y,z,r,hh,c,o={})=>part(G.cyl,M.chain(P,M.T(x,y,z),o.rot||M.id(),M.S(r,hh,o.rz||r)),c,o.tex?{...o,cyl:[r,hh]}:o);
 const cone=(P,x,y,z,r,hh,c,o={})=>part(G.cone,M.chain(P,M.T(x,y,z),o.rot||M.id(),M.S(r,hh,r)),c,o.tex?{...o,cyl:[r,hh]}:o);
@@ -591,6 +614,7 @@ function candle(P,x,y,z,t,s=1){cyl(P,x,y,z,.035*s,.2*s,C.white);const k=reduce?0
 
 /* ---------- the character: a stylised cartoon version of me ---------- */
 function drawChar(root,a,t){
+  const paint0=PAINT;PAINT=0; // the character stays clean and smooth
   const idle=reduce?0:1, breath=1+Math.sin(t*2)*.008*idle, blink=idle&&(t%4.3)>4.16?.1:1;
   const hips=M.mul(root,M.T(0,a.hipY??.72,0));
   for(const s of[-1,1]){
@@ -635,6 +659,7 @@ function drawChar(root,a,t){
   }
   blob(head,0,.09,1.02,.07,.024,.024,C.frame,{shine:1});
   blob(head,0,-.24,.99,.11,.1,.12,[C.skin[0]*.95,C.skin[1]*.86,C.skin[2]*.82],{shine:.3});      // nose
+  PAINT=paint0;
 }
 const STAND={hipL:0,hipR:0,kneeL:0,kneeR:0,lz:8,lx:0,le:8,lez:0,rz:8,rx:0,re:8};
 
@@ -1027,7 +1052,7 @@ const T={
   summary:[
     {name:'the painting above the fireplace',at:[0,2.45,-2.35],stand:[-1.35,-.75],title:'Who is Rivaldi?',body:'I’m an Information Technology Systems graduate from Institut Teknologi Bandung with hands-on experience in quality assurance, data analysis, web development, system analysis and AI-based image classification.'},
     {name:'the laptop on the coffee table',at:[.25,.95,.15],stand:[-1.0,.85],title:'What I’m good at',body:'Turning requirements into test cases, reading systems and data to find what’s wrong or what matters, and working with developers, stakeholders and cross-functional teams to ship things that work.'},
-    {name:'the certificate on the wall',at:[3.4,2.0,-1.8],stand:[2.2,-1.6],title:'Education',body:'B.S. in Information Technology Systems, Institut Teknologi Bandung, 2022 – 2026. I was also a teaching assistant for the Pancasila course.'},
+    {name:'the certificate on the wall',at:[3.4,2.0,-1.8],stand:[2.2,-1.6],title:'Education',body:'B.S. in Information Technology Systems, Institut Teknologi Bandung, 2022 – 2026. I was also a lecturer assistant for the Pancasila course.'},
     {name:'the bookshelf',at:[-2.95,1.7,.5],stand:[-1.75,-.6],title:'By the numbers',body:'2 QA roles on live web platforms · 1 data analyst internship · 2 YOLO11 models in my thesis app · 10 projects across courses and thesis.'},
     {name:'the portrait by the bookshelf',at:[-3.4,2.0,-1.9],stand:[-2.2,-1.9],title:'Beyond class',body:'Incubator IT / DPP at Himpunan Mahasiswa Informatika (Aug 2023 – Aug 2024), and the extra-campus committee for OSKM ITB (Aug – Oct 2023).'}],
   experience:[
@@ -1099,7 +1124,7 @@ function quest(){
     el.setAttribute('aria-label',(f?'Found: ':'Treasure hidden in ')+T[id][i].name+(f?'. Read again.':'. Walk to it.'));});
 }
 function showNote(i){
-  const id=B[active].id,tr=T[id][i],isNew=!found[id].has(i);found[id].add(i);quest();
+  const id=B[active].id,tr=T[id][i],isNew=!found[id].has(i);found[id].add(i);try{sessionStorage.setItem('rv-found-'+id,JSON.stringify([...found[id]]));}catch(_){}quest();
   $('#n-e').textContent=(isNew?'You found treasure ':'Treasure ')+(i+1)+' of '+T[id].length+' · hidden in '+tr.name;
   $('#n-t').textContent=tr.title;$('#n-b').textContent=tr.body;
   const l=$('#n-l');l.hidden=!tr.href;if(tr.href){l.href=tr.href;l.textContent='Open live demo →';}
@@ -1168,7 +1193,8 @@ function toDesk(){seq++;state='desk';mail=false;closeSheet();sync();}
 function enterRoom(i){
   state='inside';active=i;mail=false;const b=B[i],r=R[b.id];me.vis=false;me.route=[];me.then=null;
   Object.assign(fp,{x:r.start[0],z:r.start[1],yaw:r.start[2],pitch:-3,bob:0,dest:null,face:null,then:null,keys:{},stuck:0});
-  found[b.id]=found[b.id]||new Set();body.classList.remove('has-note','has-journal','looked');buildMarks();
+  if(!found[b.id]){let saved=[];try{saved=JSON.parse(sessionStorage.getItem('rv-found-'+b.id)||'[]');}catch(_){}found[b.id]=new Set(saved);} // keep progress when you come back from a demo
+body.classList.remove('has-note','has-journal','looked');buildMarks();
   history.replaceState(null,'','#'+b.id);
   $('#say').textContent='You are inside '+b.place+'. '+T[b.id].length+' treasures are hidden here. Tab to a treasure and press Enter to walk to it, or choose Show everything.';
   sync();snap();
@@ -1205,6 +1231,9 @@ function journal(){
 
 /* ---------- input ---------- */
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)choose(B.findIndex(b=>b.id===g.dataset.go));});
+// remember the room when leaving for a live demo or the CV, so their back links return here
+document.addEventListener('click',e=>{const l=e.target.closest('a[href]');if(!l)return;const h=l.getAttribute('href');
+  if(/^(https?:|mailto:)/.test(h)||h==='index.html')return;try{sessionStorage.setItem('rv-from-3d',location.hash||'1');}catch(_){}});
 $('#explore').onclick=()=>toScreen();$('#todesk').onclick=toDesk;$('#out').onclick=leave;$('#leave').onclick=leave;$('#journal').onclick=journal;
 $('#n-ok').onclick=e=>{closeNote();if(e.currentTarget.dataset.all)leave();};
 $('#marks').addEventListener('click',e=>{const m=e.target.closest('.mark');if(m)openTreasure(+m.dataset.t);});
