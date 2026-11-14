@@ -1,28 +1,26 @@
 # Rangkuman SMP Interaktif
 
-Catatan belajar interaktif IPA (Fisika, Kimia, Biologi) dan Matematika untuk SMP kelas 7–9.
+Website belajar interaktif IPA (Fisika, Kimia, Biologi) dan Matematika untuk SMP kelas 7–9, dengan tampilan ala aplikasi belajar.
 
 **Live:** https://rivaldimhr.github.io/rangkuman-smp/
 
 ## Fitur
-- 27 bab dalam 4 mata pelajaran, kartu bisa dibuka/tutup, pencarian, dan progress "sudah paham" (tersimpan di browser)
-- Alat hitung di dalam bab: konversi suhu, massa jenis, GLBB, energi, gelombang, hukum Ohm, skala pH, persilangan Mendel, persamaan kuadrat, Pythagoras, volume, statistika, transformasi titik
-- Simulasi pembagian cara pistol (porogapit) langkah demi langkah
-- Kuis bernilai di tiap mata pelajaran
-- 4 poster rangkuman ukuran A3 siap cetak di folder `poster/`
+- **27 bab, 146 pembahasan** — tiap bab punya tab *Materi*, *Penemuan Rumus* (sejarah penemu & penurunan rumus), *Contoh Soal* (langkah dibuka satu per satu), dan *Lab Interaktif*.
+- **Ilustrasi SVG** di setiap bab, dibuat langsung dengan kode.
+- **27 lab interaktif**: termometer, balapan GLBB, tuas, kolam gelombang, meja optik, rangkaian lampu, tata surya, perakit atom, skala pH, percobaan fotosintesis, papan Mendel, studio grafik, pemecah SPLDV, bukti Pythagoras, simulasi dadu, kanvas transformasi, simulator pembagian cara pistol, dan permainan memilah/mengurutkan.
+- **Tryout & Quiz terpisah dari materi** — 139 soal; setiap kuis menjelaskan apa yang dibahas dan setiap soal punya pembahasan. Ada tryout acak per mapel dan Daily Challenge.
+- **Gamifikasi**: XP, koin, level, layar *Level Up*, dan Laporan Belajar mingguan. Progres tersimpan di browser (localStorage).
+- **Kamus Rumus** yang bisa dicari dan **4 poster A3** siap cetak di `poster/`.
 
 ## Struktur
 ```
-index.html          website (satu file, tanpa build)
-poster/*.pdf        poster A3 per mata pelajaran
-src/make_posters.py isi materi + render poster A3 ke PDF (Playwright/Chromium)
-src/make_site.py    membangun index.html dari isi materi yang sama
+index.html            kerangka aplikasi
+style.css             tampilan
+app.js                router, beranda, bab, kuis, laporan, level/XP
+labs.js               semua lab interaktif
+data/*.js             isi materi & soal per mapel (C({...}) per bab)
+poster/*.pdf          poster A3 per mapel
+src/make_posters.py   pembuat poster A3 (Playwright/Chromium)
 ```
 
-## Membuat ulang
-```bash
-cd src
-python3 make_posters.py   # menulis ../poster/*.pdf
-python3 make_site.py      # menulis ../index.html
-```
-Isi materi cukup diubah di satu tempat (`make_posters.py`), lalu poster dan website ikut diperbarui.
+Tanpa framework dan tanpa build step — cukup buka `index.html`. Menambah bab baru cukup menambahkan satu blok `C({...})` di file `data/` yang sesuai.
