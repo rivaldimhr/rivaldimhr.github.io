@@ -8,9 +8,16 @@ Plain HTML and CSS, no build step. Edit `index.html` and push to update the site
 
 ## 3D version
 
-`3d.html` is a guided 3D tour. The character is drawn with a small hand-written WebGL renderer and the
-rotating panels are CSS 3D transforms: no library and no build step. Section text lives in the `<section class="panel">` blocks; the guide's lines are
-in the `STOPS` list at the bottom of the file.
+`3d.html` is a small 3D world drawn with a hand-written WebGL renderer (no library, no build step).
+
+- **Scene 1, the desk:** the character sits at a computer. Clicking him or "Explore my world" goes outside.
+- **Scene 2, the island:** four buildings and a mailbox. Clicking one makes the character walk in through the
+  door, then the section opens: stone cottage = Summary, castle = Experience, treehouse = Projects,
+  dwarf house = Skills, mailbox = Contact.
+
+Section text lives in the `<section class="sec">` blocks. Buildings, their positions and the character's lines
+are in the `B` list in the script; each building has its own draw function (`cottage`, `castle`, `treehouse`,
+`dwarfHouse`, `mailbox`). Sections are deep-linkable, e.g. `3d.html#projects`.
 
 ## CV
 
