@@ -9,15 +9,18 @@ Plain HTML and CSS, no build step. Edit `index.html` and push to update the site
 ## 3D version
 
 `3d.html` is a small 3D world drawn with a hand-written WebGL renderer (no library, no build step).
+The 3D button on the classic page plays a short glitch effect before switching.
 
-- **Scene 1, the desk:** the character sits at a computer. Clicking him or "Explore my world" goes outside.
-- **Scene 2, the island:** four buildings and a mailbox. Clicking one makes the character walk in through the
-  door, then the section opens: stone cottage = Summary, castle = Experience, treehouse = Projects,
-  dwarf house = Skills, mailbox = Contact.
+1. **Desk:** the character sits at his computer. "Start" (or clicking him) zooms into the monitor.
+2. **Computer screen:** a menu of buildings to choose from, plus Contact.
+3. **Outside:** the character appears in front of the chosen building and walks in through the door.
+4. **Inside:** a 3D room you can drag to look around, with the section shown beside it:
+   stone cottage = Summary, castle = Experience, treehouse = Projects, dwarf house = Skills.
 
-Section text lives in the `<section class="sec">` blocks. Buildings, their positions and the character's lines
-are in the `B` list in the script; each building has its own draw function (`cottage`, `castle`, `treehouse`,
-`dwarfHouse`, `mailbox`). Sections are deep-linkable, e.g. `3d.html#projects`.
+Section text lives in the `<section class="sec">` blocks. Buildings and the character's lines are in the `B`
+list in the script; each building has an exterior draw function (`cottage`, `castle`, `treehouse`, `hillHouse`)
+and an interior one (`cottageIn`, `castleIn`, `treeIn`, `hillIn`). All buildings are original designs.
+Sections are deep-linkable, e.g. `3d.html#projects`.
 
 ## CV
 
