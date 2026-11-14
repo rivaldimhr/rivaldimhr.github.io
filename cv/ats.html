@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M. Rivaldi Mahari — ATS-friendly CV</title>
+<meta name="description" content="Preview of the ATS-friendly CV of M. Rivaldi Mahari, with a PDF download.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#2E4A33;--yellow:#F5B40A;--ink:#1D241F}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Plus Jakarta Sans","Inter",system-ui,sans-serif;background:#C9D2C1;color:var(--ink)}
+a{color:inherit;text-decoration:none}
+.toolbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 14px;background:var(--green);box-shadow:0 8px 24px rgba(29,36,31,.25);margin-bottom:22px;font-size:14px}
+.toolbar a{font-weight:800;padding:9px 18px;border-radius:999px;color:#fff;white-space:nowrap}
+.toolbar .back{border:2px solid rgba(255,255,255,.5)}
+.toolbar .tabs{display:flex;background:rgba(255,255,255,.12);border-radius:999px;padding:4px}
+.toolbar .tabs a{padding:7px 16px;color:#E6EDE3}
+.toolbar .tabs a[aria-current]{background:#fff;color:var(--green)}
+.toolbar .dl{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--green)}
+.toolbar .dl svg{width:16px;height:16px}
+.sheet{display:block;width:min(210mm,100% - 24px);height:auto;margin:0 auto 22px;background:#fff;box-shadow:0 20px 50px rgba(29,36,31,.25)}
+.note{text-align:center;font-size:14px;font-weight:500;color:#3B443D;margin:0 12px 18px}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a class="back" href="../">← Portfolio</a>
+  <nav class="tabs" aria-label="CV version">
+    <a href="./">Visual CV</a>
+    <a href="ats.html" aria-current="page">ATS-friendly CV</a>
+  </nav>
+  <a class="dl" href="../assets/M-Rivaldi-Mahari-CV-ATS.pdf" download="M-Rivaldi-Mahari-CV-ATS.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Download PDF</a>
+</div>
+
+<p class="note">Plain two-page format for applicant tracking systems. Download the PDF for selectable text.</p>
+<img class="sheet" src="../assets/cv-ats-1.jpg" width="1105" height="1430" alt="Page 1 of the ATS-friendly CV: summary, education, work experience and projects">
+<img class="sheet" src="../assets/cv-ats-2.jpg" width="1105" height="1430" alt="Page 2 of the ATS-friendly CV: remaining projects, leadership and activities, and skills" loading="lazy">
+
+</body>
+</html>
