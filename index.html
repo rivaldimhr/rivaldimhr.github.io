@@ -67,6 +67,14 @@ h1,h2,h3{line-height:1.12;letter-spacing:-.02em}
 .navr{display:flex;gap:8px;align-items:center}
 .mode3d{display:grid;place-items:center;height:40px;padding:0 16px;border-radius:999px;background:var(--yellow);color:var(--green);font-weight:800;font-size:15px}
 .mode3d:hover{background:#fff}
+.glitch{position:fixed;inset:0;z-index:200;pointer-events:none;display:none;overflow:hidden}
+.glitch.on{display:block}
+.glitch::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.2) 0 2px,transparent 2px 5px);animation:gflash .7s steps(1) both}
+.glitch i{position:absolute;left:-10%;width:120%;mix-blend-mode:difference;animation:gbar .14s steps(2) infinite}
+@keyframes gbar{0%{transform:translateX(-6%)}50%{transform:translateX(5%)}100%{transform:translateX(-2%)}}
+@keyframes gflash{0%{background-color:transparent}25%{background-color:rgba(46,74,51,.4)}45%{background-color:rgba(245,180,10,.3)}65%{background-color:rgba(16,23,19,.6)}85%,100%{background-color:#101713}}
+body.glitching main,body.glitching footer{animation:gshake .7s steps(1) both}
+@keyframes gshake{0%{transform:none;filter:none}10%{transform:translate(-10px,2px) skewX(-4deg);filter:hue-rotate(90deg) saturate(2)}20%{transform:translate(12px,-3px);filter:invert(1)}30%{transform:translate(-5px,0) skewX(6deg);filter:hue-rotate(-60deg) contrast(1.6)}45%{transform:scale(1.03);filter:saturate(3) hue-rotate(180deg)}60%{transform:translate(7px,3px) skewX(-3deg);filter:contrast(1.5)}75%{transform:translate(-3px,-1px);filter:hue-rotate(30deg) invert(1)}100%{transform:none;filter:none}}
 .cvmenu{position:relative}
 .cvmenu summary{list-style:none;cursor:pointer;user-select:none}
 .cvmenu summary::-webkit-details-marker{display:none}
@@ -707,6 +715,17 @@ btns.forEach(b=>b.addEventListener('click',()=>{
   const f=b.dataset.f;
   items.forEach(el=>{el.hidden=!(f==='all'||el.dataset.cat.split(' ').includes(f));});
 }));
+// 3D button: a short glitch, then switch to the 3D portfolio
+document.querySelector('.mode3d').addEventListener('click',e=>{
+  if(e.metaKey||e.ctrlKey||e.shiftKey||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  e.preventDefault();const href=e.currentTarget.href;
+  const g=document.createElement('div');g.className='glitch on';g.setAttribute('aria-hidden','true');
+  for(let i=0;i<10;i++){const b=document.createElement('i');b.style.cssText=`top:${Math.random()*96}%;height:${1+Math.random()*9}%;background:${['#00E5FF','#FF2FD0','#F5B40A','#FFFFFF','#2E4A33'][i%5]};animation-delay:${-Math.random()*.2}s;animation-duration:${.09+Math.random()*.12}s`;g.append(b);}
+  document.body.append(g);document.body.classList.add('glitching');
+  try{sessionStorage.setItem('glitch','1');}catch(_){}
+  setTimeout(()=>{location.href=href;},640);
+});
+addEventListener('pageshow',()=>{document.body.classList.remove('glitching');document.querySelectorAll('.glitch').forEach(g=>g.remove());});
 // CV menu: close on outside click, Escape, or after choosing a version
 const cvm=document.querySelector('.cvmenu');
 document.addEventListener('click',e=>{if(!cvm.contains(e.target)||e.target.closest('.opts a'))cvm.open=false;});
