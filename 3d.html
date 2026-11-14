@@ -77,8 +77,40 @@ body.screen-on .screen{pointer-events:auto;opacity:1;visibility:visible;transfor
 .card img{display:block;width:100%;height:auto}
 .card b{font-size:18px;font-weight:800;padding:0 4px}
 .card>span:last-child{font-size:13px;color:#A9B8A5;padding:0 4px}
-.hint{position:fixed;left:max(20px,calc(50% - 570px));bottom:20px;z-index:12;background:#fff;border-radius:999px;padding:8px 18px;font-weight:700;font-size:14px;color:var(--green);box-shadow:0 8px 22px rgba(29,36,31,.14);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .4s}
-body.at-inside:not(.looked) .hint{opacity:1}
+.hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:12;background:rgba(16,23,19,.82);color:#fff;border-radius:999px;padding:9px 18px;font-weight:600;font-size:14px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .4s}
+.hint b{color:var(--yellow)}.hint .h-m{display:none}
+body.at-inside:not(.looked):not(.has-note):not(.has-journal) .hint{opacity:1}
+body.at-inside #gl{cursor:grab}
+/* ---------- treasure hunt ---------- */
+.quest{position:fixed;left:max(18px,calc(50% - 590px));top:84px;z-index:13;display:none;align-items:center;gap:8px;background:rgba(16,23,19,.82);color:#fff;border-radius:999px;padding:6px 6px 6px 18px;box-shadow:0 10px 26px rgba(0,0,0,.25)}
+body.at-inside .quest{display:flex}
+.q-info{display:flex;flex-direction:column;line-height:1.25;margin-right:8px}
+.q-info b{font-size:14px;font-weight:800}
+.q-info>span{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#C9D6C5}
+.q-dots{display:inline-flex;gap:5px}
+.quest .q-dots button{width:13px;height:13px;border-radius:50%;border:2px solid var(--yellow);padding:0}
+.quest .q-dots button:hover{background:rgba(245,180,10,.5)}
+.quest .q-dots button.on{background:var(--yellow)}
+.quest button{height:36px;padding:0 14px;border-radius:999px;font-weight:800;font-size:13.5px;white-space:nowrap}
+#journal{border:2px solid rgba(255,255,255,.5);color:#fff}#journal:hover{background:rgba(255,255,255,.14)}
+#leave{background:var(--yellow);color:var(--green)}#leave:hover{background:#fff}
+#marks{display:none}body.at-inside #marks{display:block}
+.mark{position:fixed;left:0;top:0;z-index:11;width:38px;height:38px;border-radius:50%;background:var(--yellow);color:var(--green);font-weight:800;font-size:18px;display:grid;place-items:center;box-shadow:0 0 0 4px rgba(245,180,10,.3),0 6px 16px rgba(0,0,0,.35);will-change:transform}
+.mark::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--yellow);animation:ping 1.6s ease-out infinite}
+@keyframes ping{from{transform:scale(.9);opacity:.9}to{transform:scale(1.9);opacity:0}}
+.mark:hover{background:#fff}
+.mark.got{width:26px;height:26px;font-size:13px;background:var(--green);color:#fff;box-shadow:0 0 0 2px #fff}
+.mark.got::after{display:none}
+.mark.off,body.has-note .mark,body.has-journal .mark{display:none}
+.note{position:fixed;left:50%;bottom:22px;transform:translate(-50%,calc(100% + 40px)) rotate(-.6deg);width:min(600px,calc(100% - 24px));z-index:21;background:#FBF3DC;color:var(--ink);border-radius:8px 22px 10px 24px;padding:20px 26px 20px;box-shadow:0 0 0 1px #E3D3A5,0 24px 60px rgba(0,0,0,.4);opacity:0;visibility:hidden;transition:transform .45s cubic-bezier(.2,1.2,.3,1),opacity .3s,visibility 0s .45s;background-image:radial-gradient(circle at 12% 18%,rgba(190,150,80,.14),transparent 40%),radial-gradient(circle at 88% 82%,rgba(190,150,80,.16),transparent 42%)}
+.note::before{content:"";position:absolute;right:22px;top:-14px;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#E05A4E,#9E2B26);box-shadow:0 3px 8px rgba(0,0,0,.3)}
+body.has-note .note{transform:translate(-50%,0) rotate(-.6deg);opacity:1;visibility:visible;transition:transform .45s cubic-bezier(.2,1.2,.3,1),opacity .3s}
+.n-e{display:block;font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#8A6A2A}
+.note h2{font-size:clamp(20px,2.4vw,26px);font-weight:800;line-height:1.2;margin-top:6px}
+.note p{color:#4A4436;margin-top:8px;font-size:15.5px}
+.n-done{font-weight:800;color:var(--green)!important}
+.n-a{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.n-a .btn{padding:10px 20px}
 
 /* ---------- speech bubble ---------- */
 .bubble{position:fixed;left:0;top:0;z-index:14;max-width:230px;background:var(--green);color:#fff;border-radius:16px;padding:10px 14px;font-weight:700;font-size:14px;line-height:1.4;box-shadow:0 12px 26px rgba(29,36,31,.25);cursor:pointer;text-align:left;will-change:transform;transition:opacity .3s}
@@ -88,7 +120,7 @@ body.at-inside:not(.looked) .hint{opacity:1}
 
 /* ---------- content sheet ("inside the building") ---------- */
 .sheet{position:fixed;right:max(18px,calc(50% - 590px));top:78px;bottom:18px;width:min(540px,46%);background:#fff;border-radius:28px;box-shadow:0 30px 70px rgba(29,36,31,.3);z-index:20;display:flex;flex-direction:column;overflow:hidden;transform:translateX(calc(100% + 60px));opacity:0;visibility:hidden;transition:transform .6s cubic-bezier(.2,.9,.3,1),opacity .4s,visibility 0s .6s}
-body.at-inside .sheet,body.mail .sheet{transform:none;opacity:1;visibility:visible;transition:transform .6s cubic-bezier(.2,.9,.3,1),opacity .4s}
+body.has-journal .sheet,body.mail .sheet{transform:none;opacity:1;visibility:visible;transition:transform .6s cubic-bezier(.2,.9,.3,1),opacity .4s}
 .sheet .place{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px 12px 22px;background:var(--green);color:#fff;font-weight:700;font-size:14px}
 .sheet .place b{color:var(--yellow)}
 .sheet .out{background:var(--yellow);color:var(--green);font-weight:800;font-size:14px;border-radius:999px;padding:8px 16px;white-space:nowrap}
@@ -159,7 +191,10 @@ body.nowebgl .nogl{display:grid}
   .hero p{font-size:15px;margin-top:8px}
   .cta{margin-top:14px}
   .btn{padding:10px 18px;font-size:14px}.btn.l{padding:8px 16px}
-  .hint{left:12px;bottom:calc(62dvh + 18px);font-size:12.5px;padding:7px 14px}
+  .hint{bottom:12px;font-size:12.5px;padding:8px 14px}.hint .h-d{display:none}.hint .h-m{display:inline}
+  .quest{left:10px;right:10px;top:74px;padding:6px 6px 6px 14px}.q-info{flex:1;min-width:0}.q-info b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .quest button{padding:0 11px;font-size:12.5px}
+  .note{bottom:10px;padding:18px 18px 16px}.note p{font-size:14.5px}
   .screen{inset:76px 10px 10px;border-width:7px;border-radius:20px}
   .scr-body{padding:16px 14px 18px}
   .cards{grid-template-columns:repeat(2,1fr);gap:10px;align-content:start}
@@ -173,7 +208,7 @@ body.nowebgl .nogl{display:grid}
   .stats{gap:6px}.stats div{padding:10px}.stats b{font-size:22px}
   .pj a{grid-template-columns:70px 1fr;gap:10px}.pj img{width:70px;height:50px}
 }
-@media (prefers-reduced-motion:reduce){.sheet,.fade,.hero{transition:none!important}}
+@media (prefers-reduced-motion:reduce){.sheet,.fade,.hero,.note{transition:none!important}.mark::after{animation:none}}
 </style>
 </head>
 <body class="at-desk">
@@ -214,13 +249,26 @@ body.nowebgl .nogl{display:grid}
       <div class="cards" id="cards"></div>
     </div>
   </section>
-  <p class="hint" aria-hidden="true">Drag to look around the room</p>
+  <div class="quest" id="quest">
+    <div class="q-info"><b id="q-room"></b><span><span class="q-dots" id="q-dots"></span><span id="q-n"></span></span></div>
+    <button type="button" id="journal">Show everything</button>
+    <button type="button" id="leave">← Leave</button>
+  </div>
+  <div id="marks"></div>
+  <div class="note" id="note" role="dialog" aria-labelledby="n-t">
+    <span class="n-e" id="n-e"></span>
+    <h2 id="n-t"></h2>
+    <p id="n-b"></p>
+    <p class="n-done" id="n-done" hidden></p>
+    <div class="n-a"><a class="btn y" id="n-l" href="#" hidden></a><button class="btn gr" type="button" id="n-ok">Keep exploring</button></div>
+  </div>
+  <p class="hint" aria-hidden="true"><span class="h-d">Drag to look · click the floor or use W A S D to walk · find the glowing <b>?</b></span><span class="h-m">Drag to look · tap the floor to walk · find the <b>?</b></span></p>
 
   <button class="bubble off" id="bubble" type="button" tabindex="-1" aria-hidden="true"><span id="btxt"></span></button>
   <p class="sr" aria-live="polite" id="say"></p>
 
   <aside class="sheet" id="sheet" aria-label="Inside the building">
-    <div class="place"><span>You’re inside <b id="place"></b></span><button class="out" type="button" id="out">← Leave</button></div>
+    <div class="place"><span>Everything in <b id="place"></b></span><button class="out" type="button" id="out">← Close</button></div>
     <section class="sec" data-sec="summary" aria-labelledby="t1">
         <header><span class="eyebrow">Summary</span>
           <h2 id="t1">Who is <em>Rivaldi?</em></h2></header>
@@ -799,6 +847,8 @@ function archWin(F,x,y0,w,hh,glow){ // tall arched window, sill at y0
 
 function cottageIn(t,eye){const W=7.4,D=6.2,H=3.2,I=M.id();
   bx(I,0,-.1,0,W,.2,D,C.woodF,{tex:3});
+  bx(I,0,H+.1,0,W+.4,.2,D+.4,C.white,{flat:.6});for(const z of[-2,0,2])bx(I,0,H-.09,z,W,.18,.2,C.wood);
+  bx(I,.2,H-.45,.3,.03,.9,.03,C.dark);part(G.cone,M.chain(I,M.T(.2,H-1.25,.3),M.S(.42,.4,.42)),C.glow,{flat:.7});blob(I,.2,H-1.22,.3,.1,.1,.1,C.white,{flat:1});
   part(G.disc,M.chain(M.T(.2,.012,.5),M.S(2.5,1,1.8)),C.green2);part(G.disc,M.chain(M.T(.2,.02,.5),M.S(2.15,1,1.5)),C.cream);part(G.disc,M.chain(M.T(.2,.028,.5),M.S(1.5,1,1.0)),C.gold);
   walls(W,D,eye,(s,F,w)=>{
     wallBox(F,w,H,C.plaster,{tex:5});bx(F,0,.1,.03,w,.2,.06,C.white);
@@ -813,7 +863,7 @@ function cottageIn(t,eye){const W=7.4,D=6.2,H=3.2,I=M.id();
     }else if(s==='W'){
       bx(F,-.5,1.25,.2,2.6,2.5,.4,C.wood);
       for(let r=0;r<4;r++){bx(F,-.5,.25+r*.6,.24,2.44,.5,.34,dk(C.wood,.35));
-        let x=-1.62;for(let k=0;k<11&&x<.55;k++){const bw=.1+rnd(r*17+k)*.1,bh=.3+rnd(r*5+k+3)*.16;bx(F,x+bw/2,.02+r*.6+bh/2,.28,bw,bh,.26,[C.green,C.gold,C.red,C.blue,C.white,C.wine,C.orange][Math.floor(rnd(r*31+k*7)*7)]);x+=bw+.02;}}
+        let x=-1.62;for(let k=0;k<11&&x<.55;k++){const bw=.1+rnd(r*17+k)*.1,bh=.3+rnd(r*5+k+3)*.16;bx(F,x+bw/2,.02+r*.6+bh/2,.32,bw,bh,.26,[C.green,C.gold,C.red,C.blue,C.white,C.wine,C.orange][Math.floor(rnd(r*31+k*7)*7)]);x+=bw+.02;}}
       picture(F,1.9,2.0,.8,1.0,C.cream);blob(F,1.9,2.1,.085,.18,.2,.01,C.skin,{flat:.5});blob(F,1.9,1.8,.085,.26,.16,.01,C.green,{flat:.5});
       picture(F,-2.4,2.2,.6,.6,C.glassL);
     }else if(s==='E'){
@@ -840,6 +890,7 @@ function cottageIn(t,eye){const W=7.4,D=6.2,H=3.2,I=M.id();
 
 function castleIn(t,eye){const W=8.6,D=13,H=6,I=M.id();
   bx(I,0,-.1,0,W,.2,D,hex('#8D7D69'),{tex:1});
+  bx(I,0,H+.1,0,W+.4,.2,D+.4,C.wood2,{tex:3,flat:.35});for(const z of[-5.2,-2.6,0,2.6,5.2]){bx(I,0,H-.16,z,W,.32,.34,C.wood);bx(I,-3.3,H-.9,z,.24,1.5,.24,C.wood,{rot:M.Z(-40)});bx(I,3.3,H-.9,z,.24,1.5,.24,C.wood,{rot:M.Z(40)});}
   bx(I,0,.012,.9,1.5,.02,D-3.2,C.wine);bx(I,-.82,.016,.9,.07,.02,D-3.2,C.gold);bx(I,.82,.016,.9,.07,.02,D-3.2,C.gold);
   bx(I,0,.14,-5.3,W-.6,.28,2.2,C.stone2,{tex:1});
   bx(I,0,1.1,-5.3,5.4,.1,.9,C.wood,{tex:3});for(const x of[-2.4,0,2.4])bx(I,x,.69,-5.3,.14,.82,.7,C.wood2);
@@ -876,6 +927,8 @@ function castleIn(t,eye){const W=8.6,D=13,H=6,I=M.id();
 
 function treeIn(t,eye){const W=6.6,D=6,H=3.3,I=M.id();TOON=1;
   bx(I,0,-.1,0,W,.2,D,hex('#DDBC84'),{tex:3});
+  bx(I,0,H+.1,0,W+.4,.2,D+.4,C.woodL,{tex:3,flat:.45});for(const x of[-2.2,0,2.2])bx(I,x,H-.1,0,.22,.2,D,C.wood2);
+  for(let k=0;k<13;k++){const u=k/12,x=-3+u*6,y=H-.3-Math.sin(u*Math.PI)*.34;blob(I,x,y,-1.6,.07,.09,.07,[C.glow,C.pink,C.sky,C.leaf3,C.orange][k%5],{flat:.95,toon:0});if(k<12)bx(I,x+.25,y-.0+.05,-1.6,.5,.012,.012,C.dark);}
   part(G.disc,M.chain(M.T(.3,.012,.7),M.S(1.9,1,1.5)),C.orange);part(G.disc,M.chain(M.T(.3,.02,.7),M.S(1.5,1,1.15)),C.cream);part(G.disc,M.chain(M.T(.3,.028,.7),M.S(1.0,1,.75)),C.sky);
   const scr=[C.green,hex('#3D5A80'),C.cream,C.glassL,C.leaf2,C.sky,C.gold];
   walls(W,D,eye,(s,F,w)=>{TOON=1;
@@ -912,16 +965,18 @@ function treeIn(t,eye){const W=6.6,D=6,H=3.3,I=M.id();TOON=1;
     }
   });
   TOON=1;
-  blob(I,1.9,.36,1.8,.62,.42,.6,C.orange);blob(I,1.9,.62,2.0,.5,.34,.3,dk(C.orange,.08));
+  blob(I,2.3,.36,1.5,.62,.42,.6,C.orange);blob(I,2.3,.62,1.7,.5,.34,.3,dk(C.orange,.08));
   bx(I,-.9,.32,-.4,.9,.64,.9,C.woodF,{tex:3});bx(I,-.9,.66,-.4,.96,.06,.96,C.wood2);
   cyl(I,-.9,.69,-.4,.2,.04,C.metal);zhoop(M.chain(I,M.T(-.9,.84,-.4),M.Y(reduce?0:t*40)),0,0,0,.16,C.gold,{depth:.5});bx(I,-.62,.74,-.22,.16,.1,.12,C.red);
   cyl(I,.6,0,-1.2,.2,.5,C.wood2);cyl(I,.6,.5,-1.2,.28,.07,C.woodL);
+  cyl(I,.6,.57,-1.2,.13,.17,C.orange);for(let i=0;i<5;i++)blob(M.chain(I,M.T(.6,.74,-1.2),M.Y(i*72),M.Z(28)),0,.2,0,.05,.22,.1,i%2?C.leaf:C.leaf3);blob(I,.6,1.02,-1.2,.09,.09,.09,C.gold);
   bx(I,.2,2.95,.6,.03,.7,.03,C.dark);blob(I,.2,2.5,.6,.2,.26,.2,C.glow,{flat:.85});
-  TOON=0;shadow(I,1.9,1.8,.8,.7,.2);shadow(I,-.9,-.4,.8,.8,.2);
+  TOON=0;shadow(I,2.3,1.5,.8,.7,.2);shadow(I,-.9,-.4,.8,.8,.2);
 }
 
 function hillIn(t,eye){const W=7,D=6,H=2.9,I=M.id();
   bx(I,0,-.1,0,W,.2,D,hex('#B98A58'),{tex:3});
+  bx(I,0,H+.1,0,W+.4,.2,D+.4,hex('#EBD9A8'),{tex:5,flat:.5});for(const z of[-2,0,2])bx(I,0,H-.1,z,W,.2,.26,C.wood2);
   part(G.disc,M.chain(M.T(0,.012,.4),M.S(2.2,1,1.9)),C.wine);part(G.disc,M.chain(M.T(0,.02,.4),M.S(1.85,1,1.6)),C.gold);part(G.disc,M.chain(M.T(0,.028,.4),M.S(1.5,1,1.3)),C.cream);part(G.disc,M.chain(M.T(0,.036,.4),M.S(.8,1,.7)),C.wine);
   walls(W,D,eye,(s,F,w)=>{
     wallBox(F,w,H,hex('#EBD9A8'),{tex:5});bx(F,0,.5,.04,w,1.0,.08,C.wood,{tex:2});bx(F,0,1.03,.06,w,.08,.12,C.wood2);
@@ -956,17 +1011,104 @@ function hillIn(t,eye){const W=7,D=6,H=2.9,I=M.id();
   cyl(I,0,0,.3,.12,.74,C.wood2);cyl(I,0,0,.3,.4,.06,C.wood2);cyl(I,0,.74,.3,.95,.08,C.wood,{tex:2});
   bx(I,-.2,.83,.2,.6,.01,.44,C.cream,{rot:M.Y(14)});cyl(I,.5,.82,.5,.07,.14,C.gold);cyl(I,-.5,.82,.7,.07,.14,C.metal);
   cyl(I,.2,.82,-.1,.1,.04,C.iron);blob(I,.2,1.0,-.1,.11,.15,.11,C.glow,{flat:.9});cyl(I,.2,1.14,-.1,.08,.04,C.iron);
-  armchair(M.chain(I,M.T(-1.9,0,.9),M.Y(58)),C.green2);armchair(M.chain(I,M.T(1.9,0,.9),M.Y(-58)),C.green2);
+  armchair(M.chain(I,M.T(-1.7,0,-1.3),M.Y(47)),C.green2);armchair(M.chain(I,M.T(1.7,0,-1.3),M.Y(-47)),C.green2);
   bx(I,0,2.7,.3,.04,.5,.04,C.iron);part(G.hoop,M.chain(I,M.T(0,2.4,.3),M.X(90),M.S(.8,.8,.4)),C.wood2);bx(I,0,2.4,.3,1.6,.06,.06,C.wood2);bx(I,0,2.4,.3,.06,.06,1.6,C.wood2);
   for(let k=0;k<6;k++)candle(I,Math.cos(k*1.047)*.8,2.46,.3+Math.sin(k*1.047)*.8,t,1.2);
-  shadow(I,0,.3,1.2,1.2,.22);shadow(I,-1.9,.9,.8,.8,.18);shadow(I,1.9,.9,.8,.8,.18);
+  shadow(I,0,.3,1.2,1.2,.22);shadow(I,-1.7,-1.3,.8,.8,.18);shadow(I,1.7,-1.3,.8,.8,.18);
 }
 const R={
-  summary:{W:7.4,D:6.2,dist:19,ty:1.1,spot:[-2.0,.4],draw:cottageIn},
-  experience:{W:8.6,D:13,dist:31,ty:1.9,spot:[0,4.2],draw:castleIn},
-  projects:{W:6.6,D:6,dist:18,ty:1.1,spot:[.5,1.5],draw:treeIn},
-  skills:{W:7,D:6,dist:18.5,ty:1.0,spot:[.2,2.2],draw:hillIn}
+  summary:{W:7.4,D:6.2,start:[2.0,2.3,-28],obs:[[-.6,1.95,.85],[1.0,1.95,.85],[.2,.2,.75],[2.75,.2,.7],[-3.0,2.2,.3],[3.05,2.4,.4],[0,-2.55,.95]],rects:[[-3.7,-2.9,-.9,1.9]],draw:cottageIn},
+  experience:{W:8.6,D:13,start:[0,5.7,0],obs:[],rects:[[-3.4,-1.0,-3.25,5.6],[1.0,3.4,-3.25,5.6],[-2.75,2.75,-6.3,-4.8]],draw:castleIn},
+  projects:{W:6.6,D:6,start:[0,2.3,0],obs:[[-.9,-.4,.7],[.6,-1.2,.34],[2.3,1.55,.72]],rects:[[-3.3,-2.3,-1.95,1.95]],draw:treeIn},
+  skills:{W:7,D:6,start:[0,2.3,0],obs:[[0,.3,1.0],[-1.7,-1.3,.7],[1.7,-1.3,.7],[-2.8,1.4,.5],[-2.9,-1.9,.5],[2.9,2.2,.5],[0,-2.4,1.0]],rects:[[2.3,3.5,-2.0,.3]],draw:hillIn}
 };
+// The treasure hunt: each section's content is hidden in objects around its room.
+const T={
+  summary:[
+    {name:'the painting above the fireplace',at:[0,2.45,-2.35],stand:[-1.35,-.75],title:'Who is Rivaldi?',body:'I’m an Information Technology Systems graduate from Institut Teknologi Bandung with hands-on experience in quality assurance, data analysis, web development, system analysis and AI-based image classification.'},
+    {name:'the laptop on the coffee table',at:[.25,.95,.15],stand:[-1.0,.85],title:'What I’m good at',body:'Turning requirements into test cases, reading systems and data to find what’s wrong or what matters, and working with developers, stakeholders and cross-functional teams to ship things that work.'},
+    {name:'the certificate on the wall',at:[3.4,2.0,-1.8],stand:[2.2,-1.6],title:'Education',body:'B.S. in Information Technology Systems, Institut Teknologi Bandung, 2022 – 2026. I was also a teaching assistant for the Pancasila course.'},
+    {name:'the bookshelf',at:[-2.95,1.7,.5],stand:[-1.75,-.6],title:'By the numbers',body:'2 QA roles on live web platforms · 1 data analyst internship · 2 YOLO11 models in my thesis app · 10 projects across courses and thesis.'},
+    {name:'the portrait by the bookshelf',at:[-3.4,2.0,-1.9],stand:[-2.2,-1.9],title:'Beyond class',body:'Incubator IT / DPP at Himpunan Mahasiswa Informatika (Aug 2023 – Aug 2024), and the extra-campus committee for OSKM ITB (Aug – Oct 2023).'}],
+  experience:[
+    {name:'the tall chair at the high table',at:[0,3.3,-5.85],stand:[0,-3.6],title:'Quality Assurance · PT Akhdani Reka Solusi',body:'Nov 2025 – Jan 2026, Bandung. Test cases and Selenium automation for the SIMPUS web application; reported bugs and verified fixes with developers.'},
+    {name:'a goblet on the left table',at:[-2.2,1.4,-1.0],stand:[-.6,-1.0],title:'Quality Assurance · PT Bringin Inti Teknologi',body:'Jul 2025 – Sep 2025, Jakarta. Functional and usability testing for Bee-RP in a 3-person team; led QA for TrackMate and prepared for UAT.'},
+    {name:'a plate on the right table',at:[2.2,1.4,2.4],stand:[.6,2.4],title:'Data Analyst Intern · PT Sarana Pactindo',body:'Jun 2024 – Jul 2024, Bandung. Built a web-based billing forecast system and analysed data for two company websites.'},
+    {name:'the window beside the high table',at:[1.7,3.2,-6.25],stand:[3.4,-4.4],title:'STEM Tutor (Maths & Physics)',body:'Mar 2023 – Apr 2023, Bandar Lampung. One-on-one tutoring for elementary and middle school students.'},
+    {name:'the banner by the door',at:[-2.9,3.2,6.3],stand:[-2.4,5.98],title:'Education & activities',body:'B.S. Information Technology Systems, ITB (2022 – 2026) · Incubator IT / DPP, HMIF (Aug 2023 – Aug 2024) · Extra-campus committee, OSKM ITB (Aug – Oct 2023).'}],
+  projects:[
+    {name:'the little robot on the workbench',at:[-2.8,1.95,-.5],stand:[-1.5,.5],title:'KukangSort AI',body:'My final-year project. A YOLO11 web app that sorts slow-loris camera-trap photos into kukang, unknown and delete, then labels behaviour.',href:'kukangsort-ai/'},
+    {name:'the wall of screens',at:[.9,1.75,-2.75],stand:[1.35,-1.5],title:'Retail Inventory AI',body:'Forecasts next-week demand for 300 products from 1 million real transactions and recommends reorder quantities.',href:'retail-inventory-ai/'},
+    {name:'the laptop on the workbench',at:[-2.8,1.55,1.0],stand:[-1.8,1.35],title:'King’s Hand',body:'Project monitoring with proposal approval and automatic alerts for late or overspending projects, covered by 21 Playwright tests.',href:'kingshand/'},
+    {name:'the blueprint under the shelves',at:[3.1,.75,.3],stand:[1.9,-.2],title:'West Java Tourism Analytics',body:'A data story and dashboard with K-Means area groups and data-quality scoring. The occupancy model beats simple baselines by 20%.',href:'jabar-tourism/'},
+    {name:'the plant on the stool',at:[.6,1.3,-1.2],stand:[.15,-.3],title:'Plants vs. Zombies',body:'A Java Swing game playable in the browser through WebAssembly, with 119 unit tests and a bot that plays Level 1 end to end.',href:'pvz/'},
+    {name:'the crates on the shelf',at:[2.95,1.75,1.2],stand:[1.55,.45],title:'Rangkuman SMP Interaktif',body:'An interactive science and maths study app for middle school: 27 chapters, hands-on labs and 143 quiz questions.',href:'rangkuman-smp/'},
+    {name:'the note by the door',at:[2.0,1.9,2.8],stand:[.95,2.2],title:'Virsila',body:'A Pancasila learning site with a practice game and a timed 28-question quiz, with 19 automated tests.',href:'virsila/'}],
+  skills:[
+    {name:'the tool rack',at:[-3.25,1.95,.3],stand:[-2.1,.1],title:'Tools',body:'Selenium · Python · SQL · FastAPI · YOLO11 · Java · JavaScript · Git & GitHub'},
+    {name:'the anvil',at:[-2.8,1.35,1.4],stand:[-1.75,2.0],title:'Manual & automated testing',body:'Test cases, bug reports and regression runs by hand, then Selenium and Playwright to automate the repetitive parts.'},
+    {name:'the shelf of bottles',at:[3.1,1.9,-.8],stand:[1.9,.75],title:'Data analysis & AI',body:'Cleaning and exploring data with Python and SQL, clustering and forecasting with scikit-learn, and image classification with YOLO11.'},
+    {name:'the map on the table',at:[-.2,1.15,.2],stand:[0,1.75],title:'System analysis & database design',body:'Turning requirements into user flows, system diagrams and data models, then writing the SQL behind them.'},
+    {name:'the fireplace',at:[0,1.5,-2.3],stand:[0,-1.15],title:'Soft skills',body:'Public speaking · Negotiation · Time management · Project management · Team collaboration · Problem solving'},
+    {name:'the barrel by the door',at:[2.9,1.25,2.2],stand:[1.85,2.2],title:'Web development, UI/UX & prototyping',body:'Building web apps with JavaScript, HTML/CSS and FastAPI, and designing interfaces from wireframe to prototype.'}]
+};
+const found={};
+const fp={x:0,z:0,yaw:0,pitch:0,bob:0,phase:0,dest:null,face:null,then:null,keys:{},stuck:0,fov:62};
+const RAD=Math.PI/180;
+function collide(r){
+  const bw=r.W/2-.5,bd=r.D/2-.5;fp.x=Math.max(-bw,Math.min(bw,fp.x));fp.z=Math.max(-bd,Math.min(bd,fp.z));
+  for(const[ox,oz,rad]of r.obs){const dx=fp.x-ox,dz=fp.z-oz,d=Math.hypot(dx,dz)||.001,m=rad+.36;if(d<m){fp.x=ox+dx/d*m;fp.z=oz+dz/d*m;}}
+  for(const[x0,x1,z0,z1]of r.rects){const a=x0-.36,b=x1+.36,c=z0-.36,e=z1+.36;
+    if(fp.x>a&&fp.x<b&&fp.z>c&&fp.z<e){const pl=fp.x-a,pr=b-fp.x,pn=fp.z-c,ps=e-fp.z,mn=Math.min(pl,pr,pn,ps);
+      if(mn===pl)fp.x=a;else if(mn===pr)fp.x=b;else if(mn===pn)fp.z=c;else fp.z=e;}}
+}
+function goTo(dest,face,then){fp.dest=dest;fp.face=face||null;fp.then=then||null;fp.stuck=0;
+  if(reduce){fp.x=dest[0];fp.z=dest[1];collide(R[B[active].id]);fp.dest=null;if(face){fp.yaw=Math.atan2(face[0]-fp.x,-(face[2]-fp.z))/RAD;fp.pitch=Math.max(-38,Math.min(38,Math.atan2(face[1]-1.55,Math.hypot(face[0]-fp.x,face[2]-fp.z))/RAD));fp.face=null;}const f=fp.then;fp.then=null;f&&f();}}
+function stepFP(dt){
+  const r=R[B[active].id],k=fp.keys,sp=2.8;
+  const fw=(k.w||k.arrowup?1:0)-(k.s||k.arrowdown?1:0),st=(k.d?1:0)-(k.a?1:0),turn=(k.arrowright?1:0)-(k.arrowleft?1:0);
+  if(turn){fp.yaw+=turn*105*dt;fp.face=null;fp.then=null;}
+  const sy=Math.sin(fp.yaw*RAD),cy=Math.cos(fp.yaw*RAD);let mx=0,mz=0;
+  if(fw||st){fp.dest=null;fp.face=null;fp.then=null;mx=sy*fw+cy*st;mz=-cy*fw+sy*st;const l=Math.hypot(mx,mz);mx*=sp*dt/l;mz*=sp*dt/l;}
+  else if(fp.dest){const dx=fp.dest[0]-fp.x,dz=fp.dest[1]-fp.z,d=Math.hypot(dx,dz),stp=sp*dt;
+    if(d<=stp+.03||fp.stuck>.45){if(d<=stp+.03){fp.x=fp.dest[0];fp.z=fp.dest[1];}fp.dest=null;}else{mx=dx/d*stp;mz=dz/d*stp;}}
+  if(mx||mz){const px=fp.x,pz=fp.z;fp.x+=mx;fp.z+=mz;collide(r);
+    const moved=Math.hypot(fp.x-px,fp.z-pz);fp.stuck=moved<Math.hypot(mx,mz)*.4?fp.stuck+dt:0;fp.phase+=dt*9;body.classList.add('looked');
+    fp.bob=reduce?0:Math.sin(fp.phase)*.035;}else fp.bob*=.8;
+  if(fp.face){const dx=fp.face[0]-fp.x,dz=fp.face[2]-fp.z,yt=Math.atan2(dx,-dz)/RAD,pt=Math.max(-24,Math.min(20,Math.atan2(fp.face[1]-1.55,Math.hypot(dx,dz))/RAD));
+    const e=1-Math.exp(-dt*6),dy=angDiff(fp.yaw,yt);fp.yaw+=dy*e;fp.pitch+=(pt-fp.pitch)*e;
+    if(!fp.dest&&Math.abs(dy)<3){fp.face=null;const f=fp.then;fp.then=null;f&&f();}}
+  else if(!fp.dest&&fp.then){const f=fp.then;fp.then=null;f();}
+}
+function gems(t){ // a spinning gem floats above every treasure that hasn't been found yet
+  const id=B[active].id;TF=M.id();TOON=0;
+  T[id].forEach((tr,i)=>{if(found[id].has(i))return;
+    const P=M.chain(M.T(tr.at[0],tr.at[1]+(reduce?0:Math.sin(t*2.4+i)*.05),tr.at[2]),M.Y(reduce?0:t*100+i*40));
+    part(G.cone,M.mul(P,M.S(.1,.16,.1)),C.gold,{flat:.55,shine:1.5});part(G.cone,M.chain(P,M.X(180),M.S(.1,.16,.1)),C.gold,{flat:.4,shine:1.5});});
+}
+function buildMarks(){
+  const id=B[active].id,box=$('#marks');box.innerHTML='';
+  T[id].forEach((tr,i)=>{const el=document.createElement('button');el.type='button';el.className='mark';el.dataset.t=i;el.innerHTML='<span>?</span>';box.append(el);});
+  quest();
+}
+function quest(){
+  const id=B[active].id,n=found[id].size,all=T[id].length;
+  $('#q-room').textContent=B[active].title+' · '+B[active].name;$('#q-n').textContent=n+' of '+all+' found';
+  $('#q-dots').innerHTML=T[id].map((tr,i)=>`<button type="button" data-t="${i}" class="${found[id].has(i)?'on':''}" aria-label="${found[id].has(i)?'Found: ':'Hint: take me to the treasure in '}${tr.name}" title="${found[id].has(i)?tr.title:'Hint: take me there'}"></button>`).join('');
+  $$('.mark').forEach((el,i)=>{const f=found[id].has(i);el.classList.toggle('got',f);el.firstChild.textContent=f?'✓':'?';
+    el.setAttribute('aria-label',(f?'Found: ':'Treasure hidden in ')+T[id][i].name+(f?'. Read again.':'. Walk to it.'));});
+}
+function showNote(i){
+  const id=B[active].id,tr=T[id][i],isNew=!found[id].has(i);found[id].add(i);quest();
+  $('#n-e').textContent=(isNew?'You found treasure ':'Treasure ')+(i+1)+' of '+T[id].length+' · hidden in '+tr.name;
+  $('#n-t').textContent=tr.title;$('#n-b').textContent=tr.body;
+  const l=$('#n-l');l.hidden=!tr.href;if(tr.href){l.href=tr.href;l.textContent='Open live demo →';}
+  const all=found[id].size===T[id].length;$('#n-done').hidden=!all;$('#n-done').textContent=all?'That’s everything in '+B[active].place+'!':'';
+  $('#n-ok').textContent=all?'Back to the map':'Keep exploring';$('#n-ok').dataset.all=all?'1':'';
+  body.classList.add('has-note');$('#say').textContent=$('#n-e').textContent+'. '+tr.title+'. '+tr.body;$('#n-ok').focus({preventScroll:true});
+}
+function closeNote(){body.classList.remove('has-note');}
+function openTreasure(i){const tr=T[B[active].id][i];closeNote();goTo(tr.stand,tr.at,()=>showNote(i));}
 
 /* =====================================================================
    State, camera, tour logic
@@ -1010,13 +1152,13 @@ function glitch(fn){
 }
 function openSheet(i){
   const b=B[i];$$('.sec').forEach(s=>s.classList.toggle('on',s.dataset.sec===b.id));
-  $('#place').textContent=b.place;$('#sheet').inert=false;$('#say').textContent='You are inside '+b.place+'. '+b.name+'.';
+  $('#place').textContent=b.place;$('#sheet').inert=false;$('#say').textContent=b.name+'.';
   history.replaceState(null,'','#'+b.id);
   const hd=$('.sec.on h2');if(hd){hd.tabIndex=-1;hd.focus({preventScroll:true});}
 }
 function closeSheet(){$('#sheet').inert=true;history.replaceState(null,'',location.pathname+location.search);}
 function toScreen(instant){
-  seq++;state='screen';mail=false;closeSheet();sync();if(instant)snap();
+  seq++;state='screen';mail=false;closeSheet();closeNote();body.classList.remove('has-journal');sync();if(instant)snap();
   const s=seq,show=()=>{if(s!==seq||state!=='screen')return;
     const p=M.pt(view.vp,[.26,1.32,-1.97]),el=$('#screen');el.style.setProperty('--ox',((p[0]*.5+.5)*100)+'%');el.style.setProperty('--oy',((1-(p[1]*.5+.5))*100)+'%');
     body.classList.add('screen-on');$('#say').textContent='The computer screen. Choose a building: Summary, Experience, Projects, Skills or Contact.';};
@@ -1024,9 +1166,12 @@ function toScreen(instant){
 }
 function toDesk(){seq++;state='desk';mail=false;closeSheet();sync();}
 function enterRoom(i){
-  state='inside';active=i;mail=false;const r=R[B[i].id];inYaw=28;
-  Object.assign(me,{x:r.spot[0],z:r.spot[1],vis:true,appear:1,route:[],then:null,yaw:inYaw,waveUntil:now()+2.8});
-  openSheet(i);sync();snap();
+  state='inside';active=i;mail=false;const b=B[i],r=R[b.id];me.vis=false;me.route=[];me.then=null;
+  Object.assign(fp,{x:r.start[0],z:r.start[1],yaw:r.start[2],pitch:-3,bob:0,dest:null,face:null,then:null,keys:{},stuck:0});
+  found[b.id]=found[b.id]||new Set();body.classList.remove('has-note','has-journal','looked');buildMarks();
+  history.replaceState(null,'','#'+b.id);
+  $('#say').textContent='You are inside '+b.place+'. '+T[b.id].length+' treasures are hidden here. Tab to a treasure and press Enter to walk to it, or choose Show everything.';
+  sync();snap();
 }
 function choose(i,instant){
   const b=B[i];
@@ -1036,9 +1181,9 @@ function choose(i,instant){
     seq++;if(instant||state==='desk'){toScreen(true);open();}else fade(()=>{toScreen(true);open();});
     return;
   }
-  if(state==='inside'&&active===i&&!mail)return;
+  if(state==='inside'&&active===i&&!mail){body.classList.remove('has-journal');return;}
   if(instant){seq++;enterRoom(i);return;}
-  seq++;closeSheet();mail=false;
+  seq++;closeSheet();closeNote();body.classList.remove('has-journal');mail=false;
   glitch(()=>{
     state='outside';active=i;B.forEach(x=>{x.open=x.openT=x.glow=x.glowT=0;});b.glowT=1;
     Object.assign(me,{x:b.spawn[0],z:b.spawn[2],yaw:b.rot+180,vis:true,appear:0,route:[],then:null,waveUntil:0});
@@ -1047,31 +1192,53 @@ function choose(i,instant){
   });
 }
 function leave(){
+  if(body.classList.contains('has-journal')){body.classList.remove('has-journal');$('#sheet').inert=true;return;}
   if(mail){mail=false;closeSheet();sync();return;}
   if(state!=='inside')return;
-  seq++;closeSheet();fade(()=>toScreen(true));
+  seq++;closeNote();fade(()=>toScreen(true));
+}
+function journal(){
+  const b=B[active];closeNote();$$('.sec').forEach(s=>s.classList.toggle('on',s.dataset.sec===b.id));
+  $('#place').textContent=b.place;$('#sheet').inert=false;body.classList.add('has-journal');
+  const hd=$('.sec.on h2');if(hd){hd.tabIndex=-1;hd.focus({preventScroll:true});}
 }
 
 /* ---------- input ---------- */
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)choose(B.findIndex(b=>b.id===g.dataset.go));});
-$('#explore').onclick=()=>toScreen();$('#todesk').onclick=toDesk;$('#out').onclick=leave;
+$('#explore').onclick=()=>toScreen();$('#todesk').onclick=toDesk;$('#out').onclick=leave;$('#leave').onclick=leave;$('#journal').onclick=journal;
+$('#n-ok').onclick=e=>{closeNote();if(e.currentTarget.dataset.all)leave();};
+$('#marks').addEventListener('click',e=>{const m=e.target.closest('.mark');if(m)openTreasure(+m.dataset.t);});
+$('#q-dots').addEventListener('click',e=>{const m=e.target.closest('button');if(m)openTreasure(+m.dataset.t);});
 $('#bubble').onclick=()=>{if(state==='desk')toScreen();};
-addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(mail||state==='inside')leave();else if(state==='screen')toDesk();});
+addEventListener('keydown',e=>{
+  if(e.key==='Escape'){if(body.classList.contains('has-note'))closeNote();else if(mail||state==='inside')leave();else if(state==='screen')toDesk();return;}
+  const k=e.key.toLowerCase();
+  if(state==='inside'&&!body.classList.contains('has-journal')&&!e.metaKey&&!e.ctrlKey&&['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)){
+    fp.keys[k]=true;closeNote();if(k.startsWith('arrow'))e.preventDefault();}
+});
+addEventListener('keyup',e=>{delete fp.keys[e.key.toLowerCase()];});
+addEventListener('blur',()=>{fp.keys={};});
 $$('a[href="index.html"]').forEach(a=>a.addEventListener('click',e=>{if(reduce||e.metaKey||e.ctrlKey)return;e.preventDefault();try{sessionStorage.setItem('glitch','1');}catch(_){}glitch();setTimeout(()=>location.href=a.href,520);}));
 
 let down=null;
-canvas.addEventListener('pointerdown',e=>{down={x:e.clientX,yaw:inYaw,moved:0};canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY,yaw:fp.yaw,pitch:fp.pitch,moved:0};canvas.setPointerCapture(e.pointerId);});
 canvas.addEventListener('pointermove',e=>{
   const r=canvas.getBoundingClientRect();
-  if(down){const dx=e.clientX-down.x;down.moved=Math.max(down.moved,Math.abs(dx));
-    if(down.moved>6&&state==='inside'){inYaw=down.yaw-dx*.4;setGoal();body.classList.add('looked');}}
+  if(down){const dx=e.clientX-down.x,dy=e.clientY-down.y;down.moved=Math.max(down.moved,Math.hypot(dx,dy));
+    if(down.moved>6&&state==='inside'){fp.face=null;fp.then=null;fp.yaw=down.yaw-dx*.24;fp.pitch=Math.max(-40,Math.min(40,down.pitch+dy*.2));}}
   if(reduce)return;
   if(state==='desk'){deskLook.tx=(e.clientX/r.width-.6)*-40;deskLook.ty=(.5-e.clientY/r.height)*14;}
-  if(state==='inside'){me.ty=(e.clientX/r.width-.4)*50;me.tp=(.45-e.clientY/r.height)*22;}
 });
-canvas.addEventListener('pointerup',()=>{if(!down)return;const click=down.moved<=6;down=null;if(!click)return;
+canvas.addEventListener('pointerup',e=>{if(!down)return;const click=down.moved<=6;down=null;if(!click)return;
   if(state==='desk')toScreen();
-  else if(state==='outside'){const i=active;seq++;fade(()=>enterRoom(i));}}); // skip the walk
+  else if(state==='outside'){const i=active;seq++;fade(()=>enterRoom(i));} // skip the walk
+  else if(state==='inside'){ // walk to the spot on the floor that was clicked
+    closeNote();const r=canvas.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width*2-1,ny=1-(e.clientY-r.top)/r.height*2,th=Math.tan(fp.fov*RAD/2),asp=r.width/r.height;
+    const sy=Math.sin(fp.yaw*RAD),cy=Math.cos(fp.yaw*RAD),cp=Math.cos(fp.pitch*RAD),sp=Math.sin(fp.pitch*RAD);
+    const d=[sy*cp+cy*nx*th*asp-sy*sp*ny*th,sp+cp*ny*th,-cy*cp+sy*nx*th*asp+cy*sp*ny*th];
+    let tt=d[1]<-.03?Math.min(9/Math.hypot(d[0],d[2]),-1.55/d[1]):2.6/Math.hypot(d[0],d[2]);
+    goTo([fp.x+d[0]*tt,fp.z+d[2]*tt]);}
+});
 canvas.addEventListener('pointercancel',()=>down=null);
 
 /* ---------- frame ---------- */
@@ -1085,9 +1252,13 @@ function frame(time){
   cam.yaw+=angDiff(cam.yaw,goal.yaw)*k;for(const key of['pitch','dist','sx','sy'])cam[key]+=(goal[key]-cam[key])*k;
   for(let i=0;i<3;i++)cam.t[i]+=(goal.t[i]-cam.t[i])*k;
   const ya=cam.yaw*Math.PI/180,pa=cam.pitch*Math.PI/180;
-  const eye=[cam.t[0]+cam.dist*Math.sin(ya)*Math.cos(pa),cam.t[1]+cam.dist*Math.sin(pa),cam.t[2]+cam.dist*Math.cos(ya)*Math.cos(pa)];
+  let eye=[cam.t[0]+cam.dist*Math.sin(ya)*Math.cos(pa),cam.t[1]+cam.dist*Math.sin(pa),cam.t[2]+cam.dist*Math.cos(ya)*Math.cos(pa)];
   let vp=M.mul(M.persp(26,canvas.width/canvas.height,.6,160),M.look(eye,cam.t));
   const sh=M.id();sh[12]=cam.sx;sh[13]=cam.sy;vp=M.mul(sh,vp);view={vp,eye};
+  if(state==='inside'){ // first person: you are standing in the room
+    stepFP(dt);const sy=Math.sin(fp.yaw*RAD),cy=Math.cos(fp.yaw*RAD),cp=Math.cos(fp.pitch*RAD),sp=Math.sin(fp.pitch*RAD);
+    eye=[fp.x,1.55+fp.bob,fp.z];fp.fov=canvas.width<canvas.height?80:64;
+    vp=M.mul(M.persp(fp.fov,canvas.width/canvas.height,.1,60),M.look(eye,[eye[0]+sy*cp,eye[1]+sp,eye[2]-cy*cp]));view={vp,eye};}
 
   gl.viewport(0,0,canvas.width,canvas.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   gl.uniform3fv(loc.uEye,eye);shadows=[];TF=M.id();TOON=0;
@@ -1105,7 +1276,7 @@ function frame(time){
     }
     me.speed+=((moving?1:0)-me.speed)*kf;me.appear=Math.min(1,me.appear+dt*(reduce?99:1.8));
     if(state==='outside'){for(const b of B){b.open+=(b.openT-b.open)*(reduce?1:1-Math.exp(-dt*7));b.glow+=(b.glowT-b.glow)*k;}worldScene(t);}
-    else{R[B[active].id].draw(t,eye);me.yaw+=angDiff(me.yaw,cam.yaw)*(1-Math.exp(-dt*4));me.hy+=(me.ty-me.hy)*kf;me.hp+=(me.tp-me.hp)*kf;}
+    else{R[B[active].id].draw(t,eye);gems(t);}
     TF=M.id();TOON=0;
     if(me.vis){
       const w=me.speed,sw=Math.sin(me.stride)*32*w,waving=t<me.waveUntil&&!moving,ins=state==='inside';
@@ -1124,6 +1295,8 @@ function frame(time){
   gl.depthMask(true);gl.disable(gl.BLEND);
 
   const W=innerWidth,Hh=innerHeight,scr=p=>{const q=M.pt(vp,p);return[(q[0]*.5+.5)*W,(1-(q[1]*.5+.5))*Hh];};
+  if(state==='inside'){const trs=T[B[active].id];$$('.mark').forEach((el,i)=>{const q=M.pt(vp,trs[i].at),x=(q[0]*.5+.5)*W,y=(1-(q[1]*.5+.5))*Hh;
+    const ok=q[2]>.2&&x>20&&x<W-20&&y>90&&y<Hh-30;el.classList.toggle('off',!ok);if(ok)el.style.transform=`translate(${Math.round(x)}px,${Math.round(y)}px) translate(-50%,-50%)`;});}
   const bub=$('#bubble');let show=false,bp=null,txt='';
   if(state==='desk'){show=true;bp=scr([.2,1.95,-1.0]);txt=mobile?'Tap me to start →':'Click me to start →';}
   else if(state==='outside'&&me.vis&&me.appear>=1){show=true;bp=scr([me.x,2.15,me.z]);txt=B[active].say;}

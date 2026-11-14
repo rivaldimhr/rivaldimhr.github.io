@@ -14,10 +14,14 @@ The 3D button on the classic page plays a short glitch effect before switching.
 1. **Desk:** the character sits at his computer. "Start" (or clicking him) zooms into the monitor.
 2. **Computer screen:** a menu of buildings to choose from, plus Contact.
 3. **Outside:** the character appears in front of the chosen building and walks in through the door.
-4. **Inside:** a 3D room you can drag to look around, with the section shown beside it:
-   stone cottage = Summary, castle = Experience, treehouse = Projects, dwarf house = Skills.
+4. **Inside:** a first-person room. Drag to look, click the floor or use W A S D / arrow keys to walk.
+   The section's content is a treasure hunt: each piece is hidden in an object marked with a glowing "?".
+   The dots in the top-left bar are hints that walk you to each treasure, and "Show everything" lists the
+   whole section at once. Stone cottage = Summary, castle = Experience, treehouse = Projects,
+   dwarf house = Skills.
 
-Section text lives in the `<section class="sec">` blocks. Buildings and the character's lines are in the `B`
+Treasure texts and positions are in the `T` list in the script; room start points and obstacles are in `R`.
+The "Show everything" text lives in the `<section class="sec">` blocks, so keep the two in step. Buildings and the character's lines are in the `B`
 list in the script; each building has an exterior draw function (`cottage`, `castle`, `treehouse`, `hillHouse`)
 and an interior one (`cottageIn`, `castleIn`, `treeIn`, `hillIn`). All buildings are original designs.
 Sections are deep-linkable, e.g. `3d.html#projects`.
