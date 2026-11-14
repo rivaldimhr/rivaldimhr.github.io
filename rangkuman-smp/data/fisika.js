@@ -1,17 +1,26 @@
 /* ================= FISIKA ================= */
 /* Gambar tangga satuan. hi = [indeks asal, indeks tujuan] untuk disorot (dipakai juga oleh lab). */
-function tanggaSVG(u, k, c, judul, hi) {
-  const n = u.length, w = 296 / n, top = i => 34 + i * (96 / (n - 1)), cx = i => 12 + i * w + (w - 3) / 2;
-  let arc = '';
-  if (hi && hi[0] !== hi[1]) {
-    const [a, b] = hi, y = Math.min(top(a), top(b)) - 6, mid = (cx(a) + cx(b)) / 2;
-    arc = `<path d="M${cx(a)} ${top(a) - 4} Q${mid} ${y - 26} ${cx(b)} ${top(b) - 4}" fill="none" stroke="${b > a ? '#16a34a' : '#e11d48'}" stroke-width="2.5" marker-end="url(#tgA${b > a ? 'g' : 'r'})"/>`;
-  }
-  return `<svg class="tangga" viewBox="0 0 320 200" width="320" style="max-width:100%;display:block;margin:10px auto"><defs><marker id="tgAg" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#16a34a"/></marker><marker id="tgAr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#e11d48"/></marker></defs>
-  <text x="160" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#16323f">${judul}</text>` +
-  u.map((t, i) => { const x = 12 + i * w, y = top(i), on = hi && (i === hi[0] || i === hi[1]);
-    return `<rect x="${x}" y="${y}" width="${w - 3}" height="${150 - y}" rx="5" fill="${c}" opacity="${on ? 1 : .55 + .45 * (1 - i / n)}" ${on ? `stroke="${i === hi[0] ? '#1d4ed8' : '#f59e0b'}" stroke-width="3"` : ''}/><text x="${x + (w - 3) / 2}" y="${y + 18}" text-anchor="middle" font-size="${t.length > 3 ? 10.5 : 12}" font-weight="700" fill="#fff">${t}</text>`; }).join('') + arc +
-  `<text x="12" y="172" font-size="11.5" font-weight="700" fill="#16a34a">↘ turun 1 anak tangga: × ${k.toLocaleString('id-ID')}</text><text x="308" y="192" text-anchor="end" font-size="11.5" font-weight="700" fill="#e11d48">↖ naik 1 anak tangga: : ${k.toLocaleString('id-ID')}</text></svg>`;
+function tanggaSVG(u, k, c, judul, hi, cls = 'tangga') {
+  const n = u.length, w = 288 / n, h = 17, x0 = 16, y0 = 50, base = y0 + (n - 1) * h + 30;
+  const X = i => x0 + i * w, Y = i => y0 + i * h, CX = i => X(i) + w / 2;
+  let d = `M${x0} ${base} L${x0} ${y0}`;
+  for (let i = 0; i < n; i++) { d += ` L${X(i + 1)} ${Y(i)}`; if (i < n - 1) d += ` L${X(i + 1)} ${Y(i + 1)}`; }
+  d += ` L${X(n)} ${base} Z`;
+  const kk = k.toLocaleString('id-ID');
+  const who = hi ? hi[0] : 0, to = hi ? hi[1] : n - 1, down = to >= who;
+  const ya = i => Y(i) - 26, mid = (CX(who) + CX(to)) / 2;
+  const arc = who === to ? '' : `<path d="M${CX(who)} ${ya(who) + 4} Q${mid} ${Math.min(ya(who), ya(to)) - 18} ${CX(to)} ${ya(to) + 8}" fill="none" stroke="${down ? '#16a34a' : '#e11d48'}" stroke-width="2.5" stroke-dasharray="${hi ? '0' : '6 4'}" marker-end="url(#tgA${down ? 'g' : 'r'})"/>`;
+  return `<svg class="${cls}" viewBox="0 0 320 ${base + 34}" width="320" style="max-width:100%;display:block;margin:10px auto">
+  <defs><marker id="tgAg" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#16a34a"/></marker><marker id="tgAr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#e11d48"/></marker>
+  <linearGradient id="tgG${c.slice(1)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity=".55"/></linearGradient></defs>
+  <text x="160" y="14" text-anchor="middle" font-size="12.5" font-weight="700" fill="#16323f">${judul}</text>
+  <path d="${d}" fill="url(#tgG${c.slice(1)})"/>` +
+  u.map((t, i) => { const on = hi && (i === hi[0] || i === hi[1]);
+    return `<line x1="${X(i)}" y1="${Y(i)}" x2="${X(i + 1)}" y2="${Y(i)}" stroke="${on ? (i === hi[0] ? '#1d4ed8' : '#f59e0b') : '#ffffff'}" stroke-width="${on ? 5 : 2.5}" stroke-linecap="round"/>
+    <text x="${CX(i)}" y="${Y(i) + 14}" text-anchor="middle" font-size="${t.length > 3 ? 10.5 : 12}" font-weight="700" fill="#fff">${t}</text>`; }).join('') +
+  arc + `<text x="${CX(who)}" y="${Y(who) - 3}" text-anchor="middle" font-size="20">🧒</text>${who !== to ? `<text x="${CX(to)}" y="${Y(to) - 3}" text-anchor="middle" font-size="16">🚩</text>` : ''}
+  <text x="16" y="${base + 14}" font-size="11.5" font-weight="700" fill="#16a34a">⬇ turun 1 anak tangga = × ${kk}</text>
+  <text x="304" y="${base + 30}" text-anchor="end" font-size="11.5" font-weight="700" fill="#e11d48">⬆ naik 1 anak tangga = : ${kk}</text></svg>`;
 }
 const TG = {
   p: ['Panjang', ['km', 'hm', 'dam', 'm', 'dm', 'cm', 'mm'], 10, '#2f7de1'],
@@ -23,7 +32,8 @@ const TG = {
 const tg = key => tanggaSVG(TG[key][1], TG[key][2], TG[key][3], 'Tangga satuan ' + TG[key][0].toLowerCase());
 C({id:'f1', mapel:'fisika', no:1, ikon:'📏', judul:'Besaran & Satuan', lab:'satuan',
 ringkas:'Besaran adalah segala sesuatu yang dapat diukur dan dinyatakan dengan angka serta satuan. Pelajari 7 besaran pokok, besaran turunan, dan tangga satuan untuk panjang, massa, liter, luas, serta volume.',
-svg:`<svg class="ill" viewBox="0 0 320 168"><rect x="20" y="104" width="170" height="30" rx="5" fill="#fde68a" stroke="#b45309" stroke-width="2"/>${Array.from({length:17},(_,i)=>`<line x1="${28+i*10}" y1="104" x2="${28+i*10}" y2="${i%5?114:122}" stroke="#92400e" stroke-width="1.5"/>`).join('')}<text x="105" y="152" text-anchor="middle" font-size="12" fill="#475569">panjang · meter</text><rect x="205" y="100" width="90" height="8" rx="3" fill="#64748b"/><polygon points="250,60 236,100 264,100" fill="#94a3b8"/><rect x="205" y="70" width="34" height="30" rx="4" fill="#2f7de1"/><text x="222" y="90" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1 kg</text><text x="250" y="128" text-anchor="middle" font-size="12" fill="#475569">massa · kg</text><circle cx="70" cy="50" r="30" fill="#fff" stroke="#16323f" stroke-width="3"/><line x1="70" y1="50" x2="70" y2="28" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/><line x1="70" y1="50" x2="86" y2="58" stroke="#16323f" stroke-width="3" stroke-linecap="round"/><rect x="64" y="12" width="12" height="8" fill="#16323f"/><text x="130" y="55" font-size="12" fill="#475569">waktu · sekon</text></svg>`,
+svg:tanggaSVG(['km','hm','dam','m','dm','cm','mm'],10,'#2f7de1','Tangga satuan panjang',null,'ill'),
+
 sesi:[
 {j:'Apa itu besaran dan satuan?', h:`<p>Perhatikan kalimat <b>“panjang meja 120 cm”</b>. Di dalamnya ada tiga hal:</p><ul><li><b>Besaran</b>: panjang (apa yang diukur)</li><li><b>Nilai</b>: 120 (berapa banyak)</li><li><b>Satuan</b>: cm (pembandingnya)</li></ul><p>Mengukur berarti <b>membandingkan</b> sesuatu dengan satuan. Hal yang tidak bisa dinyatakan dengan angka, misalnya “cantik” atau “rajin”, <b>bukan</b> besaran.</p><div class="note">💡 Satuan harus <b>baku</b> (sama di mana pun), contohnya meter. Jengkal dan depa tidak baku karena panjangnya berbeda tiap orang.</div>`},
 {j:'Tujuh besaran pokok (SI)', h:`<p>Besaran pokok adalah besaran yang satuannya ditetapkan lebih dulu dan tidak diturunkan dari besaran lain.</p><div class="tbl"><table><tr><th>Besaran</th><th>Satuan SI</th><th>Simbol</th><th>Alat ukur</th></tr><tr><td>Panjang</td><td>meter</td><td>m</td><td>mistar, jangka sorong, mikrometer</td></tr><tr><td>Massa</td><td>kilogram</td><td>kg</td><td>neraca</td></tr><tr><td>Waktu</td><td>sekon</td><td>s</td><td>stopwatch</td></tr><tr><td>Suhu</td><td>kelvin</td><td>K</td><td>termometer</td></tr><tr><td>Kuat arus</td><td>ampere</td><td>A</td><td>amperemeter</td></tr><tr><td>Intensitas cahaya</td><td>kandela</td><td>cd</td><td>lux meter</td></tr><tr><td>Jumlah zat</td><td>mol</td><td>mol</td><td>—</td></tr></table></div><div class="note">🧠 Jembatan keledai: <b>“Pak Mas Waktu Suka Kuat Intan Jumlah”</b>.</div>`},
