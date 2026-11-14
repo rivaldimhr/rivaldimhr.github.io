@@ -477,7 +477,7 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
             <div class="top"><div><h3>B.S. Information Technology Systems</h3><p class="org">Institut Teknologi Bandung</p></div><span class="pill soft">2022 – 2026</span></div>
             <ul>
               <li>Projects across UI/UX, system analysis, SQL and database modelling, machine learning and data visualisation.</li>
-              <li>Teaching Assistant for Pancasila: led discussions, graded assignments and kept students engaged.</li>
+              <li>Lecturer Assistant for Pancasila: led discussions, graded assignments and kept students engaged.</li>
             </ul>
           </li>
           <li>
@@ -620,7 +620,7 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
         <div class="bottom">
           <div>
             <h3>Virsila</h3>
-            <p>An interactive Pancasila learning site for school students, built around my teaching assistant work: the five principles, a 1945 timeline, a "which principle?" practice game and a 28-question quiz with timed exam mode. Rebuilt from a team project without login, with 19 automated tests.</p>
+            <p>An interactive Pancasila learning site for school students, built around my lecturer assistant work: the five principles, a 1945 timeline, a "which principle?" practice game and a 28-question quiz with timed exam mode. Rebuilt from a team project without login, with 19 automated tests.</p>
             <div class="card-links">
               <a class="btn-mini solid" href="virsila/">Live demo</a>
               <a class="btn-mini" href="https://github.com/rivaldimhr/Virsila2.0">Code</a>
@@ -715,6 +715,7 @@ btns.forEach(b=>b.addEventListener('click',()=>{
   const f=b.dataset.f;
   items.forEach(el=>{el.hidden=!(f==='all'||el.dataset.cat.split(' ').includes(f));});
 }));
+try{sessionStorage.removeItem('rv-from-3d');}catch(_){}
 // 3D button: a short glitch, then switch to the 3D portfolio
 document.querySelector('.mode3d').addEventListener('click',e=>{
   if(e.metaKey||e.ctrlKey||e.shiftKey||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
