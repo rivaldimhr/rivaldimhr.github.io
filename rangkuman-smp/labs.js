@@ -42,16 +42,46 @@ function ogPick(id, b) {
 
 /* ===== FISIKA ===== */
 const UNIT = {
-  p: {n: 'Panjang', u: [['km', 1000], ['hm', 100], ['dam', 10], ['m', 1], ['dm', .1], ['cm', .01], ['mm', .001]]},
-  m: {n: 'Massa', u: [['ton', 1000], ['kg', 1], ['hg', .1], ['dag', .01], ['g', .001], ['mg', 1e-6]]},
-  w: {n: 'Waktu', u: [['jam', 3600], ['menit', 60], ['detik', 1]]},
+  w: {n: 'Waktu', u: [['hari', 86400], ['jam', 3600], ['menit', 60], ['detik', 1]]},
   v: {n: 'Kecepatan', u: [['km/jam', 1 / 3.6], ['m/s', 1], ['cm/s', .01]]},
 };
-function cvU() { const t = el('cvT').value; el('cvF').innerHTML = UNIT[t].u.map(([n]) => `<option>${n}</option>`).join(''); el('cvF').value = {p: 'km', m: 'kg', w: 'jam', v: 'km/jam'}[t]; cv(); }
+const nf = v => Number.isFinite(v) ? (+v.toPrecision(12)).toLocaleString('id-ID', {maximumFractionDigits: 10}) : '—';
+function tgU() {
+  const k = el('tgT').value, u = TG[k][1], keep = [el('tgF').value, el('tgK').value];
+  el('tgF').innerHTML = u.map(x => `<option>${x}</option>`).join(''); el('tgK').innerHTML = el('tgF').innerHTML;
+  el('tgF').value = u.includes(keep[0]) ? keep[0] : u[0]; el('tgK').value = u.includes(keep[1]) ? keep[1] : u[3];
+  tgC();
+}
+function tgC(u) {
+  const k = el('tgT').value, [nm, us, f, c] = TG[k], a = us.indexOf(el('tgF').value), b = us.indexOf(el('tgK').value), x = nv('tgN');
+  el('tgS').innerHTML = tanggaSVG(us, f, c, 'Tangga satuan ' + nm.toLowerCase(), [a, b]);
+  const d = b - a, fak = f ** Math.abs(d), hasil = d >= 0 ? x * fak : x / fak;
+  const eq = {l: {kL: 'm³', L: 'dm³', mL: 'cm³'}, v: {'m³': 'kL', 'dm³': 'L', 'cm³': 'mL'}, a: {'hm²': 'ha', 'dam²': 'are'}}[k] || {};
+  el('tgO').innerHTML = d === 0 ? 'Satuan asal dan tujuan sama.' :
+    `Dari <b style="color:#1d4ed8">${us[a]}</b> ke <b style="color:#b45309">${us[b]}</b>: ${d > 0 ? 'turun' : 'naik'} <b>${Math.abs(d)}</b> anak tangga → ${d > 0 ? '×' : ':'} ${Array(Math.abs(d)).fill(f.toLocaleString('id-ID')).join(d > 0 ? ' × ' : ' : ')} = ${d > 0 ? '×' : ':'} <b>${fak.toLocaleString('id-ID')}</b><br><span style="font-size:17px">${nf(x)} ${us[a]} = <b>${nf(hasil)} ${us[b]}</b></span>${eq[us[b]] ? `<br>Karena 1 ${us[b]} = 1 ${eq[us[b]]}, hasilnya juga <b>${nf(hasil)} ${eq[us[b]]}</b>` : ''}`;
+  if (u) labDone('satuan', 'Tangga Satuan');
+}
+let TQ = null;
+function tgSoal() {
+  const ks = Object.keys(TG), k = ks[Math.floor(Math.random() * ks.length)], us = TG[k][1];
+  let a = Math.floor(Math.random() * 7), b; do { b = Math.floor(Math.random() * 7); } while (b === a || Math.abs(b - a) > 3);
+  const x = [2, 3, 4, 5, 1.5, 2.5, 7, 12, 25, 250, 600, 0.8][Math.floor(Math.random() * 12)];
+  const ans = b > a ? x * TG[k][2] ** (b - a) : x / TG[k][2] ** (a - b);
+  TQ = {ans, txt: `${nf(x)} ${us[a]} = … ${us[b]}`, k, a, b};
+  el('tqQ').innerHTML = `<b style="font-size:18px">${TQ.txt}</b>`; el('tqA').value = ''; el('tqR').innerHTML = ''; el('tqA').focus();
+}
+function tgCek() {
+  if (!TQ) return tgSoal();
+  const v = parseFloat(el('tqA').value.replace(/\./g, '').replace(',', '.')), ok = Math.abs(v - TQ.ans) <= Math.abs(TQ.ans) * 1e-9;
+  const [nm, us, f] = TG[TQ.k], d = TQ.b - TQ.a;
+  el('tqR').innerHTML = (ok ? '✅ Benar! ' : `❌ Belum tepat. Jawabannya <b>${nf(TQ.ans)}</b>. `) + `<small>${us[TQ.a]} → ${us[TQ.b]}: ${d > 0 ? 'turun' : 'naik'} ${Math.abs(d)} anak tangga ${nm.toLowerCase()} (${d > 0 ? '×' : ':'} ${(f ** Math.abs(d)).toLocaleString('id-ID')}).</small> <button class="btn sm" onclick="tgSoal()">Soal lain ▶</button>`;
+  if (ok) labDone('satuan', 'Tangga Satuan');
+}
+function cvU() { const t = el('cvT').value; el('cvF').innerHTML = UNIT[t].u.map(([n]) => `<option>${n}</option>`).join(''); el('cvF').value = {w: 'jam', v: 'km/jam'}[t]; cv(); }
 function cv(u) {
   const t = el('cvT').value, U = UNIT[t].u, f = U.find(x => x[0] === el('cvF').value)[1], base = nv('cvN') * f;
   el('cvO').innerHTML = U.map(([n, k]) => `${fx(base / k, 6)} <b>${n}</b>`).join(' &nbsp;=&nbsp; ');
-  if (u) labDone('satuan', 'Konversi Satuan');
+  if (u) labDone('satuan', 'Tangga Satuan');
 }
 
 const FLUIDA = [['Air', 1], ['Minyak goreng', .8], ['Air laut', 1.03], ['Gliserin', 1.26], ['Raksa', 13.6]];
@@ -352,7 +382,12 @@ function pbDraw() {
 /* ===== daftar lab ===== */
 const rng_ = (id, lbl, min, max, val, step, fn) => `<label style="display:block">${lbl}: <b id="${id}v">${val}</b><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}" oninput="el('${id}v').textContent=this.value;${fn}"></label>`;
 const LABS = {
-  satuan: {t: 'Konversi Satuan', h: () => `<p>Masukkan nilai, lalu lihat hasilnya di semua satuan. Turun satu anak tangga satuan berarti dikali 10.</p><div class="row"><label>Besaran<select id="cvT" onchange="cvU();cv(1)">${Object.entries(UNIT).map(([k, v]) => `<option value="${k}">${v.n}</option>`).join('')}</select></label><label>Nilai<input id="cvN" type="number" value="72" oninput="cv(1)"></label><label>Satuan<select id="cvF" onchange="cv(1)"></select></label></div><div class="out" id="cvO" data-init="cvU"></div>`},
+  satuan: {t: 'Tangga Satuan', h: () => `<p><b>1. Tangga interaktif</b> — pilih jenis tangga, satuan asal (biru) dan tujuan (oranye). Lihat berapa anak tangga yang dilewati.</p>
+    <div class="row"><label>Tangga<select id="tgT" onchange="tgU();tgC(1)">${Object.entries(TG).map(([k, v]) => `<option value="${k}">${v[0]}</option>`).join('')}</select></label><label>Nilai<input id="tgN" type="number" value="2.5" step="any" oninput="tgC(1)"></label><label>Dari<select id="tgF" onchange="tgC(1)"></select></label><label>Ke<select id="tgK" onchange="tgC(1)"></select></label></div>
+    <div id="tgS"></div><div class="out" id="tgO" data-init="tgU"></div>
+    <p style="margin-top:18px"><b>2. Tantangan tangga</b> — jawab soal acak (pakai koma untuk desimal, mis. 0,25).</p>
+    <div class="row"><span id="tqQ" style="margin:0 10px 12px 0"><button class="btn sm" onclick="tgSoal()">Mulai soal ▶</button></span><input id="tqA" type="text" placeholder="jawaban" style="width:150px" onkeydown="if(event.key==='Enter')tgCek()"><button class="btn sm ghost" onclick="tgCek()">Cek</button></div><div id="tqR" style="margin-top:6px;font-weight:600"></div>
+    <p style="margin-top:18px"><b>3. Waktu & kecepatan</b> (tidak memakai tangga)</p><div class="row"><label>Besaran<select id="cvT" onchange="cvU();cv(1)">${Object.entries(UNIT).map(([k, v]) => `<option value="${k}">${v.n}</option>`).join('')}</select></label><label>Nilai<input id="cvN" type="number" value="72" oninput="cv(1)"></label><label>Satuan<select id="cvF" onchange="cv(1)"></select></label></div><div class="out" id="cvO" data-init="cvU"></div>`},
   massajenis: {t: 'Terapung atau Tenggelam?', h: () => `<p>Atur massa & volume benda, pilih zat cairnya. Bandingkan massa jenis benda dengan zat cair.</p><div class="row"><label>Massa (g)<input id="mjM" type="number" value="60" oninput="mj(1)"></label><label>Volume (cm³)<input id="mjV" type="number" value="100" oninput="mj(1)"></label><label>Zat cair<select id="mjF" onchange="mj(1)">${FLUIDA.map(([n, r]) => `<option value="${r}">${n} (${String(r).replace('.', ',')} g/cm³)</option>`).join('')}</select></label></div>
     <div class="row"><button class="btn sm ghost" onclick="mjSet(60,100)">🪵 Kayu</button><button class="btn sm ghost" onclick="mjSet(92,100)">🧊 Es</button><button class="btn sm ghost" onclick="mjSet(79,10)">🔩 Besi</button><button class="btn sm ghost" onclick="mjSet(193,10)">🥇 Emas</button></div><svg id="mjS" viewBox="0 0 320 160" width="320" data-init="mj"></svg><div class="out" id="mjO"></div>`},
   suhu: {t: 'Termometer Ajaib', h: () => `<p>Geser suhu Celcius dan lihat keempat termometer ikut berubah.</p>${rng_('shC', 'Suhu (°C)', -40, 120, 37, 1, 'suhu(1)')}<svg id="shS" viewBox="0 0 320 205" width="320" data-init="suhu"></svg><div class="out" id="shO"></div>`},

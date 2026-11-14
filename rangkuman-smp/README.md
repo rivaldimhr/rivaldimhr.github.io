@@ -5,10 +5,10 @@ Website belajar interaktif IPA (Fisika, Kimia, Biologi) dan Matematika untuk SMP
 **Live:** https://rivaldimhr.github.io/rangkuman-smp/
 
 ## Fitur
-- **27 bab, 146 pembahasan** — tiap bab punya tab *Materi*, *Penemuan Rumus* (sejarah penemu & penurunan rumus), *Contoh Soal* (langkah dibuka satu per satu), dan *Lab Interaktif*.
+- **27 bab, 149 pembahasan** — tiap bab punya tab *Materi*, *Penemuan Rumus* (sejarah penemu & penurunan rumus), *Contoh Soal* (langkah dibuka satu per satu), dan *Lab Interaktif*.
 - **Ilustrasi SVG** di setiap bab, dibuat langsung dengan kode.
-- **27 lab interaktif**: termometer, balapan GLBB, tuas, kolam gelombang, meja optik, rangkaian lampu, tata surya, perakit atom, skala pH, percobaan fotosintesis, papan Mendel, studio grafik, pemecah SPLDV, bukti Pythagoras, simulasi dadu, kanvas transformasi, simulator pembagian cara pistol, dan permainan memilah/mengurutkan.
-- **Tryout & Quiz terpisah dari materi** — 139 soal; setiap kuis menjelaskan apa yang dibahas dan setiap soal punya pembahasan. Ada tryout acak per mapel dan Daily Challenge.
+- **27 lab interaktif**: tangga satuan (panjang, massa, liter, luas, kubik), termometer, balapan GLBB, tuas, kolam gelombang, meja optik, rangkaian lampu, tata surya, perakit atom, skala pH, percobaan fotosintesis, papan Mendel, studio grafik, pemecah SPLDV, bukti Pythagoras, simulasi dadu, kanvas transformasi, simulator pembagian cara pistol, dan permainan memilah/mengurutkan.
+- **Tryout & Quiz terpisah dari materi** — 143 soal; setiap kuis menjelaskan apa yang dibahas dan setiap soal punya pembahasan. Ada tryout acak per mapel dan Daily Challenge.
 - **Gamifikasi**: XP, koin, level, layar *Level Up*, dan Laporan Belajar mingguan. Progres tersimpan di browser (localStorage).
 - **Kamus Rumus** yang bisa dicari dan **4 poster A3** siap cetak di `poster/`.
 
