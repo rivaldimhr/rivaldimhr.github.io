@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Virsila — Belajar Pancasila secara interaktif</title>
+<meta name="description" content="Pelajari lima sila, sejarah perumusan Pancasila 1945, dan uji pemahamanmu lewat latihan dan kuis.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='50' fill='%23B3191F'/%3E%3Crect y='50' width='100' height='50' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#lima-sila">Lewati ke materi</a>
+
+<!-- Lambang kelima sila (digambar ulang secara sederhana) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="lambang-1" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" fill="#141414"/>
+      <polygon fill="#E9B824" points="50,16 58.2,38.7 82.3,39.5 63.3,54.4 70,77.5 50,64 30,77.5 36.7,54.4 17.7,39.5 41.8,38.7"/>
+    </symbol>
+    <symbol id="lambang-2" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" fill="#B3191F"/>
+      <g fill="none" stroke="#E9B824" stroke-width="4">
+        <circle cx="50" cy="20" r="5.5"/><rect x="66" y="23" width="10" height="10" rx="1.5" transform="rotate(35 71 28)"/>
+        <circle cx="79" cy="44" r="5.5"/><rect x="72" y="62" width="10" height="10" rx="1.5" transform="rotate(70 77 67)"/>
+        <circle cx="60" cy="79" r="5.5"/><rect x="35" y="74" width="10" height="10" rx="1.5" transform="rotate(20 40 79)"/>
+        <circle cx="22" cy="66" r="5.5"/><rect x="16" y="38" width="10" height="10" rx="1.5" transform="rotate(50 21 43)"/>
+        <circle cx="31" cy="23" r="5.5"/>
+      </g>
+    </symbol>
+    <symbol id="lambang-3" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="46.5" fill="#fff" stroke="#16181D" stroke-width="3"/>
+      <path d="M46 84 L47 60 Q44 56 38 55 M47 64 Q52 58 61 57 M54 84 L53 60" stroke="#6B4423" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M40 70 L40 82 M60 68 L60 82 M34 66 L33 78" stroke="#6B4423" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <g fill="#1F6E3A">
+        <circle cx="50" cy="32" r="16"/><circle cx="33" cy="42" r="13"/><circle cx="67" cy="42" r="13"/>
+        <circle cx="40" cy="25" r="11"/><circle cx="60" cy="25" r="11"/><circle cx="50" cy="47" r="12"/>
+      </g>
+    </symbol>
+    <symbol id="lambang-4" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" fill="#B3191F"/>
+      <path fill="#141414" d="M18 30 Q14 18 24 14 Q22 24 32 30 L68 30 Q78 24 76 14 Q86 18 82 30 Q78 40 68 42 L66 66 Q62 82 50 84 Q38 82 34 66 L32 42 Q22 40 18 30 Z"/>
+      <circle cx="41" cy="50" r="3.2" fill="#fff"/><circle cx="59" cy="50" r="3.2" fill="#fff"/>
+      <ellipse cx="45" cy="74" rx="2.6" ry="3.4" fill="#B3191F"/><ellipse cx="55" cy="74" rx="2.6" ry="3.4" fill="#B3191F"/>
+    </symbol>
+    <symbol id="lambang-5" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="46.5" fill="#fff" stroke="#16181D" stroke-width="3"/>
+      <path d="M38 86 Q30 56 34 18" stroke="#B88A12" stroke-width="2.5" fill="none"/>
+      <g fill="#E9B824">
+        <ellipse cx="30" cy="26" rx="3.4" ry="6" transform="rotate(-25 30 26)"/><ellipse cx="38" cy="30" rx="3.4" ry="6" transform="rotate(25 38 30)"/>
+        <ellipse cx="29" cy="38" rx="3.4" ry="6" transform="rotate(-25 29 38)"/><ellipse cx="37" cy="42" rx="3.4" ry="6" transform="rotate(25 37 42)"/>
+        <ellipse cx="29" cy="50" rx="3.4" ry="6" transform="rotate(-25 29 50)"/><ellipse cx="37" cy="54" rx="3.4" ry="6" transform="rotate(25 37 54)"/>
+        <ellipse cx="31" cy="62" rx="3.4" ry="6" transform="rotate(-25 31 62)"/>
+      </g>
+      <path d="M62 86 Q70 60 66 30 M66 52 Q74 46 78 40 M66 66 Q58 60 54 52" stroke="#2F7D3A" stroke-width="2.5" fill="none"/>
+      <g fill="#fff" stroke="#9AA19C" stroke-width="1.5">
+        <circle cx="66" cy="28" r="6"/><circle cx="79" cy="38" r="5.5"/><circle cx="53" cy="50" r="5.5"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="wordmark" href="#awal" aria-label="Virsila, ke awal halaman">Virsila</a>
+    <nav aria-label="Navigasi utama">
+      <a href="#lima-sila">Lima Sila</a>
+      <a href="#sejarah">Sejarah</a>
+      <a href="#praktik">Praktik</a>
+      <a href="#kuis">Kuis</a>
+      <a href="#progres" class="nav-progres">Progres <span id="nav-persen">0%</span></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO: merah di atas, putih di bawah; lambang berdiri di garis pertemuan -->
+  <section class="hero" id="awal">
+    <div class="hero-merah">
+      <div class="wrap">
+        <p class="hero-kecil">Virtual Pancasila · untuk pelajar SMP–SMA</p>
+        <h1>Lima sila, satu rumah bersama.</h1>
+        <p class="hero-lead">Kenali bunyi dan makna tiap sila, telusuri bagaimana para pendiri bangsa merumuskannya pada 1945, lalu uji pemahamanmu.</p>
+      </div>
+    </div>
+    <div class="hero-putih">
+      <div class="wrap">
+        <ol class="sila-strip" aria-label="Pilih sila untuk dipelajari">
+          <!-- diisi app.js -->
+        </ol>
+        <p class="hero-petunjuk">Pilih lambang untuk mulai belajar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIMA SILA -->
+  <section class="bagian" id="lima-sila" aria-labelledby="judul-sila">
+    <div class="wrap">
+      <header class="bagian-kepala">
+        <h2 id="judul-sila">Lima Sila</h2>
+        <p>Bunyi resmi sesuai alinea keempat Pembukaan UUD 1945, maknanya, dan contoh sederhana dalam keseharian.</p>
+      </header>
+      <div class="sila-tabs" role="tablist" aria-label="Sila" id="sila-tabs"></div>
+      <article class="sila-panel" id="sila-panel" role="tabpanel" aria-live="polite"></article>
+    </div>
+  </section>
+
+  <!-- SEJARAH -->
+  <section class="bagian bagian-kanvas" id="sejarah" aria-labelledby="judul-sejarah">
+    <div class="wrap">
+      <header class="bagian-kepala">
+        <h2 id="judul-sejarah">Bagaimana Pancasila dirumuskan</h2>
+        <p>Dari sidang BPUPKI sampai pengesahan oleh PPKI: kurang dari tiga bulan pada 1945. Pilih peristiwa untuk membaca ceritanya.</p>
+      </header>
+      <ol class="linimasa" id="linimasa"></ol>
+
+      <div class="dua-kolom">
+        <div class="kartu">
+          <h3>Tiga usulan di sidang pertama BPUPKI</h3>
+          <p class="kartu-sub">Ketiganya mengusulkan lima dasar, dengan urutan dan istilah yang berbeda.</p>
+          <div class="usulan-tabs" role="tablist" id="usulan-tabs"></div>
+          <ol class="usulan-list" id="usulan-list" aria-live="polite"></ol>
+        </div>
+        <div class="kartu">
+          <h3>Satu kalimat yang berubah</h3>
+          <p class="kartu-sub">Bunyi sila pertama dalam Piagam Jakarta dan dalam Pembukaan UUD 1945 yang disahkan.</p>
+          <div class="segmen" role="group" aria-label="Pilih versi" id="piagam-tombol"></div>
+          <blockquote class="piagam" id="piagam-teks" aria-live="polite"></blockquote>
+          <p class="kartu-catatan">Perubahan ini disepakati demi persatuan bangsa yang beragam.</p>
+        </div>
+      </div>
+
+      <div class="kartu garuda">
+        <div>
+          <h3>Rahasia angka di lambang Garuda</h3>
+          <p class="kartu-sub">Jumlah bulu Garuda Pancasila menyimpan satu tanggal penting. Buka keempat kartu untuk menemukannya.</p>
+        </div>
+        <div class="garuda-grid" id="garuda-grid"></div>
+        <p class="garuda-hasil" id="garuda-hasil" aria-live="polite" hidden></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRAKTIK -->
+  <section class="bagian" id="praktik" aria-labelledby="judul-praktik">
+    <div class="wrap">
+      <header class="bagian-kepala">
+        <h2 id="judul-praktik">Sila yang mana?</h2>
+        <p>Sepuluh kejadian sehari-hari. Tebak sila yang paling sesuai dengan sikap di dalamnya.</p>
+      </header>
+      <div class="praktik" id="praktik-area"></div>
+    </div>
+  </section>
+
+  <!-- KUIS -->
+  <section class="bagian bagian-tinta" id="kuis" aria-labelledby="judul-kuis">
+    <div class="wrap">
+      <header class="bagian-kepala">
+        <h2 id="judul-kuis">Kuis</h2>
+        <p>28 soal dengan pembahasan. Gunakan tombol A–D atau 1–4 di keyboard untuk menjawab.</p>
+      </header>
+      <div class="kuis" id="kuis-area"></div>
+    </div>
+  </section>
+
+  <!-- PROGRES -->
+  <section class="bagian" id="progres" aria-labelledby="judul-progres">
+    <div class="wrap progres">
+      <div>
+        <h2 id="judul-progres">Progres belajarmu</h2>
+        <p class="progres-sub">Tersimpan di browser ini saja. Tidak perlu daftar atau login.</p>
+        <label class="nama-label" for="nama">Nama panggilan (opsional)</label>
+        <input id="nama" maxlength="30" placeholder="mis. Dina" autocomplete="nickname">
+        <div class="progres-cincin" id="progres-cincin" aria-hidden="true"><span id="progres-angka">0%</span></div>
+        <button class="tombol tombol-garis" id="reset-progres" type="button">Mulai dari awal</button>
+      </div>
+      <ul class="cek" id="cek-list"></ul>
+    </div>
+  </section>
+
+  <!-- SUMBER -->
+  <section class="bagian bagian-kanvas sumber" aria-labelledby="judul-sumber">
+    <div class="wrap">
+      <h2 id="judul-sumber">Sumber</h2>
+      <ul>
+        <li>Pembukaan Undang-Undang Dasar Negara Republik Indonesia Tahun 1945, alinea keempat.</li>
+        <li>Keputusan Presiden Nomor 24 Tahun 2016 tentang Hari Lahir Pancasila.</li>
+        <li>Undang-Undang Nomor 12 Tahun 2011 tentang Pembentukan Peraturan Perundang-undangan, Pasal 2.</li>
+        <li>Undang-Undang Nomor 24 Tahun 2009 tentang Bendera, Bahasa, dan Lambang Negara, serta Lagu Kebangsaan.</li>
+        <li>Badan Pembinaan Ideologi Pancasila: <a href="https://bpip.go.id/" rel="noopener">bpip.go.id</a> · Kementerian Sekretariat Negara: <a href="https://www.setneg.go.id/" rel="noopener">setneg.go.id</a> · Database peraturan BPK: <a href="https://peraturan.bpk.go.id/" rel="noopener">peraturan.bpk.go.id</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="kaki">
+  <div class="wrap kaki-in">
+    <span>Virsila dibangun ulang oleh Rivaldi Mahari dari proyek kelompok (2024).</span>
+    <a href="https://github.com/rivaldimhr/Virsila2.0">Kode di GitHub</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="assets/app.js"></script>
+</body>
+</html>
