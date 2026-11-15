@@ -226,6 +226,8 @@ section.block{padding:110px 0}
 .card h3{font-size:21px;font-weight:800}
 .card p{font-size:15.5px;color:var(--muted);margin-top:6px}
 .card-links{display:flex;gap:8px;margin-top:14px}
+.card p.mine{color:var(--green);background:var(--green-3);border-radius:12px;padding:10px 12px;margin-top:10px;font-size:14.5px}
+.card p.mine b{font-weight:800}
 .btn-mini{font-size:14px;font-weight:700;padding:8px 16px;border-radius:999px;border:2px solid var(--green);color:var(--green)}
 .btn-mini.solid{background:var(--green);color:var(--yellow)}
 .btn-mini:hover{transform:translateY(-1px)}
@@ -509,13 +511,13 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
       </div>
       <div class="filters" role="group" aria-label="Filter projects">
         <button type="button" aria-pressed="true" data-f="all">All</button>
-        <button type="button" aria-pressed="false" data-f="ai">AI &amp; Data</button>
-        <button type="button" aria-pressed="false" data-f="soft">Software</button>
-        <button type="button" aria-pressed="false" data-f="web">Web</button>
+        <button type="button" aria-pressed="false" data-f="data">Data &amp; AI</button>
+        <button type="button" aria-pressed="false" data-f="qa">QA &amp; testing</button>
+        <button type="button" aria-pressed="false" data-f="soft">Software &amp; web</button>
       </div>
     </div>
 
-    <article class="featured card-f" data-cat="ai web">
+    <article class="featured card-f" data-cat="data soft">
       <div class="shots">
         <div class="ui"><img src="assets/kukangsort-ui.jpg" alt="KukangSort AI dashboard showing the upload area and sorting stages" loading="lazy"></div>
         <div class="trap"><img src="assets/kukang-cameratrap.jpg" alt="Infrared camera-trap photo of a slow loris eating at night" loading="lazy"><span>kukang · makan</span></div>
@@ -537,13 +539,14 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
     </article>
 
     <div class="grid">
-      <article class="card" data-cat="ai web">
+      <article class="card" data-cat="data">
         <a class="thumb" href="https://rivaldimhr.github.io/retail-inventory-ai/" aria-label="Open the Retail Inventory AI live demo"><img src="assets/retail-inventory-ai.jpg" alt="Retail Inventory AI dashboard with reorder suggestions, risk cards and demand charts" loading="lazy"></a>
         <div class="tags"><span class="pill">AI &amp; Data</span><span class="pill soft">Python</span><span class="pill soft">FastAPI</span><span class="pill soft">React</span><span class="pill soft">CI</span></div>
         <div class="bottom">
           <div>
             <h3>Retail Inventory AI</h3>
-            <p>Forecasts next-week demand for 300 products from 1 million real transactions (Online Retail II), recommends how much to reorder, flags stock risks and finds products bought together. Rebuilt from a team course project.</p>
+            <p>Forecasts next-week demand for 300 products from 1 million real transactions (Online Retail II), recommends how much to reorder, flags stock risks and finds products bought together.</p>
+            <p class="mine"><b>My part:</b> started as a 5-person AI for Business course project. I rebuilt it on the Online Retail II data with a 7-day forecast, reorder recommendations, a static demo, a chat assistant and automated tests in CI.</p>
             <div class="card-links">
               <a class="btn-mini solid" href="https://rivaldimhr.github.io/retail-inventory-ai/">Live demo</a>
               <a class="btn-mini" href="https://github.com/rivaldimhr/retail-inventory-ai">Code</a>
@@ -552,13 +555,14 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
         </div>
       </article>
 
-      <article class="card" data-cat="soft web">
+      <article class="card" data-cat="soft qa">
         <a class="thumb" href="https://rivaldimhr.github.io/kingshand/" aria-label="Open the King's Hand live demo"><img src="assets/kingshand.jpg" alt="King's Hand dashboard with project counts, recent projects and admin notifications" loading="lazy"></a>
         <div class="tags"><span class="pill">Software</span><span class="pill soft">JavaScript</span><span class="pill soft">JavaFX</span><span class="pill soft">Playwright</span><span class="pill soft">CI</span></div>
         <div class="bottom">
           <div>
             <h3>King's Hand</h3>
-            <p>Project monitoring for funded projects. Project leads submit proposals and report progress; admins approve proposals and review reports. Projects spending faster than they progress, or reporting late, are flagged automatically. Started as a 6-person JavaFX app; I rebuilt it for the web and added the admin role, the alerts and 21 automated Playwright tests.</p>
+            <p>Project monitoring for funded projects. Project leads submit proposals and report progress; admins approve proposals and review reports. Projects spending faster than they progress, or reporting late, are flagged automatically.</p>
+            <p class="mine"><b>My part:</b> started as a 6-person JavaFX app. I rebuilt it for the web and added the admin role, the alerts and 21 automated Playwright tests.</p>
             <div class="card-links">
               <a class="btn-mini solid" href="https://rivaldimhr.github.io/kingshand/">Live demo</a>
               <a class="btn-mini" href="https://github.com/rivaldimhr/KINGSHANDs">Code</a>
@@ -567,13 +571,14 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
         </div>
       </article>
 
-      <article class="card" data-cat="ai">
+      <article class="card" data-cat="data qa">
         <a class="thumb" href="https://rivaldimhr.github.io/jabar-tourism/" aria-label="Open the West Java Tourism Analytics dashboard"><img src="assets/jabar-cluster.jpg" alt="Cluster chart of nature tourism areas in West Java" loading="lazy"></a>
         <div class="tags"><span class="pill">Data</span><span class="pill soft">pandas</span><span class="pill soft">scikit-learn</span><span class="pill soft">Plotly</span><span class="pill soft">Playwright</span></div>
         <div class="bottom">
           <div>
             <h3>West Java Tourism Analytics</h3>
-            <p>A data story on West Java nature tourism and hotel occupancy, with a map of K-Means area groups, filters, and a per-area data-quality score that exposed duplicate names and copied years. The occupancy model beats simple baselines by 20%. I worked on the team presentation and dashboard design, then added the model benchmark, data-quality scoring, map, a one-page policy brief and 28 automated tests.</p>
+            <p>A data story on West Java nature tourism and hotel occupancy, with a map of K-Means area groups, filters, and a per-area data-quality score that exposed duplicate names and copied years. The occupancy model beats simple baselines by 20%.</p>
+            <p class="mine"><b>My part:</b> team course project. I worked on the presentation and dashboard design, then added the model benchmark, data-quality scoring, map, a one-page policy brief and 28 automated tests.</p>
             <div class="card-links">
               <a class="btn-mini solid" href="https://rivaldimhr.github.io/jabar-tourism/">Live dashboard</a>
               <a class="btn-mini" href="https://github.com/rivaldimhr/Data-Analytics">Code</a>
@@ -582,13 +587,14 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
         </div>
       </article>
 
-      <article class="card" data-cat="soft">
+      <article class="card" data-cat="soft qa">
         <a class="thumb" href="pvz/" aria-label="Play Plants vs. Zombies in the browser"><img src="assets/pvz-gameplay.jpg" alt="Gameplay of the Java Plants vs. Zombies game: sunflowers, peashooters and a wall-nut holding off zombies" loading="lazy"></a>
         <div class="tags"><span class="pill">Game</span><span class="pill soft">Java</span><span class="pill soft">OOP</span><span class="pill soft">WebAssembly</span><span class="pill soft">CI</span></div>
         <div class="bottom">
           <div>
             <h3>Plants vs. Zombies</h3>
-            <p>Tower-defence game in pure Java Swing, playable in the browser: the same JAR runs on a JVM in WebAssembly (CheerpJ). Started as a 5-person OOP project; I added 119 unit tests, a bot that plays Level 1 as an end-to-end test, and a browser test in CI.</p>
+            <p>Tower-defence game in pure Java Swing, playable in the browser: the same JAR runs on a JVM in WebAssembly (CheerpJ).</p>
+            <p class="mine"><b>My part:</b> started as a 5-person OOP project. I added 119 unit tests, a bot that plays Level 1 as an end-to-end test, a browser test in CI and the browser version.</p>
             <div class="card-links">
               <a class="btn-mini solid" href="pvz/">Play in browser</a>
               <a class="btn-mini" href="https://github.com/rivaldimhr/plants-vs-zombies-java/releases/latest">Download</a>
@@ -598,7 +604,7 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
         </div>
       </article>
 
-      <article class="card" data-cat="web">
+      <article class="card" data-cat="soft">
         <a class="thumb" href="rangkuman-smp/" aria-label="Open the interactive SMP study notes"><img src="assets/rangkuman-smp.jpg" alt="Interactive study notes site with tabs for Physics, Chemistry, Biology and Mathematics" loading="lazy"></a>
         <div class="tags"><span class="pill">Web</span><span class="pill soft">JavaScript</span><span class="pill soft">SVG</span><span class="pill soft">HTML/CSS</span><span class="pill soft">Python</span></div>
         <div class="bottom">
@@ -614,13 +620,14 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
         </div>
       </article>
 
-      <article class="card" data-cat="web">
+      <article class="card" data-cat="soft qa">
         <a class="thumb" href="virsila/" aria-label="Open Virsila"><img src="assets/virsila.jpg" alt="Virsila home page: a red and white hero with the five Pancasila symbols" loading="lazy"></a>
         <div class="tags"><span class="pill">Web</span><span class="pill soft">JavaScript</span><span class="pill soft">Accessibility</span><span class="pill soft">Playwright</span></div>
         <div class="bottom">
           <div>
             <h3>Virsila</h3>
-            <p>An interactive Pancasila learning site for school students, built around my lecturer assistant work: the five principles, a 1945 timeline, a "which principle?" practice game and a 28-question quiz with timed exam mode. Rebuilt from a team project without login, with 19 automated tests.</p>
+            <p>An interactive Pancasila learning site for school students, built around my lecturer assistant work: the five principles, a 1945 timeline, a "which principle?" practice game and a 28-question quiz with timed exam mode.</p>
+            <p class="mine"><b>My part:</b> started as a team project. I rebuilt it as a site without login and added 19 automated tests.</p>
             <div class="card-links">
               <a class="btn-mini solid" href="virsila/">Live demo</a>
               <a class="btn-mini" href="https://github.com/rivaldimhr/Virsila2.0">Code</a>
