@@ -12,6 +12,8 @@
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{font-family:Inter,Arial,Helvetica,sans-serif;color:var(--ink);background:#C9D2C1;font-size:9.3pt;line-height:1.34}
 a{color:inherit;text-decoration:none}
+.doc a{color:#1F4E8C;text-decoration:underline;text-underline-offset:1.5pt}
+.lk{white-space:nowrap;font-size:8.6pt}
 
 /* toolbar (screen only) */
 .toolbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 14px;background:var(--green);box-shadow:0 8px 24px rgba(29,36,31,.25);margin-bottom:22px;font:600 14px/1.2 "Plus Jakarta Sans",Inter,system-ui,sans-serif}
@@ -30,7 +32,7 @@ h1{font-size:18pt;font-weight:700;text-align:center;letter-spacing:.02em}
 .summary{margin-top:7pt}
 h2{font-size:10.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #222;margin:8pt 0 3pt;padding-bottom:1pt}
 .entry{break-inside:avoid}
-.entry+.entry{margin-top:4pt}
+.entry+.entry{margin-top:3pt}
 .row{display:flex;justify-content:space-between;gap:12pt}
 .row b{font-weight:700}
 .row i{font-style:italic}
@@ -62,7 +64,7 @@ li{margin-top:1pt}
 
 <main class="doc">
   <h1>M. RIVALDI MAHARI</h1>
-  <p class="contact">Bandung, Indonesia • 089695637050 • rivaldimhr@gmail.com • rivaldimhr.github.io • github.com/rivaldimhr</p>
+  <p class="contact">Bandung, Indonesia • 089695637050 • <a href="mailto:rivaldimhr@gmail.com">rivaldimhr@gmail.com</a> • <a href="https://rivaldimhr.github.io/">rivaldimhr.github.io</a> • <a href="https://github.com/rivaldimhr">github.com/rivaldimhr</a></p>
   <p class="summary">Information Technology Systems graduate from Institut Teknologi Bandung with experience in Quality Assurance, data analysis, web development, system analysis, and AI-based image classification. Skilled in turning requirements into test plans and test cases, automating UI and API tests, tracking defects in Jira through to verified fixes, and analyzing data with SQL and Python.</p>
 
   <h2>Education</h2>
@@ -113,7 +115,7 @@ li{margin-top:1pt}
   <h2>Projects</h2>
   <div class="entry">
     <div class="row"><b>KukangSort AI – Final Year Project</b><span>2026</span></div>
-    <div class="row"><i>Web-based camera-trap image classification system · YOLO11, Python, FastAPI, OpenCV, Docker</i></div>
+    <div class="row"><i>Web-based camera-trap image classification system · YOLO11, Python, FastAPI, OpenCV, Docker</i><span class="lk"><a href="https://rivaldimhr.github.io/kukangsort-ai/">Live demo</a> | <a href="https://github.com/rivaldimhr/KukangSortAI">GitHub</a></span></div>
     <ul>
       <li>Implemented YOLO11 image classification in a web system that automatically sorts Sunda slow loris (kukang) camera-trap images.</li>
       <li>Built a two-stage pipeline: image sorting and kukang verification, then behavior classification (eating, moving, grooming), for single images and batches.</li>
@@ -122,7 +124,7 @@ li{margin-top:1pt}
   </div>
   <div class="entry">
     <div class="row"><b>QA Automation Portfolio</b><span>2026</span></div>
-    <div class="row"><i>UI and API testing · Playwright, pytest, requests, Postman/Newman, Jira, GitHub Actions</i></div>
+    <div class="row"><i>UI and API testing · Playwright, pytest, requests, Postman/Newman, Jira, GitHub Actions</i><span class="lk"><a href="https://rivaldimhr.github.io/qa-automation-portfolio/">Test report</a> | <a href="https://github.com/rivaldimhr/qa-automation-portfolio">GitHub</a></span></div>
     <ul>
       <li>Wrote a test plan and 64 test cases (equivalence partitioning, boundary values, state transitions) for a project-monitoring web app and a REST API.</li>
       <li>Found 14 bugs through exploratory testing and API testing, logged in Jira with steps, evidence, and severity; the 4 High/Medium bugs were fixed and guarded by regression tests proven to fail on the old version.</li>
@@ -131,7 +133,7 @@ li{margin-top:1pt}
   </div>
   <div class="entry">
     <div class="row"><b>E-commerce SQL Analysis (Olist)</b><span>2026</span></div>
-    <div class="row"><i>Data analysis · SQL (SQLite), CTEs, window functions, Python</i></div>
+    <div class="row"><i>Data analysis · SQL (SQLite), CTEs, window functions, Python</i><span class="lk"><a href="https://rivaldimhr.github.io/ecommerce-sql-analysis/">Dashboard</a> | <a href="https://github.com/rivaldimhr/ecommerce-sql-analysis">GitHub</a></span></div>
     <ul>
       <li>Analyzed 98,000 orders with 13 SQL queries: cohort retention, RFM segmentation, delivery delays, categories, and sellers.</li>
       <li>Found that only 3% of customers buy again and that a late first delivery lowers repeat purchases by 25% (z-test, p = 0.002); wrote five business recommendations with success metrics.</li>
@@ -140,28 +142,28 @@ li{margin-top:1pt}
   </div>
   <div class="entry">
     <div class="row"><b>Retail Inventory AI</b><span>2026</span></div>
-    <div class="row"><i>Demand forecasting · Python, FastAPI, React</i></div>
+    <div class="row"><i>Demand forecasting · Python, FastAPI, React</i><span class="lk"><a href="https://rivaldimhr.github.io/retail-inventory-ai/">Live demo</a> | <a href="https://github.com/rivaldimhr/retail-inventory-ai">GitHub</a></span></div>
     <ul>
       <li>Rebuilt a team course project on 1 million real transactions: 7-day demand forecast for 300 products, reorder recommendations, and stock-risk alerts.</li>
     </ul>
   </div>
   <div class="entry">
     <div class="row"><b>King's Hand</b><span>Team project, extended</span></div>
-    <div class="row"><i>Project-monitoring web app · JavaScript, Playwright, CI</i></div>
+    <div class="row"><i>Project-monitoring web app · JavaScript, Playwright, CI</i><span class="lk"><a href="https://rivaldimhr.github.io/kingshand/">Live demo</a> | <a href="https://github.com/rivaldimhr/KINGSHANDs">GitHub</a></span></div>
     <ul>
       <li>Rebuilt a 6-person JavaFX app for the web, added an admin role and automatic overspend and late-report alerts, and wrote 25 Playwright end-to-end tests.</li>
     </ul>
   </div>
   <div class="entry">
     <div class="row"><b>West Java Tourism Analytics</b><span>Team project, extended</span></div>
-    <div class="row"><i>Data analysis · pandas, scikit-learn, Plotly</i></div>
+    <div class="row"><i>Data analysis · pandas, scikit-learn, Plotly</i><span class="lk"><a href="https://rivaldimhr.github.io/jabar-tourism/">Dashboard</a> | <a href="https://github.com/rivaldimhr/Data-Analytics">GitHub</a></span></div>
     <ul>
       <li>K-Means grouping of tourism areas, an occupancy model that beats simple baselines by 20%, a per-area data-quality score, and a one-page policy brief.</li>
     </ul>
   </div>
   <div class="entry">
     <div class="row"><b>Plants vs. Zombies</b><span>Team project, extended</span></div>
-    <div class="row"><i>Game development · Java, OOP, WebAssembly</i></div>
+    <div class="row"><i>Game development · Java, OOP, WebAssembly</i><span class="lk"><a href="https://rivaldimhr.github.io/pvz/">Play</a> | <a href="https://github.com/rivaldimhr/plants-vs-zombies-java">GitHub</a></span></div>
     <ul>
       <li>Java Swing game in a 5-member team, made playable in the browser; added 119 unit tests and an automated end-to-end test in CI.</li>
     </ul>
@@ -169,7 +171,7 @@ li{margin-top:1pt}
   <div class="entry">
     <div class="row"><b>Other projects</b></div>
     <ul>
-      <li>Virsila (Pancasila learning site, 19 automated tests) · Rangkuman SMP (interactive science and maths study app).</li>
+      <li><a href="https://rivaldimhr.github.io/virsila/">Virsila</a> (Pancasila learning site, 19 automated tests) · <a href="https://rivaldimhr.github.io/rangkuman-smp/">Rangkuman SMP</a> (interactive science and maths study app).</li>
       <li>Academic: Muslim Pro App (UI/UX, 4-member team) · Songket Aninun (enterprise needs analysis) · Crowdfunding IT System (system analysis) · Minecraft Database (SQL design) · Word Machine (data structures) · Destroy the Temple (game logic) · AI Data Analysis (machine learning).</li>
     </ul>
   </div>
