@@ -383,7 +383,7 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
         <svg viewBox="0 0 100 100"><defs><path id="circ" d="M50 50m-37 0a37 37 0 1 1 74 0a37 37 0 1 1-74 0"/></defs><circle cx="50" cy="50" r="49" fill="#fff"/><text font-family="Plus Jakarta Sans" font-size="10.5" font-weight="800" fill="#2E4A33" letter-spacing="2.2"><textPath href="#circ">OPEN TO WORK ✱ QA ✱ DATA ✱ AI ✱</textPath></text></svg>
         <span class="center"><svg><use href="#arrow"/></svg></span>
       </div>
-      <div class="float f1"><span class="ic"><svg><use href="#bug"/></svg></span><span>QA Engineer<small>Manual + Selenium</small></span></div>
+      <div class="float f1"><span class="ic"><svg><use href="#bug"/></svg></span><span>QA Engineer<small>Manual + automation</small></span></div>
       <div class="float f2"><span class="ic"><svg><use href="#chart"/></svg></span><span>Data Analyst<small>Python · SQL</small></span></div>
       <div class="float f3"><span class="ic"><svg><use href="#spark"/></svg></span><span>AI Builder<small>YOLO11 + FastAPI</small></span></div>
     </div>
@@ -539,7 +539,7 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
     </article>
 
     <div class="grid">
-      <article class="card" data-cat="data qa">
+      <article class="card" data-cat="data">
         <a class="thumb" href="ecommerce-sql-analysis/" aria-label="Open the Olist SQL analysis dashboard"><img src="assets/olist-sql.jpg" alt="Dashboard headline 'Paket terlambat, rating anjlok' with a bar chart of bad reviews by delivery delay" loading="lazy"></a>
         <div class="tags"><span class="pill">Data</span><span class="pill soft">SQL</span><span class="pill soft">SQLite</span><span class="pill soft">Window functions</span><span class="pill soft">CI</span></div>
         <div class="bottom">
@@ -551,6 +551,23 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
               <a class="btn-mini solid" href="ecommerce-sql-analysis/">Live dashboard</a>
               <a class="btn-mini" href="https://github.com/rivaldimhr/ecommerce-sql-analysis/blob/main/docs/rekomendasi.md">Brief</a>
               <a class="btn-mini" href="https://github.com/rivaldimhr/ecommerce-sql-analysis">Code</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-cat="qa">
+        <a class="thumb" href="qa-automation-portfolio/" aria-label="Open the latest QA test report"><img src="assets/qa-automation.jpg" alt="QA report page: three test suites passing and a list of bugs linked to Jira tickets" loading="lazy"></a>
+        <div class="tags"><span class="pill">QA</span><span class="pill soft">Playwright</span><span class="pill soft">pytest</span><span class="pill soft">Postman</span><span class="pill soft">Jira</span><span class="pill soft">CI</span></div>
+        <div class="bottom">
+          <div>
+            <h3>QA Automation Portfolio</h3>
+            <p>End-to-end QA for a web app (King's Hand) and a REST API (Restful-Booker): test plan, four exploratory sessions, 64 test cases designed with boundary values and state transitions, and 14 bugs logged in Jira with steps and evidence. The four High/Medium bugs were fixed and guarded by regression tests proven to fail on the old version; open bugs stay in the suite as strict expected failures.</p>
+            <p class="mine"><b>My part:</b> solo project. Page Object Model UI tests in Playwright, API tests with pytest and JSON Schema, a Postman collection run by Newman, a Jira sprint (epics, stories, bugs) and a daily CI run that publishes HTML reports.</p>
+            <div class="card-links">
+              <a class="btn-mini solid" href="qa-automation-portfolio/">Test report</a>
+              <a class="btn-mini" href="https://github.com/rivaldimhr/qa-automation-portfolio/blob/main/docs/bug-reports.md">Bug reports</a>
+              <a class="btn-mini" href="https://github.com/rivaldimhr/qa-automation-portfolio">Code</a>
             </div>
           </div>
         </div>
@@ -579,7 +596,7 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
           <div>
             <h3>King's Hand</h3>
             <p>Project monitoring for funded projects. Project leads submit proposals and report progress; admins approve proposals and review reports. Projects spending faster than they progress, or reporting late, are flagged automatically.</p>
-            <p class="mine"><b>My part:</b> started as a 6-person JavaFX app. I rebuilt it for the web and added the admin role, the alerts and 21 automated Playwright tests.</p>
+            <p class="mine"><b>My part:</b> started as a 6-person JavaFX app. I rebuilt it for the web and added the admin role, the alerts and 25 automated Playwright tests, including regression tests for bugs found in my QA project.</p>
             <div class="card-links">
               <a class="btn-mini solid" href="https://rivaldimhr.github.io/kingshand/">Live demo</a>
               <a class="btn-mini" href="https://github.com/rivaldimhr/KINGSHANDs">Code</a>
@@ -680,7 +697,10 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
     </div>
 
     <div class="tools">
+      <div class="tool"><span class="circle"><b style="background:#2EAD33">PW</b></span><span>Playwright</span></div>
       <div class="tool"><span class="circle"><b style="background:#43B02A">Se</b></span><span>Selenium</span></div>
+      <div class="tool"><span class="circle"><b style="background:#E2583E">PM</b></span><span>Postman</span></div>
+      <div class="tool"><span class="circle"><b style="background:#1868DB">Ji</b></span><span>Jira</span></div>
       <div class="tool"><span class="circle"><b style="background:#3572A5">Py</b></span><span>Python</span></div>
       <div class="tool"><span class="circle"><b style="background:#2E4A33">SQL</b></span><span>SQL</span></div>
       <div class="tool"><span class="circle"><b style="background:#059285">FA</b></span><span>FastAPI</span></div>
@@ -691,7 +711,7 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
     </div>
 
     <div class="services">
-      <div class="svc hl"><span class="ic"><svg><use href="#bug"/></svg></span><h3>Manual &amp; automated testing</h3><p>Test cases from requirements, functional and usability testing, Selenium automation and bug reporting.</p></div>
+      <div class="svc hl"><span class="ic"><svg><use href="#bug"/></svg></span><h3>Manual &amp; automated testing</h3><p>Test plans and test cases from requirements, exploratory testing, UI automation (Playwright, Selenium), API testing (pytest, Postman) and bug tracking in Jira.</p></div>
       <div class="svc"><span class="ic"><svg><use href="#chart"/></svg></span><h3>Data analysis &amp; AI</h3><p>Cleaning, visualising and modelling data, and training image classifiers.</p></div>
       <div class="svc"><span class="ic"><svg><use href="#flow"/></svg></span><h3>System analysis</h3><p>Requirements engineering, user flows and business process mapping.</p></div>
       <div class="svc"><span class="ic"><svg><use href="#db"/></svg></span><h3>Database design &amp; SQL</h3><p>Relational modelling and queries that keep data tidy and useful.</p></div>

@@ -104,6 +104,7 @@ main{max-width:1180px;margin:auto;padding:32px 24px 64px}
 .s-inactive{background:#e6eaf0;color:var(--slate)}
 .s-pending,.r-review{background:#fbf0d9;color:var(--amber)}
 .s-rejected,.r-revisi{background:#fbe6e5;color:var(--red)}
+.r-replaced{background:#eceff3;color:var(--slate)}
 .notif-list .notif-item{border-bottom:1px solid var(--line);border-radius:0}
 .notif-list .notif-item:last-child{border:0}
 .empty{color:var(--mute);padding:16px;text-align:center}
@@ -423,7 +424,7 @@ const save = () => store.set(S);
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const STATUS = {active:"Aktif",inactive:"Selesai",pending:"Menunggu persetujuan",rejected:"Ditolak",approved:"Disetujui"};
-const RSTATUS = {ok:"Diterima",review:"Menunggu diperiksa",revisi:"Perlu revisi"};
+const RSTATUS = {ok:"Diterima",review:"Menunggu diperiksa",revisi:"Perlu revisi",replaced:"Diganti laporan baru"};
 const REPORT_NAME = {keu:"Laporan keuangan",dev:"Laporan perkembangan"};
 function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove("show"),2800)}
 const visibleProjects = () => S.projects.filter(p => p.status !== "rejected");
@@ -437,6 +438,8 @@ function alertsFor(p){
   const prog=lastOf(p.progress), used=pct(p);
   if(used-prog >= RULES.overspendGap)
     out.push({type:"dana", title:"Dana terpakai lebih cepat dari progres", detail:`Dana terpakai ${used}% dari anggaran, progres pekerjaan baru ${prog}%.`});
+  if(used > 100)
+    out.push({type:"anggaran", title:"Dana terpakai melebihi anggaran", detail:`Dana terpakai ${used}% dari anggaran ${rp(p.dana)}.`});
   const devDates = p.reports.dev.map(r=>r.date).sort();
   const last = devDates[devDates.length-1];
   const age = last ? daysSince(last) : daysSince(p.start+"-01");
@@ -648,14 +651,19 @@ function renderDetail(id){
       const fl=file.files[0], v=val.value===""?NaN:Number(val.value);
       if(!fl){ err.textContent="Pilih file laporan dulu."; return; }
       if(!Number.isFinite(v) || v<0 || (kind==="dev" && v>100)){ err.textContent = kind==="dev"?"Isi progres antara 0 dan 100.":"Isi dana terpakai dengan angka 0 atau lebih."; return; }
-      if(kind==="dev" && v<prog){ err.textContent=`Progres tidak boleh turun dari ${prog}%.`; return; }
-      if(kind==="keu" && v<spent){ err.textContent=`Total dana terpakai tidak boleh lebih kecil dari ${rp(spent)}.`; return; }
+      // Laporan terakhir yang diminta revisi belum sah, jadi batas bawahnya adalah nilai sebelum laporan itu.
+      const latest = lastOf(p.reports[kind]) || null, current = kind==="dev"?prog:spent;
+      const floor = latest && latest.status==="revisi" && latest.prev!=null ? latest.prev : current;
+      if(kind==="dev" && v<floor){ err.textContent=`Progres tidak boleh turun dari ${floor}%.`; return; }
+      if(kind==="keu" && v<floor){ err.textContent=`Total dana terpakai tidak boleh lebih kecil dari ${rp(floor)}.`; return; }
       // nilai disimpan sebagai titik bulan berjalan (tambah titik bulan jika perlu)
       const idx=Math.max(0,monthsBetween(p.start,thisMonth()));
       const arr = kind==="dev"?p.progress:p.spend, other = kind==="dev"?p.spend:p.progress;
       while(arr.length<=idx) arr.push(lastOf(arr)); while(other.length<=idx) other.push(lastOf(other));
       arr[idx]=v;
-      p.reports[kind].push({name:fl.name,date:iso(TODAY),status:"review",value:v,note:""});
+      // laporan yang diminta revisi dianggap selesai karena sudah diganti laporan baru
+      p.reports[kind].forEach(r=>{ if(r.status==="revisi") r.status="replaced"; });
+      p.reports[kind].push({name:fl.name,date:iso(TODAY),status:"review",value:v,note:"",prev:current});
       notify("admin",`${REPORT_NAME[kind]} baru dari ${p.name} menunggu diperiksa.`);
       save(); render(); renderDetail(id); toast(`${REPORT_NAME[kind]} terkirim ke admin.`);
     };
@@ -743,7 +751,8 @@ function decide(id,approve){
   pr.note=note;
   if(approve){
     pr.status="approved";
-    if(p){ p.status="active"; p.start=thisMonth(); p.progress=[0]; p.spend=[0]; }
+    // rencana mulai dari proposal dipertahankan; jika sudah lewat, proyek mulai bulan ini
+    if(p){ p.status="active"; p.start=(p.start && p.start>thisMonth())?p.start:thisMonth(); p.progress=[0]; p.spend=[0]; }
     notify("pj",`Proposal ${pr.judul} disetujui. Proyek kini aktif.${note?" Catatan: "+note:""}`);
     toast(`${pr.judul} disetujui.`);
   } else {
@@ -781,9 +790,5 @@ function renderReports(){
 
 if(role && ALLOWED[role]) showApp();
 </script>
-<!-- tombol kembali ke portofolio -->
-<a id="rv-back" href="../#projects" aria-label="Kembali ke portofolio Rivaldi">← Portofolio</a>
-<style>#rv-back{position:fixed;left:16px;bottom:16px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:rgba(15,23,42,.88);color:#fff!important;font:600 13px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none!important;border:1px solid rgba(255,255,255,.25);box-shadow:0 6px 18px rgba(0,0,0,.25);backdrop-filter:blur(6px);transition:transform .15s,background .15s}#rv-back:hover{background:#0f172a;transform:translateY(-2px)}#rv-back:focus-visible{outline:3px solid #fbbf24;outline-offset:2px}@media print{#rv-back{display:none}}</style>
-<script src="../assets/back3d.js"></script>
 </body>
 </html>
