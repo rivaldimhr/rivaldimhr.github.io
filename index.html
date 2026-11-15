@@ -770,7 +770,9 @@ document.querySelector('.mode3d').addEventListener('click',e=>{
   try{sessionStorage.setItem('glitch','1');}catch(_){}
   setTimeout(()=>{location.href=href;},640);
 });
-addEventListener('pageshow',()=>{document.body.classList.remove('glitching');document.querySelectorAll('.glitch').forEach(g=>g.remove());});
+addEventListener('pageshow',()=>{document.body.classList.remove('glitching');document.querySelectorAll('.glitch').forEach(g=>g.remove());
+  // coming back to the classic site starts the 3D treasure hunt over
+  try{Object.keys(sessionStorage).filter(k=>k.startsWith('rv-found-')).forEach(k=>sessionStorage.removeItem(k));}catch(_){}});
 // CV menu: close on outside click, Escape, or after choosing a version
 const cvm=document.querySelector('.cvmenu');
 document.addEventListener('click',e=>{if(!cvm.contains(e.target)||e.target.closest('.opts a'))cvm.open=false;});

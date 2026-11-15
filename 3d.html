@@ -968,6 +968,7 @@ function castleIn(t,eye){const W=8.6,D=13,H=6,I=M.id();
     if(s==='N'){
       archWin(F,0,1.7,1.1,3.3,.8);archWin(F,-1.7,1.7,.9,2.6,.8);archWin(F,1.7,1.7,.9,2.6,.8);
       for(const sx of[-1,1]){bx(F,sx*3.5,5.0,.14,.9,.06,.06,C.wood2);bx(F,sx*3.5,3.7,.1,.76,2.5,.04,C.green);bx(F,sx*3.5,3.7,.125,.2,2.5,.02,C.gold);}
+      zdisc(F,-3.5,4.3,.13,.22,.03,C.gold,{shine:1.2});zdisc(F,-3.5,4.3,.15,.12,.02,C.wine); // OSKM banner
     }else if(s==='E'||s==='W'){
       for(const z of[-4.4,-1.5,1.4,4.3])archWin(F,z,2.1,.8,2.5,.7);
       [-2.95,-.05,2.85].forEach((z,i)=>{bx(F,z,4.7,.14,.8,.06,.06,C.wood2);bx(F,z,3.6,.1,.66,2.1,.04,i%2?C.green:C.gold);
@@ -975,6 +976,7 @@ function castleIn(t,eye){const W=8.6,D=13,H=6,I=M.id();
     }else{
       door(F,0,.02,2.3,3.5,C.wood,0,{frame:C.stone2,tex:2});zdisc(F,0,3.55,.02,1.28,.14,C.stone2);
       for(const sx of[-1,1]){bx(F,sx*2.9,3.4,.1,.8,2.4,.04,C.gold);bx(F,sx*2.9,3.4,.125,.24,2.4,.02,C.green);}
+      zdisc(F,-2.9,4.0,.13,.2,.03,C.wine);zdisc(F,-2.9,4.0,.15,.1,.02,C.gold,{shine:1.2}); // HMIF banner
     }
   });
   for(const z of[-2.4,1.3,4.9]){bx(I,0,5.2,z,.05,1.9,.05,C.iron);part(G.hoop,M.chain(I,M.T(0,4.2,z),M.X(90),M.S(1.0,1.0,.4)),C.iron);
@@ -1032,6 +1034,11 @@ function treeIn(t,eye){const W=6.6,D=6,H=3.3,I=M.id();TOON=1;
   cyl(I,.6,0,-1.2,.2,.5,C.wood2);cyl(I,.6,.5,-1.2,.28,.07,C.woodL);
   cyl(I,.6,.57,-1.2,.13,.17,C.orange);for(let i=0;i<5;i++)blob(M.chain(I,M.T(.6,.74,-1.2),M.Y(i*72),M.Z(28)),0,.2,0,.05,.22,.1,i%2?C.leaf:C.leaf3);blob(I,.6,1.02,-1.2,.09,.09,.09,C.gold);
   bx(I,.2,2.95,.6,.03,.7,.03,C.dark);blob(I,.2,2.5,.6,.2,.26,.2,C.glow,{flat:.85});
+  {const K=M.chain(I,M.T(2.2,0,-2.45),M.Y(-18)); // a chest of ITB coursework, lid open with scrolls inside
+   bx(K,0,.21,0,.74,.42,.46,C.woodF,{tex:3});for(const x of[-.26,.26])bx(K,x,.21,0,.06,.44,.48,C.gold,{shine:1.2});
+   bx(M.chain(K,M.T(0,.42,-.23),M.X(-62)),0,.0,.23,.76,.06,.48,C.wood2);bx(K,0,.33,.235,.12,.14,.02,C.gold,{shine:1.3});
+   [[-.18,C.cream],[.02,C.white],[.2,C.cream]].forEach(([x,c],i)=>bx(M.chain(K,M.T(x,.46,.02),M.Z(70+i*18)),0,0,0,.08,.36,.08,c,{flat:.85}));}
+  shadow(I,2.2,-2.45,.5,.35,.2);
   TOON=0;shadow(I,2.3,1.5,.8,.7,.2);shadow(I,-.9,-.4,.8,.8,.2);
 }
 
@@ -1075,13 +1082,18 @@ function hillIn(t,eye){const W=7,D=6,H=2.9,I=M.id();
   armchair(M.chain(I,M.T(-1.7,0,-1.3),M.Y(47)),C.green2);armchair(M.chain(I,M.T(1.7,0,-1.3),M.Y(-47)),C.green2);
   bx(I,0,2.7,.3,.04,.5,.04,C.iron);part(G.hoop,M.chain(I,M.T(0,2.4,.3),M.X(90),M.S(.8,.8,.4)),C.wood2);bx(I,0,2.4,.3,1.6,.06,.06,C.wood2);bx(I,0,2.4,.3,.06,.06,1.6,C.wood2);
   for(let k=0;k<6;k++)candle(I,Math.cos(k*1.047)*.8,2.46,.3+Math.sin(k*1.047)*.8,t,1.2);
-  shadow(I,0,.3,1.2,1.2,.22);shadow(I,-1.7,-1.3,.8,.8,.18);shadow(I,1.7,-1.3,.8,.8,.18);
+  {const E=M.chain(I,M.T(-1.9,0,2.45),M.Y(-38)); // an easel with a wireframe sketch
+   for(const x of[-.3,.3])bx(E,x,.8,.02,.05,1.62,.05,C.wood2,{rot:M.Z(x>0?-6:6)});bx(E,0,.75,.32,.05,1.5,.05,C.wood2,{rot:M.X(-14)});
+   bx(E,0,.62,-.04,.8,.05,.12,C.wood2);bx(E,0,1.13,-.05,.72,.92,.03,C.white,{flat:.9});
+   bx(E,0,1.47,-.07,.6,.1,.01,C.blue,{flat:.9});bx(E,-.16,1.15,-.07,.26,.4,.01,C.sky,{flat:.9});
+   for(let k=0;k<3;k++)bx(E,.16,1.3-k*.1,-.07,.22,.035,.01,C.metal,{flat:.9});bx(E,.16,.86,-.07,.24,.1,.01,C.gold,{flat:.9});}
+  shadow(I,0,.3,1.2,1.2,.22);shadow(I,-1.7,-1.3,.8,.8,.18);shadow(I,1.7,-1.3,.8,.8,.18);shadow(I,-1.9,2.45,.5,.4,.16);
 }
 const R={
   summary:{W:7.4,D:6.2,start:[2.0,2.3,-28],exit:[2.2,.55],obs:[[-.6,1.95,.85],[1.0,1.95,.85],[.2,.2,.75],[2.75,.2,.7],[-3.0,2.2,.3],[3.05,2.4,.4],[0,-2.55,.95]],rects:[[-3.7,-2.9,-.9,1.9]],draw:cottageIn},
   experience:{W:8.6,D:13,start:[0,5.7,0],exit:[0,1.15],obs:[],rects:[[-3.4,-1.0,-3.25,5.6],[1.0,3.4,-3.25,5.6],[-2.75,2.75,-6.3,-4.8]],draw:castleIn},
-  projects:{W:6.6,D:6,start:[0,2.3,0],exit:[0,.55],obs:[[-.9,-.4,.7],[.6,-1.2,.34],[2.3,1.55,.72]],rects:[[-3.3,-2.3,-1.95,1.95]],draw:treeIn},
-  skills:{W:7,D:6,start:[0,2.3,0],exit:[0,.6],obs:[[0,.3,1.0],[-1.7,-1.3,.7],[1.7,-1.3,.7],[-2.8,1.4,.5],[-2.9,-1.9,.5],[2.9,2.2,.5],[0,-2.4,1.0]],rects:[[2.3,3.5,-2.0,.3]],draw:hillIn}
+  projects:{W:6.6,D:6,start:[0,2.3,0],exit:[0,.55],obs:[[-.9,-.4,.7],[.6,-1.2,.34],[2.3,1.55,.72],[2.2,-2.45,.42]],rects:[[-3.3,-2.3,-1.95,1.95]],draw:treeIn},
+  skills:{W:7,D:6,start:[0,2.3,0],exit:[0,.6],obs:[[0,.3,1.0],[-1.7,-1.3,.7],[1.7,-1.3,.7],[-2.8,1.4,.5],[-2.9,-1.9,.5],[2.9,2.2,.5],[0,-2.4,1.0],[-1.9,2.45,.38]],rects:[[2.3,3.5,-2.0,.3]],draw:hillIn}
 };
 // The treasure hunt: each section's content is hidden in objects around its room.
 const T={
@@ -1095,8 +1107,10 @@ const T={
     {name:'the tall chair at the high table',at:[0,3.3,-5.85],stand:[0,-3.6],title:'Quality Assurance · PT Akhdani Reka Solusi',body:'Nov 2025 – Jan 2026, Bandung. Created and ran test cases for the SIMPUS web application from requirements and user workflows, automated repetitive checks with Selenium, and reported bugs and verified fixes with developers.'},
     {name:'a goblet on the left table',at:[-2.2,1.4,-1.0],stand:[-.6,-1.0],title:'Quality Assurance · PT Bringin Inti Teknologi',body:'Jul 2025 – Sep 2025, Jakarta. Functional and usability testing for Bee-RP, an employee management system, in a 3-person QA team; led QA for TrackMate, a task-tracking web app, and validated fixes with developers ahead of UAT.'},
     {name:'a plate on the right table',at:[2.2,1.4,2.4],stand:[.6,2.4],title:'Data Analyst Intern · PT Sarana Pactindo',body:'Jun 2024 – Jul 2024, Bandung. Built a web-based billing forecast system, analysed data to support updates for two company websites, and gathered requirements with two stakeholders.'},
-    {name:'the window beside the high table',at:[1.7,3.2,-6.25],stand:[3.4,-4.4],title:'STEM Tutor (Maths & Physics)',body:'Mar 2023 – Apr 2023, Bandar Lampung. One-on-one tutoring for elementary and middle school students.'},
-    {name:'the banner by the door',at:[-2.9,3.2,6.3],stand:[-2.4,5.98],title:'Education & activities',body:'B.S. Information Technology Systems, ITB (2022 – 2026) · Incubator IT / DPP, HMIF (Aug 2023 – Aug 2024) · Extra-campus committee, OSKM ITB (Aug – Oct 2023).'}],
+    {name:'the window beside the high table',at:[1.7,3.2,-6.25],stand:[3.4,-4.4],title:'STEM Tutor (Maths & Physics)',body:'Mar 2023 – Apr 2023, Bandar Lampung. One-on-one tutoring for elementary and middle school students, making hard concepts simple and fun.'},
+    {name:'the banner by the door',at:[-2.9,3.4,6.3],stand:[-.5,3.8],title:'B.S. Information Technology Systems · ITB',body:'2022 – 2026. Projects across UI/UX, system analysis, SQL and database modelling, machine learning and data visualisation. As lecturer assistant for Pancasila I led discussions, graded assignments and kept students engaged.'},
+    {name:'the banner on the other side of the door',at:[2.9,3.8,6.3],stand:[.5,3.8],title:'Incubator IT / DPP · Himpunan Mahasiswa Informatika',body:'Aug 2023 – Aug 2024. Planned and delivered projects, delegated across teams, tracked progress and managed risks, and kept stakeholders informed with documentation and evaluations.'},
+    {name:'the green banner in the far corner',at:[-3.5,3.9,-6.3],stand:[-.55,-3.1],title:'Extra-campus Committee · OSKM ITB',body:'Aug – Oct 2023. Logistics, budgeting, external coordination, promotion and participant registration.'}],
   projects:[
     {name:'the little robot on the workbench',at:[-2.8,1.95,-.5],stand:[-1.5,.5],title:'KukangSort AI',body:'My final-year project. A YOLO11 web app that sorts slow-loris camera-trap photos into kukang, unknown and delete, then labels behaviour.',href:'kukangsort-ai/'},
     {name:'the wall of screens',at:[.9,1.75,-2.75],stand:[1.35,-1.5],title:'QA Automation Portfolio',body:'Test plan, 64 test cases and 14 bugs logged in Jira for a web app and a REST API. The serious bugs were fixed and guarded by regression tests; Playwright, pytest and Postman run in CI every day.',href:'qa-automation-portfolio/'},
@@ -1106,14 +1120,17 @@ const T={
     {name:'the crates on the shelf',at:[2.95,1.75,1.2],stand:[1.55,.45],title:'Retail Inventory AI',body:'Forecasts next-week demand for 300 products from 1 million real transactions and recommends reorder quantities.',href:'retail-inventory-ai/'},
     {name:'the note by the door',at:[2.0,1.9,2.8],stand:[.95,2.2],title:'E-commerce SQL Analysis',body:'SQL analysis of 98,000 Olist orders: only 3% of customers buy again, and a late first delivery cuts repeat buying by 25%. Every chart shows its SQL.',href:'ecommerce-sql-analysis/'},
     {name:'the study books under the window',at:[-2.1,.95,-2.7],stand:[-.75,-2.0],title:'Rangkuman SMP Interaktif',body:'A junior-high science and maths study app: 27 chapters, each with an illustration, worked examples and a hands-on lab, plus 143 quiz questions.',href:'rangkuman-smp/'},
-    {name:'the red-and-white flag by the door',at:[-1.62,1.76,2.86],stand:[-1.0,2.1],title:'Virsila',body:'A Pancasila learning site for school students: the five principles, a 1945 timeline, a practice game and a timed quiz, checked by 19 automated tests.',href:'virsila/'}],
+    {name:'the red-and-white flag by the door',at:[-1.62,1.76,2.86],stand:[-1.0,2.1],title:'Virsila',body:'A Pancasila learning site for school students: the five principles, a 1945 timeline, a practice game and a timed quiz, checked by 19 automated tests.',href:'virsila/'},
+    {name:'the treasure chest in the corner',at:[2.2,.75,-2.45],stand:[1.4,-1.3],title:'More academic projects at ITB',body:'Muslim Pro app UI/UX (team of 4), enterprise requirements analysis for Songket Aninun, a crowdfunding IT system (team of 2), a Minecraft relational database, Word Machine (team of 5), the Destroy the Temple game (team of 4) and an AI data analysis project (team of 3).'}],
   skills:[
     {name:'the tool rack',at:[-3.25,1.95,.3],stand:[-2.1,.1],title:'Tools',body:'Playwright · Selenium · Postman · Jira · Python · SQL · FastAPI · YOLO11 · Java · JavaScript · Git & GitHub'},
     {name:'the anvil',at:[-2.8,1.35,1.4],stand:[-1.75,2.0],title:'Manual & automated testing',body:'Test plans, test cases and exploratory sessions, bugs tracked in Jira, then Playwright, Selenium, pytest and Postman to automate UI and API checks in CI.'},
     {name:'the shelf of bottles',at:[3.1,1.9,-.8],stand:[1.9,.75],title:'Data analysis & AI',body:'SQL with CTEs and window functions, Python and pandas for cleaning and exploring, clustering and forecasting with scikit-learn, and image classification with YOLO11.'},
-    {name:'the map on the table',at:[-.2,1.15,.2],stand:[0,1.75],title:'System analysis & database design',body:'Turning requirements into user flows, system diagrams and data models, then writing the SQL behind them.'},
+    {name:'the map on the table',at:[-.2,1.15,.2],stand:[0,1.75],title:'System analysis',body:'Requirements engineering, user flows and business process mapping: turning what people need into a system others can build and test.'},
     {name:'the fireplace',at:[0,1.5,-2.3],stand:[0,-1.15],title:'Soft skills',body:'Public speaking · Negotiation · Time management · Project management · Team collaboration · Problem solving'},
-    {name:'the barrel by the door',at:[2.9,1.25,2.2],stand:[1.85,2.2],title:'Web development, UI/UX & prototyping',body:'Building web apps with JavaScript, HTML/CSS and FastAPI, and designing interfaces from wireframe to prototype.'}]
+    {name:'the barrel by the door',at:[2.9,1.25,2.2],stand:[1.85,2.2],title:'Web development',body:'Front ends in HTML, CSS and JavaScript, and back ends with FastAPI and PHP.'},
+    {name:'the barrel behind the armchair',at:[-2.9,1.1,-1.9],stand:[-2.3,-.15],title:'Database design & SQL',body:'Relational models and SQL queries that keep data tidy and useful, from schema and cleaning to CTEs and window functions.'},
+    {name:'the easel by the door',at:[-1.9,1.3,2.45],stand:[-1.1,1.45],title:'UI/UX & prototyping',body:'Turning user needs into interface concepts, wireframes and clickable prototypes.'}]
 };
 const found={};
 const fp={x:0,z:0,yaw:0,pitch:0,bob:0,phase:0,dest:null,face:null,then:null,keys:{},stuck:0,fov:62};
@@ -1159,6 +1176,9 @@ function buildMarks(){
   T[id].forEach((tr,i)=>{const el=document.createElement('button');el.type='button';el.className='mark';el.dataset.t=i;el.innerHTML='<span>?</span>';box.append(el);});
   quest();
 }
+addEventListener('pageshow',e=>{if(!e.persisted)return; // the classic site clears progress; reload it from storage
+  for(const id in found){let v=[];try{v=JSON.parse(sessionStorage.getItem('rv-found-'+id)||'[]');}catch(_){}found[id]=new Set(v);}
+  if(state==='inside')quest();});
 function quest(){
   const id=B[active].id,n=found[id].size,all=T[id].length;
   $('#q-room').textContent=B[active].title+' · '+B[active].name;$('#q-n').textContent=n+' of '+all+' found';
