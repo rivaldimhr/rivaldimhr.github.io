@@ -147,6 +147,9 @@ body.has-journal .sheet,body.mail .sheet{transform:none;opacity:1;visibility:vis
 .tl .when.soft{background:var(--green-3)}
 .tl .org{font-size:13.5px;font-weight:700;color:var(--green-2)}
 .tl p{font-size:14px;margin-top:4px}
+.tl li ul{margin-top:6px;padding-left:18px;font-size:14px;color:var(--muted)}
+.tl li ul li{background:none;border-radius:0;padding:0;margin-top:3px}
+.tl li ul li::marker{color:var(--yellow)}
 .sub{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--green-2);margin:16px 0 8px}
 .pj{display:grid;gap:10px}
 .pj a{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:center;background:var(--mist);border-radius:16px;padding:10px;transition:background .2s,transform .2s}
@@ -289,24 +292,49 @@ body.nowebgl .nogl{display:grid}
           <ol class="tl">
             <li><div class="top"><h3>Quality Assurance</h3><span class="when">Nov 2025 – Jan 2026</span></div>
               <div class="org">PT Akhdani Reka Solusi · Bandung</div>
-              <p>Test cases and Selenium automation for the SIMPUS web application; reported bugs and verified fixes with developers.</p></li>
+              <ul>
+                <li>Created and ran test cases for the SIMPUS web application, based on system requirements and user workflows.</li>
+                <li>Built and executed automated tests with Selenium to cut repetitive manual testing.</li>
+                <li>Found, documented and reported bugs, then worked with developers to verify fixes.</li>
+              </ul></li>
             <li><div class="top"><h3>Quality Assurance</h3><span class="when">Jul 2025 – Sep 2025</span></div>
               <div class="org">PT Bringin Inti Teknologi · Jakarta</div>
-              <p>Functional and usability testing for Bee-RP in a 3-person team; led QA for TrackMate and prepared for UAT.</p></li>
+              <ul>
+                <li>Ran functional and usability testing in a 3-person QA team for Bee-RP, an employee management system for projects, attendance, leave and performance reports.</li>
+                <li>Led QA for TrackMate, an employee task-tracking web app, in a 2-person team.</li>
+                <li>Worked with developers and stakeholders to validate fixes and get ready for UAT.</li>
+              </ul></li>
             <li><div class="top"><h3>Data Analyst Intern</h3><span class="when">Jun 2024 – Jul 2024</span></div>
               <div class="org">PT Sarana Pactindo · Bandung</div>
-              <p>Built a web-based billing forecast system and analysed data for two company websites.</p></li>
+              <ul>
+                <li>Built a web-based billing forecast system and analysed data to support updates for two company websites.</li>
+                <li>Gathered requirements with two stakeholders to improve accuracy, interface and efficiency.</li>
+              </ul></li>
             <li><div class="top"><h3>STEM Tutor (Maths &amp; Physics)</h3><span class="when">Mar 2023 – Apr 2023</span></div>
-              <div class="org">Private tutoring · Bandar Lampung</div></li>
+              <div class="org">Private tutoring · Bandar Lampung</div>
+              <ul>
+                <li>One-on-one tutoring for elementary and middle school students, making hard concepts simple and fun.</li>
+              </ul></li>
           </ol>
           <h3 class="sub">Education &amp; activities</h3>
           <ol class="tl">
             <li><div class="top"><h3>B.S. Information Technology Systems</h3><span class="when soft">2022 – 2026</span></div>
-              <div class="org">Institut Teknologi Bandung · Lecturer Assistant for Pancasila</div></li>
+              <div class="org">Institut Teknologi Bandung</div>
+              <ul>
+                <li>Projects across UI/UX, system analysis, SQL and database modelling, machine learning and data visualisation.</li>
+                <li>Lecturer Assistant for Pancasila: led discussions, graded assignments and kept students engaged.</li>
+              </ul></li>
             <li><div class="top"><h3>Incubator IT / DPP</h3><span class="when soft">Aug 2023 – Aug 2024</span></div>
-              <div class="org">Himpunan Mahasiswa Informatika</div></li>
+              <div class="org">Himpunan Mahasiswa Informatika</div>
+              <ul>
+                <li>Planned and delivered projects, delegated across teams, tracked progress and managed risks.</li>
+                <li>Kept stakeholders informed and prepared documentation and evaluations.</li>
+              </ul></li>
             <li><div class="top"><h3>Extra-campus Committee</h3><span class="when soft">Aug – Oct 2023</span></div>
-              <div class="org">OSKM ITB</div></li>
+              <div class="org">OSKM ITB</div>
+              <ul>
+                <li>Logistics, budgeting, external coordination, promotion and participant registration.</li>
+              </ul></li>
           </ol>
         </div>
       </section>
@@ -1059,9 +1087,9 @@ const T={
     {name:'the bookshelf',at:[-2.95,1.7,.5],stand:[-1.75,-.6],title:'By the numbers',body:'2 QA roles on live web platforms · 1 data analyst internship · 2 YOLO11 models in my thesis app · 9 projects with live demos.'},
     {name:'the portrait by the bookshelf',at:[-3.4,2.0,-1.9],stand:[-2.2,-1.9],title:'Beyond class',body:'Incubator IT / DPP at Himpunan Mahasiswa Informatika (Aug 2023 – Aug 2024), and the extra-campus committee for OSKM ITB (Aug – Oct 2023).'}],
   experience:[
-    {name:'the tall chair at the high table',at:[0,3.3,-5.85],stand:[0,-3.6],title:'Quality Assurance · PT Akhdani Reka Solusi',body:'Nov 2025 – Jan 2026, Bandung. Test cases and Selenium automation for the SIMPUS web application; reported bugs and verified fixes with developers.'},
-    {name:'a goblet on the left table',at:[-2.2,1.4,-1.0],stand:[-.6,-1.0],title:'Quality Assurance · PT Bringin Inti Teknologi',body:'Jul 2025 – Sep 2025, Jakarta. Functional and usability testing for Bee-RP in a 3-person team; led QA for TrackMate and prepared for UAT.'},
-    {name:'a plate on the right table',at:[2.2,1.4,2.4],stand:[.6,2.4],title:'Data Analyst Intern · PT Sarana Pactindo',body:'Jun 2024 – Jul 2024, Bandung. Built a web-based billing forecast system and analysed data for two company websites.'},
+    {name:'the tall chair at the high table',at:[0,3.3,-5.85],stand:[0,-3.6],title:'Quality Assurance · PT Akhdani Reka Solusi',body:'Nov 2025 – Jan 2026, Bandung. Created and ran test cases for the SIMPUS web application from requirements and user workflows, automated repetitive checks with Selenium, and reported bugs and verified fixes with developers.'},
+    {name:'a goblet on the left table',at:[-2.2,1.4,-1.0],stand:[-.6,-1.0],title:'Quality Assurance · PT Bringin Inti Teknologi',body:'Jul 2025 – Sep 2025, Jakarta. Functional and usability testing for Bee-RP, an employee management system, in a 3-person QA team; led QA for TrackMate, a task-tracking web app, and validated fixes with developers ahead of UAT.'},
+    {name:'a plate on the right table',at:[2.2,1.4,2.4],stand:[.6,2.4],title:'Data Analyst Intern · PT Sarana Pactindo',body:'Jun 2024 – Jul 2024, Bandung. Built a web-based billing forecast system, analysed data to support updates for two company websites, and gathered requirements with two stakeholders.'},
     {name:'the window beside the high table',at:[1.7,3.2,-6.25],stand:[3.4,-4.4],title:'STEM Tutor (Maths & Physics)',body:'Mar 2023 – Apr 2023, Bandar Lampung. One-on-one tutoring for elementary and middle school students.'},
     {name:'the banner by the door',at:[-2.9,3.2,6.3],stand:[-2.4,5.98],title:'Education & activities',body:'B.S. Information Technology Systems, ITB (2022 – 2026) · Incubator IT / DPP, HMIF (Aug 2023 – Aug 2024) · Extra-campus committee, OSKM ITB (Aug – Oct 2023).'}],
   projects:[
