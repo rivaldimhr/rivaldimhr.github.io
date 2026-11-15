@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M. Rivaldi Mahari — Resume</title>
+<meta name="description" content="One-page resume of M. Rivaldi Mahari, QA engineer and data analyst based in Bandung, with a PDF download.">
+<style>
+:root{--green:#2E4A33;--yellow:#F5B40A;--ink:#111}
+@page{size:A4;margin:12mm 14mm 11mm}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:Inter,Arial,Helvetica,sans-serif;color:var(--ink);background:#C9D2C1;font-size:9.3pt;line-height:1.34}
+a{color:inherit;text-decoration:none}
+.doc a{color:#1F4E8C;text-decoration:underline;text-underline-offset:1.5pt}
+.lk{white-space:nowrap;font-size:8.6pt}
+
+/* toolbar (screen only) */
+.toolbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 14px;background:var(--green);box-shadow:0 8px 24px rgba(29,36,31,.25);margin-bottom:22px;font:600 14px/1.2 "Plus Jakarta Sans",Inter,system-ui,sans-serif}
+.toolbar a{font-weight:800;padding:9px 18px;border-radius:999px;color:#fff;white-space:nowrap}
+.toolbar .back{border:2px solid rgba(255,255,255,.5)}
+.toolbar .tabs{display:flex;background:rgba(255,255,255,.12);border-radius:999px;padding:4px}
+.toolbar .tabs a{padding:7px 16px;color:#E6EDE3}
+.toolbar .tabs a[aria-current]{background:#fff;color:var(--green)}
+.toolbar .dl{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--green)}
+.toolbar .dl svg{width:16px;height:16px}
+.doc{width:210mm;max-width:calc(100% - 24px);margin:0 auto 24px;background:#fff;padding:14mm 15mm;box-shadow:0 20px 50px rgba(29,36,31,.25)}
+
+/* document */
+h1{font-size:18pt;font-weight:700;text-align:center;letter-spacing:.02em}
+.contact{text-align:center;margin-top:2pt;font-size:9.2pt}
+.summary{margin-top:7pt}
+h2{font-size:10.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #222;margin:8pt 0 3pt;padding-bottom:1pt}
+.entry{break-inside:avoid}
+.entry+.entry{margin-top:3pt}
+.row{display:flex;justify-content:space-between;gap:12pt}
+.row b{font-weight:700}
+.row i{font-style:italic}
+ul{padding-left:13pt;margin-top:1.5pt}
+li{margin-top:1pt}
+.skills p+p{margin-top:2pt}
+
+@media print{
+  body{background:#fff}
+  .toolbar{display:none}
+  .doc{width:auto;max-width:none;margin:0;padding:0;box-shadow:none}
+}
+@media screen and (max-width:700px){
+  .doc{padding:18px 16px;font-size:13px}
+  .row{flex-direction:column;gap:0}
+}
+.headline{text-align:center;font-weight:700;font-size:10pt;color:var(--green);margin-top:1pt}
+.flat{padding-left:13pt}
+.doc h2{margin-top:7pt}
+.doc>p{margin-top:2pt}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a class="back" href="../">← Portfolio</a>
+  <nav class="tabs" aria-label="Document">
+    <a href="./">Visual CV</a>
+    <a href="ats.html">ATS CV</a>
+    <a href="resume.html" aria-current="page">Resume</a>
+    <a href="cover-letter.html">Cover letter</a>
+  </nav>
+  <a class="dl" href="../assets/M-Rivaldi-Mahari-Resume.pdf" download="M-Rivaldi-Mahari-Resume.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Download PDF</a>
+</div>
+
+<main class="doc">
+  <h1>M. RIVALDI MAHARI</h1>
+  <p class="headline">Quality Assurance Engineer | Data Analyst</p>
+  <p class="contact">Bandung, Indonesia • 089695637050 • <a href="mailto:rivaldimhr@gmail.com">rivaldimhr@gmail.com</a> • <a href="https://rivaldimhr.github.io/">rivaldimhr.github.io</a> • <a href="https://github.com/rivaldimhr">github.com/rivaldimhr</a></p>
+
+  <h2>Summary</h2>
+  <p>Information Technology Systems graduate from Institut Teknologi Bandung with two Quality Assurance roles and a data analyst internship. Designs test cases from requirements, automates UI and API tests with Playwright, Selenium and pytest, tracks bugs in Jira through to verified fixes, and analyzes data with SQL and Python.</p>
+
+  <h2>Skills</h2>
+  <div class="skills">
+    <p><b>Testing:</b> Test planning and test case design • Manual, exploratory, functional and regression testing • UAT • Jira</p>
+    <p><b>Automation and API:</b> Playwright • Selenium • pytest • Postman/Newman • requests • GitHub Actions (CI)</p>
+    <p><b>Data:</b> SQL (CTEs, window functions) • Python • pandas • scikit-learn • Plotly • YOLO11 • OpenCV</p>
+    <p><b>Development:</b> JavaScript • HTML/CSS • FastAPI • Java • PHP • Git and GitHub • Docker</p>
+  </div>
+
+  <h2>Experience</h2>
+  <div class="entry">
+    <div class="row"><b>Quality Assurance</b><span>Nov 2025 – Jan 2026</span></div>
+    <div class="row"><i>PT Akhdani Reka Solusi</i><span>Bandung</span></div>
+    <ul>
+      <li>Created and executed test cases for the SIMPUS web application based on system requirements and user workflows.</li>
+      <li>Automated repetitive regression checks with Selenium to reduce manual retesting.</li>
+      <li>Documented and reported bugs, and worked with developers to verify fixes.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>Quality Assurance</b><span>Jul 2025 – Sep 2025</span></div>
+    <div class="row"><i>PT Bringin Inti Teknologi</i><span>Jakarta</span></div>
+    <ul>
+      <li>Performed functional and usability testing in a 3-person QA team for Bee-RP, an employee management system.</li>
+      <li>Led QA for TrackMate, an employee task-tracking web application, in a 2-person team.</li>
+      <li>Validated fixes with developers and stakeholders to prepare releases for UAT.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>Data Analyst Intern</b><span>Jun 2024 – Jul 2024</span></div>
+    <div class="row"><i>PT Sarana Pactindo</i><span>Bandung</span></div>
+    <ul>
+      <li>Built a web-based billing forecast system and analyzed data to support updates to two company websites.</li>
+      <li>Gathered requirements with two stakeholders to improve accuracy, user interface and operational efficiency.</li>
+    </ul>
+  </div>
+
+  <h2>Projects</h2>
+  <div class="entry">
+    <div class="row"><b>QA Automation Portfolio</b><span class="lk"><a href="https://rivaldimhr.github.io/qa-automation-portfolio/">Test report</a> | <a href="https://github.com/rivaldimhr/qa-automation-portfolio">GitHub</a></span></div>
+    <ul><li>Wrote a test plan and 64 test cases for a web app and a REST API, logged 14 bugs in Jira, and automated 115 test runs with Playwright and pytest plus a Postman collection in a daily CI pipeline with HTML reports.</li></ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>E-commerce SQL Analysis</b><span class="lk"><a href="https://rivaldimhr.github.io/ecommerce-sql-analysis/">Dashboard</a> | <a href="https://github.com/rivaldimhr/ecommerce-sql-analysis">GitHub</a></span></div>
+    <ul><li>Analyzed 98,000 orders with 13 SQL queries (cohorts, RFM, delivery delays); found that a late first delivery lowers repeat purchases by 25% (p = 0.002) and wrote five recommendations with success metrics.</li></ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>KukangSort AI (final-year project)</b><span class="lk"><a href="https://rivaldimhr.github.io/kukangsort-ai/">Live demo</a> | <a href="https://github.com/rivaldimhr/KukangSortAI">GitHub</a></span></div>
+    <ul><li>Built a web system with YOLO11, FastAPI and Docker that sorts Sunda slow loris camera-trap images and classifies behavior (eating, moving, grooming) for single images and batches.</li></ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>Retail Inventory AI</b><span class="lk"><a href="https://rivaldimhr.github.io/retail-inventory-ai/">Live demo</a> | <a href="https://github.com/rivaldimhr/retail-inventory-ai">GitHub</a></span></div>
+    <ul><li>Forecast 7-day demand for 300 products from 1 million transactions, with reorder recommendations and stock-risk alerts.</li></ul>
+  </div>
+
+  <h2>Education</h2>
+  <div class="entry">
+    <div class="row"><b>B.S. Information Technology Systems</b><span>Aug 2022 – 2026</span></div>
+    <div class="row"><i>Institut Teknologi Bandung</i><span>Bandung</span></div>
+    <ul><li>Lecturer Assistant for Pancasila. Coursework: system analysis, databases, machine learning, data visualization.</li></ul>
+  </div>
+
+  <h2>Leadership</h2>
+  <ul class="flat">
+    <li><b>Incubator IT / DPP, Himpunan Mahasiswa Informatika</b> (2023 – 2024): led project planning and delivery across teams.</li>
+    <li><b>Committee, OSKM ITB</b> (2023): logistics, budgeting, external coordination and registration.</li>
+  </ul>
+</main>
+
+</body>
+</html>

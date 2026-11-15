@@ -84,6 +84,7 @@ body.glitching main,body.glitching footer{animation:gshake .7s steps(1) both}
 .cvmenu .opts a:hover{background:var(--yellow-soft)}
 .cvmenu .opts .ic{flex:none;width:38px;height:38px;border-radius:12px;background:var(--yellow);color:var(--green);display:grid;place-items:center}
 .cvmenu .opts a+a .ic{background:var(--green-3)}
+.cvmenu .opts a:nth-child(n+3) .ic{background:var(--yellow-soft)}
 .cvmenu .opts svg{width:18px;height:18px}
 .cvmenu .opts small{display:block;font-weight:500;font-size:12.5px;color:var(--muted)}
 .dlcv{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 16px;border-radius:999px;border:2px solid var(--yellow);color:var(--yellow);font-weight:800;font-size:15px;white-space:nowrap}
@@ -354,7 +355,7 @@ footer{width:var(--wrap);margin:26px auto 30px;display:flex;justify-content:spac
       <li><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
     </ul>
-    <div class="navr"><a class="mode3d" href="3d.html" title="Switch to the 3D portfolio">3D</a><details class="cvmenu"><summary class="dlcv" title="Preview and download my CV"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>CV</span><span class="sr"> (choose a version to preview)</span></summary><div class="opts"><a href="cv/"><span class="ic"><svg aria-hidden="true"><use href="#eye"/></svg></span><span>Visual CV<small>1 page, with photo · preview</small></span></a><a href="cv/ats.html"><span class="ic"><svg aria-hidden="true"><use href="#eye"/></svg></span><span>ATS-friendly CV<small>2 pages, plain format · preview</small></span></a></div></details><a class="cta" href="#contact">Contact me</a></div>
+    <div class="navr"><a class="mode3d" href="3d.html" title="Switch to the 3D portfolio">3D</a><details class="cvmenu"><summary class="dlcv" title="Preview and download my CV, resume and cover letter"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>CV</span><span class="sr"> (choose a document to preview)</span></summary><div class="opts"><a href="cv/"><span class="ic"><svg aria-hidden="true"><use href="#eye"/></svg></span><span>Visual CV<small>1 page, with photo · preview</small></span></a><a href="cv/ats.html"><span class="ic"><svg aria-hidden="true"><use href="#eye"/></svg></span><span>ATS CV<small>2 pages, plain format · preview</small></span></a><a href="cv/resume.html"><span class="ic"><svg aria-hidden="true"><use href="#eye"/></svg></span><span>Resume<small>1 page, ATS-friendly · preview</small></span></a><a href="cv/cover-letter.html"><span class="ic"><svg aria-hidden="true"><use href="#eye"/></svg></span><span>Cover letter<small>QA or Data Analyst · preview</small></span></a></div></details><a class="cta" href="#contact">Contact me</a></div>
   </div>
 </nav>
 
