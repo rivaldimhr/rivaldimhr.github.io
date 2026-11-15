@@ -274,7 +274,7 @@ body.nowebgl .nogl{display:grid}
           <h2 id="t1">Who is <em>Rivaldi?</em></h2></header>
         <div class="body">
           <p>I’m an Information Technology Systems graduate from Institut Teknologi Bandung with hands-on experience in quality assurance, data analysis, web development, system analysis and AI-based image classification.</p>
-          <p>I’m good at turning requirements into test cases, reading systems and data to find what’s wrong or what matters, and working with developers, stakeholders and cross-functional teams to ship things that work.</p>
+          <p>I’m good at turning requirements into test plans and automated UI and API tests, tracking bugs in Jira through to verified fixes, analysing data with SQL and Python to find what matters, and working with developers and stakeholders to ship things that work.</p>
           <div class="stats">
             <div><b>2</b>QA roles on live web platforms</div>
             <div><b>1</b>data analyst internship</div>
@@ -316,8 +316,10 @@ body.nowebgl .nogl{display:grid}
         <div class="body">
           <div class="pj">
             <a class="hl" href="kukangsort-ai/"><img src="assets/kukangsort-ui.jpg" alt="" loading="lazy"><div><b>KukangSort AI</b><span>Final-year project. YOLO11 web app that sorts slow-loris camera-trap photos and labels behaviour.</span></div></a>
+            <a href="ecommerce-sql-analysis/"><img src="assets/olist-sql.jpg" alt="" loading="lazy"><div><b>E-commerce SQL Analysis</b><span>SQL analysis of 98,000 orders: retention, RFM and how late delivery cuts repeat buying.</span></div></a>
+            <a href="qa-automation-portfolio/"><img src="assets/qa-automation.jpg" alt="" loading="lazy"><div><b>QA Automation Portfolio</b><span>Test plan, 64 test cases, 14 bugs in Jira, Playwright and Postman tests in daily CI.</span></div></a>
             <a href="retail-inventory-ai/"><img src="assets/retail-inventory-ai.jpg" alt="" loading="lazy"><div><b>Retail Inventory AI</b><span>Demand forecasts and reorder suggestions from 1 million real transactions.</span></div></a>
-            <a href="kingshand/"><img src="assets/kingshand.jpg" alt="" loading="lazy"><div><b>King’s Hand</b><span>Project monitoring with automatic alerts and 21 Playwright tests.</span></div></a>
+            <a href="kingshand/"><img src="assets/kingshand.jpg" alt="" loading="lazy"><div><b>King’s Hand</b><span>Project monitoring with automatic alerts and 25 Playwright tests.</span></div></a>
             <a href="jabar-tourism/"><img src="assets/jabar-cluster.jpg" alt="" loading="lazy"><div><b>West Java Tourism Analytics</b><span>Data story with K-Means area groups and data-quality scoring.</span></div></a>
             <a href="pvz/"><img src="assets/pvz-gameplay.jpg" alt="" loading="lazy"><div><b>Plants vs. Zombies</b><span>Java Swing game playable in the browser, with 119 unit tests.</span></div></a>
             <a href="rangkuman-smp/"><img src="assets/rangkuman-smp.jpg" alt="" loading="lazy"><div><b>Rangkuman SMP Interaktif</b><span>Science and maths study app: 27 chapters, labs and 143 quiz questions.</span></div></a>
@@ -330,7 +332,7 @@ body.nowebgl .nogl{display:grid}
           <h2 id="t4">What I <em>work with</em></h2></header>
         <div class="body">
           <h3 class="sub" style="margin-top:0">Tools</h3>
-          <ul class="chips y"><li>Selenium</li><li>Python</li><li>SQL</li><li>FastAPI</li><li>YOLO11</li><li>Java</li><li>JavaScript</li><li>Git &amp; GitHub</li></ul>
+          <ul class="chips y"><li>Playwright</li><li>Selenium</li><li>Postman</li><li>Jira</li><li>Python</li><li>SQL</li><li>FastAPI</li><li>YOLO11</li><li>Java</li><li>JavaScript</li><li>Git &amp; GitHub</li></ul>
           <h3 class="sub">What I do</h3>
           <ul class="chips"><li>Manual &amp; automated testing</li><li>Data analysis &amp; AI</li><li>System analysis</li><li>Database design &amp; SQL</li><li>Web development</li><li>UI/UX &amp; prototyping</li></ul>
           <h3 class="sub">Soft skills</h3>
@@ -1051,9 +1053,9 @@ const R={
 const T={
   summary:[
     {name:'the painting above the fireplace',at:[0,2.45,-2.35],stand:[-1.35,-.75],title:'Who is Rivaldi?',body:'I’m an Information Technology Systems graduate from Institut Teknologi Bandung with hands-on experience in quality assurance, data analysis, web development, system analysis and AI-based image classification.'},
-    {name:'the laptop on the coffee table',at:[.25,.95,.15],stand:[-1.0,.85],title:'What I’m good at',body:'Turning requirements into test cases, reading systems and data to find what’s wrong or what matters, and working with developers, stakeholders and cross-functional teams to ship things that work.'},
+    {name:'the laptop on the coffee table',at:[.25,.95,.15],stand:[-1.0,.85],title:'What I’m good at',body:'Turning requirements into test plans and automated UI and API tests, tracking bugs in Jira through to verified fixes, and analysing data with SQL and Python to find what matters.'},
     {name:'the certificate on the wall',at:[3.4,2.0,-1.8],stand:[2.2,-1.6],title:'Education',body:'B.S. in Information Technology Systems, Institut Teknologi Bandung, 2022 – 2026. I was also a lecturer assistant for the Pancasila course.'},
-    {name:'the bookshelf',at:[-2.95,1.7,.5],stand:[-1.75,-.6],title:'By the numbers',body:'2 QA roles on live web platforms · 1 data analyst internship · 2 YOLO11 models in my thesis app · 10 projects across courses and thesis.'},
+    {name:'the bookshelf',at:[-2.95,1.7,.5],stand:[-1.75,-.6],title:'By the numbers',body:'2 QA roles on live web platforms · 1 data analyst internship · 2 YOLO11 models in my thesis app · 9 projects with live demos.'},
     {name:'the portrait by the bookshelf',at:[-3.4,2.0,-1.9],stand:[-2.2,-1.9],title:'Beyond class',body:'Incubator IT / DPP at Himpunan Mahasiswa Informatika (Aug 2023 – Aug 2024), and the extra-campus committee for OSKM ITB (Aug – Oct 2023).'}],
   experience:[
     {name:'the tall chair at the high table',at:[0,3.3,-5.85],stand:[0,-3.6],title:'Quality Assurance · PT Akhdani Reka Solusi',body:'Nov 2025 – Jan 2026, Bandung. Test cases and Selenium automation for the SIMPUS web application; reported bugs and verified fixes with developers.'},
@@ -1063,16 +1065,16 @@ const T={
     {name:'the banner by the door',at:[-2.9,3.2,6.3],stand:[-2.4,5.98],title:'Education & activities',body:'B.S. Information Technology Systems, ITB (2022 – 2026) · Incubator IT / DPP, HMIF (Aug 2023 – Aug 2024) · Extra-campus committee, OSKM ITB (Aug – Oct 2023).'}],
   projects:[
     {name:'the little robot on the workbench',at:[-2.8,1.95,-.5],stand:[-1.5,.5],title:'KukangSort AI',body:'My final-year project. A YOLO11 web app that sorts slow-loris camera-trap photos into kukang, unknown and delete, then labels behaviour.',href:'kukangsort-ai/'},
-    {name:'the wall of screens',at:[.9,1.75,-2.75],stand:[1.35,-1.5],title:'Retail Inventory AI',body:'Forecasts next-week demand for 300 products from 1 million real transactions and recommends reorder quantities.',href:'retail-inventory-ai/'},
-    {name:'the laptop on the workbench',at:[-2.8,1.55,1.0],stand:[-1.8,1.35],title:'King’s Hand',body:'Project monitoring with proposal approval and automatic alerts for late or overspending projects, covered by 21 Playwright tests.',href:'kingshand/'},
+    {name:'the wall of screens',at:[.9,1.75,-2.75],stand:[1.35,-1.5],title:'QA Automation Portfolio',body:'Test plan, 64 test cases and 14 bugs logged in Jira for a web app and a REST API. The serious bugs were fixed and guarded by regression tests; Playwright, pytest and Postman run in CI every day.',href:'qa-automation-portfolio/'},
+    {name:'the laptop on the workbench',at:[-2.8,1.55,1.0],stand:[-1.8,1.35],title:'King’s Hand',body:'Project monitoring with proposal approval and automatic alerts for late or overspending projects, covered by 25 Playwright tests.',href:'kingshand/'},
     {name:'the blueprint under the shelves',at:[3.1,.75,.3],stand:[1.9,-.2],title:'West Java Tourism Analytics',body:'A data story and dashboard with K-Means area groups and data-quality scoring. The occupancy model beats simple baselines by 20%.',href:'jabar-tourism/'},
     {name:'the plant on the stool',at:[.6,1.3,-1.2],stand:[.15,-.3],title:'Plants vs. Zombies',body:'A Java Swing game playable in the browser through WebAssembly, with 119 unit tests and a bot that plays Level 1 end to end.',href:'pvz/'},
-    {name:'the crates on the shelf',at:[2.95,1.75,1.2],stand:[1.55,.45],title:'Rangkuman SMP Interaktif',body:'An interactive science and maths study app for middle school: 27 chapters, hands-on labs and 143 quiz questions.',href:'rangkuman-smp/'},
-    {name:'the note by the door',at:[2.0,1.9,2.8],stand:[.95,2.2],title:'Virsila',body:'A Pancasila learning site with a practice game and a timed 28-question quiz, with 19 automated tests.',href:'virsila/'}],
+    {name:'the crates on the shelf',at:[2.95,1.75,1.2],stand:[1.55,.45],title:'Retail Inventory AI',body:'Forecasts next-week demand for 300 products from 1 million real transactions and recommends reorder quantities.',href:'retail-inventory-ai/'},
+    {name:'the note by the door',at:[2.0,1.9,2.8],stand:[.95,2.2],title:'E-commerce SQL Analysis',body:'SQL analysis of 98,000 Olist orders: only 3% of customers buy again, and a late first delivery cuts repeat buying by 25%. Every chart shows its SQL.',href:'ecommerce-sql-analysis/'}],
   skills:[
-    {name:'the tool rack',at:[-3.25,1.95,.3],stand:[-2.1,.1],title:'Tools',body:'Selenium · Python · SQL · FastAPI · YOLO11 · Java · JavaScript · Git & GitHub'},
-    {name:'the anvil',at:[-2.8,1.35,1.4],stand:[-1.75,2.0],title:'Manual & automated testing',body:'Test cases, bug reports and regression runs by hand, then Selenium and Playwright to automate the repetitive parts.'},
-    {name:'the shelf of bottles',at:[3.1,1.9,-.8],stand:[1.9,.75],title:'Data analysis & AI',body:'Cleaning and exploring data with Python and SQL, clustering and forecasting with scikit-learn, and image classification with YOLO11.'},
+    {name:'the tool rack',at:[-3.25,1.95,.3],stand:[-2.1,.1],title:'Tools',body:'Playwright · Selenium · Postman · Jira · Python · SQL · FastAPI · YOLO11 · Java · JavaScript · Git & GitHub'},
+    {name:'the anvil',at:[-2.8,1.35,1.4],stand:[-1.75,2.0],title:'Manual & automated testing',body:'Test plans, test cases and exploratory sessions, bugs tracked in Jira, then Playwright, Selenium, pytest and Postman to automate UI and API checks in CI.'},
+    {name:'the shelf of bottles',at:[3.1,1.9,-.8],stand:[1.9,.75],title:'Data analysis & AI',body:'SQL with CTEs and window functions, Python and pandas for cleaning and exploring, clustering and forecasting with scikit-learn, and image classification with YOLO11.'},
     {name:'the map on the table',at:[-.2,1.15,.2],stand:[0,1.75],title:'System analysis & database design',body:'Turning requirements into user flows, system diagrams and data models, then writing the SQL behind them.'},
     {name:'the fireplace',at:[0,1.5,-2.3],stand:[0,-1.15],title:'Soft skills',body:'Public speaking · Negotiation · Time management · Project management · Team collaboration · Problem solving'},
     {name:'the barrel by the door',at:[2.9,1.25,2.2],stand:[1.85,2.2],title:'Web development, UI/UX & prototyping',body:'Building web apps with JavaScript, HTML/CSS and FastAPI, and designing interfaces from wireframe to prototype.'}]

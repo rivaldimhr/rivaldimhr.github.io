@@ -4,16 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>M. Rivaldi Mahari — ATS-friendly CV</title>
-<meta name="description" content="Preview of the ATS-friendly CV of M. Rivaldi Mahari, with a PDF download.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<meta name="description" content="ATS-friendly CV of M. Rivaldi Mahari, QA engineer and data analyst based in Bandung, with a PDF download.">
 <style>
-:root{--green:#2E4A33;--yellow:#F5B40A;--ink:#1D241F}
+:root{--green:#2E4A33;--yellow:#F5B40A;--ink:#111}
+@page{size:A4;margin:12mm 14mm 11mm}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Plus Jakarta Sans","Inter",system-ui,sans-serif;background:#C9D2C1;color:var(--ink)}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:Inter,Arial,Helvetica,sans-serif;color:var(--ink);background:#C9D2C1;font-size:9.3pt;line-height:1.34}
 a{color:inherit;text-decoration:none}
-.toolbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 14px;background:var(--green);box-shadow:0 8px 24px rgba(29,36,31,.25);margin-bottom:22px;font-size:14px}
+
+/* toolbar (screen only) */
+.toolbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 14px;background:var(--green);box-shadow:0 8px 24px rgba(29,36,31,.25);margin-bottom:22px;font:600 14px/1.2 "Plus Jakarta Sans",Inter,system-ui,sans-serif}
 .toolbar a{font-weight:800;padding:9px 18px;border-radius:999px;color:#fff;white-space:nowrap}
 .toolbar .back{border:2px solid rgba(255,255,255,.5)}
 .toolbar .tabs{display:flex;background:rgba(255,255,255,.12);border-radius:999px;padding:4px}
@@ -21,8 +22,31 @@ a{color:inherit;text-decoration:none}
 .toolbar .tabs a[aria-current]{background:#fff;color:var(--green)}
 .toolbar .dl{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--green)}
 .toolbar .dl svg{width:16px;height:16px}
-.sheet{display:block;width:min(210mm,100% - 24px);height:auto;margin:0 auto 22px;background:#fff;box-shadow:0 20px 50px rgba(29,36,31,.25)}
-.note{text-align:center;font-size:14px;font-weight:500;color:#3B443D;margin:0 12px 18px}
+.doc{width:210mm;max-width:calc(100% - 24px);margin:0 auto 24px;background:#fff;padding:14mm 15mm;box-shadow:0 20px 50px rgba(29,36,31,.25)}
+
+/* document */
+h1{font-size:18pt;font-weight:700;text-align:center;letter-spacing:.02em}
+.contact{text-align:center;margin-top:2pt;font-size:9.2pt}
+.summary{margin-top:7pt}
+h2{font-size:10.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #222;margin:8pt 0 3pt;padding-bottom:1pt}
+.entry{break-inside:avoid}
+.entry+.entry{margin-top:4pt}
+.row{display:flex;justify-content:space-between;gap:12pt}
+.row b{font-weight:700}
+.row i{font-style:italic}
+ul{padding-left:13pt;margin-top:1.5pt}
+li{margin-top:1pt}
+.skills p+p{margin-top:2pt}
+
+@media print{
+  body{background:#fff}
+  .toolbar{display:none}
+  .doc{width:auto;max-width:none;margin:0;padding:0;box-shadow:none}
+}
+@media screen and (max-width:700px){
+  .doc{padding:18px 16px;font-size:13px}
+  .row{flex-direction:column;gap:0}
+}
 </style>
 </head>
 <body>
@@ -36,9 +60,145 @@ a{color:inherit;text-decoration:none}
   <a class="dl" href="../assets/M-Rivaldi-Mahari-CV-ATS.pdf" download="M-Rivaldi-Mahari-CV-ATS.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Download PDF</a>
 </div>
 
-<p class="note">Plain two-page format for applicant tracking systems. Download the PDF for selectable text.</p>
-<img class="sheet" src="../assets/cv-ats-1.jpg" width="1105" height="1430" alt="Page 1 of the ATS-friendly CV: summary, education, work experience and projects">
-<img class="sheet" src="../assets/cv-ats-2.jpg" width="1105" height="1430" alt="Page 2 of the ATS-friendly CV: remaining projects, leadership and activities, and skills" loading="lazy">
+<main class="doc">
+  <h1>M. RIVALDI MAHARI</h1>
+  <p class="contact">Bandung, Indonesia • 089695637050 • rivaldimhr@gmail.com • rivaldimhr.github.io • github.com/rivaldimhr</p>
+  <p class="summary">Information Technology Systems graduate from Institut Teknologi Bandung with experience in Quality Assurance, data analysis, web development, system analysis, and AI-based image classification. Skilled in turning requirements into test plans and test cases, automating UI and API tests, tracking defects in Jira through to verified fixes, and analyzing data with SQL and Python.</p>
+
+  <h2>Education</h2>
+  <div class="entry">
+    <div class="row"><b>Institut Teknologi Bandung</b><span>Bandung, Indonesia</span></div>
+    <div class="row"><i>B.S. Information Technology Systems</i><span>Aug 2022 – 2026</span></div>
+    <ul>
+      <li>Academic projects in UI/UX, system analysis, application logic, SQL and database modeling, machine learning, and data visualization.</li>
+      <li>Lecturer Assistant for Pancasila: facilitated discussions, graded assignments, and supported student engagement.</li>
+    </ul>
+  </div>
+
+  <h2>Experience</h2>
+  <div class="entry">
+    <div class="row"><b>PT Akhdani Reka Solusi</b><span>Bandung</span></div>
+    <div class="row"><i>Quality Assurance</i><span>Nov 2025 – Jan 2026</span></div>
+    <ul>
+      <li>Performed manual testing on the SIMPUS web application by creating and executing test cases based on system requirements and user workflows.</li>
+      <li>Developed and executed automated tests using Selenium to improve testing efficiency and reduce repetitive manual testing.</li>
+      <li>Identified, documented, and reported bugs; collaborated with developers to verify fixes and maintain system quality.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>PT Bringin Inti Teknologi</b><span>Jakarta</span></div>
+    <div class="row"><i>Quality Assurance</i><span>Jul 2025 – Sep 2025</span></div>
+    <ul>
+      <li>Executed functional and usability testing as part of a 3-member QA team for Bee-RP, a web-based employee management system covering project tracking, attendance, leave requests, and performance reports.</li>
+      <li>Led Quality Assurance activities for TrackMate, an employee task-tracking web application, within a 2-person team.</li>
+      <li>Collaborated with developers and stakeholders to identify defects, validate fixes, and support UAT readiness.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>PT Sarana Pactindo</b><span>Bandung</span></div>
+    <div class="row"><i>Data Analyst Intern</i><span>Jun 2024 – Jul 2024</span></div>
+    <ul>
+      <li>Developed a web-based billing forecast system and performed data analysis to support updates for two company websites.</li>
+      <li>Collaborated with two stakeholders to gather requirements, improve system accuracy, and enhance user interface and operational efficiency.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>Private Tutor</b><span>Bandar Lampung</span></div>
+    <div class="row"><i>STEM Tutor (Math &amp; Physics)</i><span>Mar 2023 – Apr 2023</span></div>
+    <ul>
+      <li>Delivered one-on-one Mathematics and basic Physics tutoring for elementary and middle school students, simplifying concepts to build problem-solving skills and exam readiness.</li>
+    </ul>
+  </div>
+
+  <h2>Projects</h2>
+  <div class="entry">
+    <div class="row"><b>KukangSort AI – Final Year Project</b><span>2026</span></div>
+    <div class="row"><i>Web-based camera-trap image classification system · YOLO11, Python, FastAPI, OpenCV, Docker</i></div>
+    <ul>
+      <li>Implemented YOLO11 image classification in a web system that automatically sorts Sunda slow loris (kukang) camera-trap images.</li>
+      <li>Built a two-stage pipeline: image sorting and kukang verification, then behavior classification (eating, moving, grooming), for single images and batches.</li>
+      <li>Evaluated model performance and processing time to assess reliability for practical use.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>QA Automation Portfolio</b><span>2026</span></div>
+    <div class="row"><i>UI and API testing · Playwright, pytest, requests, Postman/Newman, Jira, GitHub Actions</i></div>
+    <ul>
+      <li>Wrote a test plan and 64 test cases (equivalence partitioning, boundary values, state transitions) for a project-monitoring web app and a REST API.</li>
+      <li>Found 14 bugs through exploratory testing and API testing, logged in Jira with steps, evidence, and severity; the 4 High/Medium bugs were fixed and guarded by regression tests proven to fail on the old version.</li>
+      <li>Automated 115 test runs with Playwright (Page Object Model) and pytest with JSON Schema validation, plus a Postman collection run by Newman, in a daily CI pipeline that publishes HTML reports.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>E-commerce SQL Analysis (Olist)</b><span>2026</span></div>
+    <div class="row"><i>Data analysis · SQL (SQLite), CTEs, window functions, Python</i></div>
+    <ul>
+      <li>Analyzed 98,000 orders with 13 SQL queries: cohort retention, RFM segmentation, delivery delays, categories, and sellers.</li>
+      <li>Found that only 3% of customers buy again and that a late first delivery lowers repeat purchases by 25% (z-test, p = 0.002); wrote five business recommendations with success metrics.</li>
+      <li>Published a dashboard that shows the SQL behind every chart, with 33 automated tests that re-check the numbers in CI.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>Retail Inventory AI</b><span>2026</span></div>
+    <div class="row"><i>Demand forecasting · Python, FastAPI, React</i></div>
+    <ul>
+      <li>Rebuilt a team course project on 1 million real transactions: 7-day demand forecast for 300 products, reorder recommendations, and stock-risk alerts.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>King's Hand</b><span>Team project, extended</span></div>
+    <div class="row"><i>Project-monitoring web app · JavaScript, Playwright, CI</i></div>
+    <ul>
+      <li>Rebuilt a 6-person JavaFX app for the web, added an admin role and automatic overspend and late-report alerts, and wrote 25 Playwright end-to-end tests.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>West Java Tourism Analytics</b><span>Team project, extended</span></div>
+    <div class="row"><i>Data analysis · pandas, scikit-learn, Plotly</i></div>
+    <ul>
+      <li>K-Means grouping of tourism areas, an occupancy model that beats simple baselines by 20%, a per-area data-quality score, and a one-page policy brief.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>Plants vs. Zombies</b><span>Team project, extended</span></div>
+    <div class="row"><i>Game development · Java, OOP, WebAssembly</i></div>
+    <ul>
+      <li>Java Swing game in a 5-member team, made playable in the browser; added 119 unit tests and an automated end-to-end test in CI.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>Other projects</b></div>
+    <ul>
+      <li>Virsila (Pancasila learning site, 19 automated tests) · Rangkuman SMP (interactive science and maths study app).</li>
+      <li>Academic: Muslim Pro App (UI/UX, 4-member team) · Songket Aninun (enterprise needs analysis) · Crowdfunding IT System (system analysis) · Minecraft Database (SQL design) · Word Machine (data structures) · Destroy the Temple (game logic) · AI Data Analysis (machine learning).</li>
+    </ul>
+  </div>
+
+  <h2>Leadership &amp; Activities</h2>
+  <div class="entry">
+    <div class="row"><b>Himpunan Mahasiswa Informatika</b><span>Bandung</span></div>
+    <div class="row"><i>Incubator IT / DPP</i><span>Aug 2023 – Aug 2024</span></div>
+    <ul>
+      <li>Led project planning, execution, and delivery; coordinated cross-functional teams, monitored progress and risks, and reported to stakeholders.</li>
+    </ul>
+  </div>
+  <div class="entry">
+    <div class="row"><b>OSKM ITB</b><span>Bandung</span></div>
+    <div class="row"><i>Extra-campus Committee</i><span>Aug 2023 – Oct 2023</span></div>
+    <ul>
+      <li>Supported events through logistics planning, budgeting, external coordination, promotion, and participant registration.</li>
+    </ul>
+  </div>
+
+  <h2>Skills</h2>
+  <div class="skills">
+    <p><b>Testing:</b> Test planning and test case design • Manual, exploratory, functional, and usability testing • UI automation (Playwright, Selenium) • API testing (Postman, Newman, pytest, requests) • Regression testing • Bug reporting in Jira • UAT support</p>
+    <p><b>Data &amp; AI:</b> SQL (CTEs, window functions) • Python • pandas • scikit-learn • Plotly • YOLO11 • OpenCV</p>
+    <p><b>Development &amp; tools:</b> JavaScript • HTML/CSS • FastAPI • Java • PHP • Git and GitHub • GitHub Actions (CI) • Docker</p>
+    <p><b>Analysis &amp; design:</b> Requirements engineering • User flows • Database design • UI/UX prototyping</p>
+    <p><b>Soft skills:</b> Public speaking • Negotiation • Time management • Project management • Team collaboration • Problem solving</p>
+  </div>
+</main>
 
 <script src="../assets/back3d.js"></script>
 </body>
