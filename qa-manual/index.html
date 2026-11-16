@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Manual QA: Virsila — M. Rivaldi Mahari</title>
-<meta name="description" content="Manual testing of the Virsila learning web app: 72 positive and negative test cases across 8 modules, 3 bug reports, the Excel results and a reusable template.">
+<title>QA Manual: Virsila — M. Rivaldi Mahari</title>
+<meta name="description" content="Pengujian manual aplikasi web belajar Virsila: 72 test case positif dan negatif di 8 modul, 3 laporan bug, hasil tes dalam Excel, dan template yang bisa dipakai ulang.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -78,119 +78,119 @@ footer{border-top:1px solid var(--line);padding:22px 0 80px;color:var(--muted);f
 </style>
 </head>
 <body>
-<div class="top"><div class="wrap"><a href="../#projects">← Rivaldi’s portfolio</a><a class="pill" href="#download">Download the Excel files</a></div></div>
+<div class="top"><div class="wrap"><a href="../#projects">← Portofolio Rivaldi</a><a class="pill" href="#download">Unduh file Excel</a></div></div>
 <header class="hero"><div class="wrap">
-  <span class="eyebrow">Manual QA project</span>
-  <h1>Testing <em>Virsila</em> by hand, end to end.</h1>
-  <p class="lead">Virsila is an interactive Pancasila learning web app with lessons, a practice game, a timed quiz and saved progress. I split it into modules and features, wrote positive and negative test cases for each, ran them, and reported 3 bugs with steps and evidence.</p>
-  <div class="cta"><a class="btn y" href="#download">Download the results</a><a class="btn o" href="../virsila/">Open the app under test</a></div>
+  <span class="eyebrow">Proyek QA manual</span>
+  <h1>Menguji <em>Virsila</em> secara manual, dari awal sampai akhir.</h1>
+  <p class="lead">Virsila adalah aplikasi web interaktif untuk belajar Pancasila, berisi materi, permainan praktik, kuis berwaktu, dan progres yang tersimpan. Saya membaginya menjadi modul dan fitur, menulis test case positif dan negatif untuk tiap fitur, menjalankannya, lalu melaporkan 3 bug lengkap dengan langkah dan bukti.</p>
+  <div class="cta"><a class="btn y" href="#download">Unduh hasil tes</a><a class="btn o" href="../virsila/">Buka aplikasi yang diuji</a></div>
 </div></header>
 <main>
 <div class="wrap stats">
-  <div><b>72</b>test cases in 8 modules and 31 features</div>
-  <div><b>51 + 21</b>positive and negative cases</div>
-  <div><b>67</b>passed, 4 failed, 1 noted (94% pass rate)</div>
-  <div><b>3</b>bugs reported, none critical</div>
+  <div><b>72</b>test case di 8 modul dan 31 fitur</div>
+  <div><b>51 + 21</b>kasus positif dan negatif</div>
+  <div><b>67</b>passed, 4 failed, 1 note (pass rate 94%)</div>
+  <div><b>3</b>bug dilaporkan, tidak ada yang critical</div>
 </div>
 
 <section><div class="wrap">
-  <h2>How I <em>worked</em></h2>
-  <p class="sub">The process follows the standard test process: plan, analyse, design, execute, report. There was no written specification, so expected results come from the app and its on-screen text.</p>
+  <h2>Cara saya <em>bekerja</em></h2>
+  <p class="sub">Prosesnya mengikuti proses tes standar: rencana, analisis, desain, eksekusi, laporan. Tidak ada spesifikasi tertulis, jadi hasil yang diharapkan diambil dari aplikasi dan teks di layarnya.</p>
   <ol class="steps">
-    <li><b>Break the app down</b>Explored every screen and split the app into 8 modules and 31 features, one sheet per module.</li>
-    <li><b>Plan</b>Set scope, approach, environment, entry and exit criteria, and severity and priority scales.</li>
-    <li><b>Design test cases</b>For every feature: positive cases first, then negative ones, each with pre-condition, steps, test data and expected result.</li>
-    <li><b>Execute</b>Ran every case from a clean browser, at laptop size and at five narrower widths, recording the current result and status.</li>
-    <li><b>Report bugs</b>Wrote each failure up with steps to reproduce, expected and actual results, impact, severity and a screenshot.</li>
-    <li><b>Summarise</b>Counted results per module and judged them against the exit criteria.</li>
+    <li><b>Memetakan aplikasi</b>Menjelajahi tiap layar lalu membagi aplikasi menjadi 8 modul dan 31 fitur, satu sheet per modul.</li>
+    <li><b>Menyusun rencana</b>Menetapkan ruang lingkup, pendekatan, lingkungan uji, kriteria mulai dan selesai, serta skala severity dan priority.</li>
+    <li><b>Merancang test case</b>Untuk tiap fitur: kasus positif dulu, lalu kasus negatif, masing-masing dengan pre-condition, langkah, data uji, dan hasil yang diharapkan.</li>
+    <li><b>Menjalankan tes</b>Tiap kasus dijalankan dari browser bersih, pada ukuran laptop dan lima lebar yang lebih sempit, sambil mencatat hasil dan statusnya.</li>
+    <li><b>Melaporkan bug</b>Tiap kegagalan ditulis dengan langkah reproduksi, hasil yang diharapkan dan yang terjadi, dampak, severity, dan tangkapan layar.</li>
+    <li><b>Merangkum</b>Menghitung hasil per modul dan menilainya terhadap kriteria selesai.</li>
   </ol>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Positive and <em>negative</em> cases</h2>
-  <p class="sub">Every test case is labelled with its type, and inside each feature the positive cases come before the negative ones.</p>
+  <h2>Kasus positif dan <em>negatif</em></h2>
+  <p class="sub">Tiap test case diberi label jenisnya, dan di dalam tiap fitur kasus positif ditulis sebelum kasus negatif.</p>
   <div class="pn">
-    <div class="p"><b>Positive · 51 cases</b>Valid input and the normal way of using a feature. The feature must work: the right screen opens, the score goes up, the progress is saved.</div>
-    <div class="n"><b>Negative · 21 cases</b>Invalid input, a wrong order of actions or misuse. The app must refuse it or stay unchanged, without breaking: a 31st character is not accepted, an answered question cannot be changed, HTML typed as a name stays plain text.</div>
+    <div class="p"><b>Positive · 51 kasus</b>Input valid dan cara pakai yang normal. Fiturnya harus berfungsi: layar yang benar terbuka, skor bertambah, progres tersimpan.</div>
+    <div class="n"><b>Negative · 21 kasus</b>Input tidak valid, urutan langkah yang salah, atau penyalahgunaan. Aplikasi harus menolaknya atau tetap tidak berubah, tanpa rusak: karakter ke-31 tidak diterima, soal yang sudah dijawab tidak bisa diubah, HTML yang diketik sebagai nama tetap menjadi teks biasa.</div>
   </div>
   <div class="scroll"><table>
-    <thead><tr><th>Feature</th><th>Positive case</th><th>Negative case</th></tr></thead>
-    <tbody><tr><th scope="row">Nickname</th><td><b>TCPRG004</b> Save a nickname</td><td><b>TCPRG007</b> HTML typed as a nickname is shown as text <span class="st passed">Passed</span></td></tr><tr><th scope="row">Deep link</th><td><b>TCNAV006</b> Deep link opens a specific sila</td><td><b>TCNAV007</b> Invalid deep link falls back to Sila 1 <span class="st passed">Passed</span></td></tr><tr><th scope="row">Keyboard answers</th><td><b>TCQUI005</b> Answer with the keyboard</td><td><b>TCQUI007</b> Keys outside A-D and 1-4 are ignored <span class="st passed">Passed</span></td></tr><tr><th scope="row">Garuda cards</th><td><b>TCHIS006</b> Garuda result appears only after the fourth card</td><td><b>TCHIS008</b> Clicking an opened Garuda card again changes nothing <span class="st passed">Passed</span></td></tr><tr><th scope="row">Result and retry</th><td><b>TCQUI009</b> Review and retry the wrong questions</td><td><b>TCQUI010</b> A retry of wrong questions does not replace the best practice score <span class="st failed">Failed</span></td></tr><tr><th scope="row">Answer a situation</th><td><b>TCPRA001</b> Correct answer in the practice game</td><td><b>TCPRA003</b> A practice-game answer cannot be changed <span class="st passed">Passed</span></td></tr></tbody>
+    <thead><tr><th>Fitur</th><th>Kasus positif</th><th>Kasus negatif</th></tr></thead>
+    <tbody><tr><th scope="row">Nama panggilan</th><td><b>TCPRG004</b> Menyimpan nama panggilan</td><td><b>TCPRG007</b> HTML yang diketik sebagai nama ditampilkan sebagai teks <span class="st passed">Passed</span></td></tr><tr><th scope="row">Tautan langsung</th><td><b>TCNAV006</b> Tautan langsung membuka sila tertentu</td><td><b>TCNAV007</b> Tautan langsung yang tidak valid kembali ke Sila 1 <span class="st passed">Passed</span></td></tr><tr><th scope="row">Jawaban keyboard</th><td><b>TCQUI005</b> Menjawab dengan keyboard</td><td><b>TCQUI007</b> Tombol di luar A-D dan 1-4 diabaikan <span class="st passed">Passed</span></td></tr><tr><th scope="row">Kartu Garuda</th><td><b>TCHIS006</b> Hasil Garuda baru muncul setelah kartu keempat</td><td><b>TCHIS008</b> Mengklik kartu Garuda yang sudah terbuka tidak mengubah apa pun <span class="st passed">Passed</span></td></tr><tr><th scope="row">Hasil dan ulangi</th><td><b>TCQUI009</b> Ulasan dan mengulang soal yang salah</td><td><b>TCQUI010</b> Mengulang soal yang salah tidak mengganti skor terbaik latihan <span class="st failed">Failed</span></td></tr><tr><th scope="row">Menjawab kejadian</th><td><b>TCPRA001</b> Jawaban benar di permainan praktik</td><td><b>TCPRA003</b> Jawaban di permainan praktik tidak bisa diubah <span class="st passed">Passed</span></td></tr></tbody>
   </table></div>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Test design <em>techniques</em></h2>
-  <p class="sub">Each test case in the workbook names the technique that produced it. Four examples:</p>
+  <h2>Teknik desain <em>tes</em></h2>
+  <p class="sub">Tiap test case di workbook menyebut teknik yang menghasilkannya. Empat contoh:</p>
   <div class="tech">
-    <div><b>Boundary value analysis</b>The nickname allows 30 characters, so I typed <code>29</code>, <code>30</code> and <code>31</code>. The exam activity is ticked from 70%, so I scored <code>60%</code> and <code>70%</code>. The timer warning starts at one minute, so I checked <code>01:01</code> and <code>01:00</code>.</div>
-    <div><b>Equivalence partitioning</b>One correct and one wrong answer per quiz mode instead of every combination; keys <code>A</code>–<code>D</code> as the valid group and <code>E</code>, <code>5</code>, <code>0</code> as the invalid one.</div>
-    <div><b>State transition</b>Not learned → learned → not learned; exam answer A → C; practice finished → retry → finished. The retry path is where BUG-001 was found.</div>
-    <div><b>Error guessing</b>What if the saved progress is damaged? What if someone types HTML as their name? The first found BUG-003; the second passed.</div>
+    <div><b>Boundary value analysis</b>Nama panggilan dibatasi 30 karakter, jadi saya mengetik <code>29</code>, <code>30</code>, dan <code>31</code>. Aktivitas ujian tercentang mulai 70%, jadi saya mencetak skor <code>60%</code> dan <code>70%</code>. Peringatan timer mulai di satu menit, jadi saya memeriksa <code>01:01</code> dan <code>01:00</code>.</div>
+    <div><b>Equivalence partitioning</b>Satu jawaban benar dan satu jawaban salah per mode kuis, bukan semua kombinasi; tombol <code>A</code>–<code>D</code> sebagai kelompok valid dan <code>E</code>, <code>5</code>, <code>0</code> sebagai kelompok tidak valid.</div>
+    <div><b>State transition</b>Belum dipelajari → sudah → belum; jawaban ujian A → C; latihan selesai → ulangi → selesai. BUG-001 ditemukan di jalur ulangi ini.</div>
+    <div><b>Error guessing</b>Bagaimana kalau progres tersimpan rusak? Bagaimana kalau seseorang mengetik HTML sebagai namanya? Pertanyaan pertama menemukan BUG-003; yang kedua lulus.</div>
   </div>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Results by <em>module</em></h2>
+  <h2>Hasil per <em>modul</em></h2>
   <div class="scroll"><table>
-    <thead><tr><th>Module</th><th>All TC</th><th>Positive</th><th>Negative</th><th>Passed</th><th>Failed</th><th>Note</th><th>Pass share</th></tr></thead>
-    <tbody><tr><th scope="row">Navigation</th><td>8</td><td>7</td><td>1</td><td>6</td><td>2</td><td>–</td><td><span class="bar"><i style="width:75%"></i></span></td></tr><tr><th scope="row">Lima Sila</th><td>7</td><td>6</td><td>1</td><td>7</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">History</th><td>8</td><td>6</td><td>2</td><td>8</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Practice</th><td>8</td><td>5</td><td>3</td><td>8</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Quiz Practice</th><td>12</td><td>7</td><td>5</td><td>11</td><td>1</td><td>–</td><td><span class="bar"><i style="width:92%"></i></span></td></tr><tr><th scope="row">Quiz Exam</th><td>9</td><td>6</td><td>3</td><td>9</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Progress</th><td>12</td><td>6</td><td>6</td><td>11</td><td>1</td><td>–</td><td><span class="bar"><i style="width:92%"></i></span></td></tr><tr><th scope="row">Layout</th><td>8</td><td>8</td><td>–</td><td>7</td><td>–</td><td>1</td><td><span class="bar"><i style="width:88%"></i></span></td></tr><tr><th scope="row">Total</th><td><b>72</b></td><td><b>51</b></td><td><b>21</b></td><td><b>67</b></td><td><b>4</b></td><td><b>1</b></td><td></td></tr></tbody>
+    <thead><tr><th>Modul</th><th>All TC</th><th>Positive</th><th>Negative</th><th>Passed</th><th>Failed</th><th>Note</th><th>Porsi lulus</th></tr></thead>
+    <tbody><tr><th scope="row">Navigasi</th><td>8</td><td>7</td><td>1</td><td>6</td><td>2</td><td>–</td><td><span class="bar"><i style="width:75%"></i></span></td></tr><tr><th scope="row">Lima Sila</th><td>7</td><td>6</td><td>1</td><td>7</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Sejarah</th><td>8</td><td>6</td><td>2</td><td>8</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Praktik</th><td>8</td><td>5</td><td>3</td><td>8</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Kuis Latihan</th><td>12</td><td>7</td><td>5</td><td>11</td><td>1</td><td>–</td><td><span class="bar"><i style="width:92%"></i></span></td></tr><tr><th scope="row">Kuis Ujian</th><td>9</td><td>6</td><td>3</td><td>9</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Progres</th><td>12</td><td>6</td><td>6</td><td>11</td><td>1</td><td>–</td><td><span class="bar"><i style="width:92%"></i></span></td></tr><tr><th scope="row">Tampilan</th><td>8</td><td>8</td><td>–</td><td>7</td><td>–</td><td>1</td><td><span class="bar"><i style="width:88%"></i></span></td></tr><tr><th scope="row">Total</th><td><b>72</b></td><td><b>51</b></td><td><b>21</b></td><td><b>67</b></td><td><b>4</b></td><td><b>1</b></td><td></td></tr></tbody>
   </table></div>
-  <p class="note"><b>Exit criteria:</b> all High-priority cases were executed, no Critical or High-severity bug is open and the pass rate is above 90%, so the criteria are met. One case (external links) has the status Note and still has to be re-run with internet access.</p>
+  <p class="note"><b>Kriteria selesai:</b> semua kasus berprioritas High sudah dijalankan, tidak ada bug Critical atau High yang terbuka, dan pass rate di atas 90%, jadi kriterianya terpenuhi. Satu kasus (tautan eksternal) berstatus Note dan masih harus dijalankan ulang dengan akses internet.</p>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Bugs <em>found</em></h2>
-  <p class="sub">All three are open. The full reports, with suggested fixes, are in the workbook.</p>
+  <h2>Bug yang <em>ditemukan</em></h2>
+  <p class="sub">Ketiganya masih terbuka. Laporan lengkap beserta saran perbaikan ada di workbook.</p>
   <article class="bug">
-      <a class="shot" href="evidence/bug-001.png"><img src="evidence/bug-001.png" alt="Screenshot showing retrying only the wrong questions overwrites the best Latihan score with 100%"></a>
+      <a class="shot" href="evidence/bug-001.png"><img src="evidence/bug-001.png" alt="Tangkapan layar BUG-001: mengulang hanya soal yang salah menimpa skor terbaik Latihan menjadi 100%"></a>
       <div>
-        <p class="meta"><b>BUG-001</b><span class="sev medium">Severity: Medium</span><span class="sev">Priority: High</span><span class="sev">Found by TCQUI010</span></p>
-        <h3>Retrying only the wrong questions overwrites the best Latihan score with 100%</h3>
-        <ol><li>Open Virsila with no saved progress and go to &quot;Kuis&quot;.</li><li>Click &quot;Mulai latihan&quot; and finish all 28 questions with 25 correct and 3 wrong (result 89%).</li><li>On the result screen click &quot;Ulangi 3 soal yang salah&quot;.</li><li>Answer the three questions correctly and finish.</li><li>Click &quot;Pilih mode lagi&quot; and read the best score under Latihan.</li></ol>
-        <dl><dt>Expected</dt><dd>The best Latihan score stays 89%. A retry covers only the 3 questions that were wrong, so it should not count as a full practice score.</dd><dt>Actual</dt><dd>The retry result is 100% with the text &quot;Skor terbaik baru untuk mode ini.&quot;, and the mode screen then shows &quot;Skor terbaik: 100%&quot; for Latihan.</dd><dt>Impact</dt><dd>A learner who got questions wrong sees a perfect best score, so the score no longer tells them or a teacher how well they know the material.</dd></dl>
+        <p class="meta"><b>BUG-001</b><span class="sev medium">Severity: Medium</span><span class="sev">Priority: High</span><span class="sev">Ditemukan oleh TCQUI010</span></p>
+        <h3>Mengulang hanya soal yang salah menimpa skor terbaik Latihan menjadi 100%</h3>
+        <ol><li>Buka Virsila tanpa progres tersimpan lalu menuju &quot;Kuis&quot;.</li><li>Klik &quot;Mulai latihan&quot; dan selesaikan ke-28 soal dengan 25 benar dan 3 salah (hasil 89%).</li><li>Di layar hasil klik &quot;Ulangi 3 soal yang salah&quot;.</li><li>Jawab ketiga soal dengan benar sampai selesai.</li><li>Klik &quot;Pilih mode lagi&quot; lalu baca skor terbaik di bawah Latihan.</li></ol>
+        <dl><dt>Yang diharapkan</dt><dd>Skor terbaik Latihan tetap 89%. Pengulangan hanya mencakup 3 soal yang salah, jadi tidak boleh dihitung sebagai skor latihan penuh.</dd><dt>Yang terjadi</dt><dd>Hasil pengulangan 100% dengan teks &quot;Skor terbaik baru untuk mode ini.&quot;, lalu layar mode menampilkan &quot;Skor terbaik: 100%&quot; untuk Latihan.</dd><dt>Dampak</dt><dd>Pelajar yang menjawab salah melihat skor terbaik sempurna, sehingga skor tidak lagi menunjukkan seberapa paham mereka, baik bagi pelajar maupun guru.</dd></dl>
       </div>
     </article><article class="bug">
-      <a class="shot" href="evidence/bug-002.png"><img src="evidence/bug-002.png" alt="Screenshot showing on screens up to 860 px wide the header hides four of the five section links and offers no menu"></a>
+      <a class="shot" href="evidence/bug-002.png"><img src="evidence/bug-002.png" alt="Tangkapan layar BUG-002: di layar selebar 860 px ke bawah, header menyembunyikan empat dari lima tautan bagian tanpa menu pengganti"></a>
       <div>
-        <p class="meta"><b>BUG-002</b><span class="sev medium">Severity: Medium</span><span class="sev">Priority: Medium</span><span class="sev">Found by TCNAV003, TCNAV004</span></p>
-        <h3>On screens up to 860 px wide the header hides four of the five section links and offers no menu</h3>
-        <ol><li>Open Virsila in a window 390 px wide (or any width up to 860 px).</li><li>Look at the header.</li><li>Try to go to Sejarah, Praktik or Kuis from the header.</li></ol>
-        <dl><dt>Expected</dt><dd>All five sections can be reached from the header, either as links or through a menu button.</dd><dt>Actual</dt><dd>Only &quot;Progres&quot; is shown. Lima Sila, Sejarah, Praktik and Kuis are hidden and there is no menu button. At 861 px all five links are shown.</dd><dt>Impact</dt><dd>Phone and tablet users, the main audience of a learning site for students, can only reach the quiz and the practice game by scrolling through the whole page.</dd></dl>
+        <p class="meta"><b>BUG-002</b><span class="sev medium">Severity: Medium</span><span class="sev">Priority: Medium</span><span class="sev">Ditemukan oleh TCNAV003, TCNAV004</span></p>
+        <h3>Di layar selebar 860 px ke bawah, header menyembunyikan empat dari lima tautan bagian tanpa menu pengganti</h3>
+        <ol><li>Buka Virsila di jendela selebar 390 px (atau lebar berapa pun sampai 860 px).</li><li>Perhatikan header.</li><li>Coba menuju Sejarah, Praktik, atau Kuis dari header.</li></ol>
+        <dl><dt>Yang diharapkan</dt><dd>Kelima bagian bisa dijangkau dari header, sebagai tautan atau lewat tombol menu.</dd><dt>Yang terjadi</dt><dd>Hanya &quot;Progres&quot; yang tampil. Lima Sila, Sejarah, Praktik, dan Kuis tersembunyi dan tidak ada tombol menu. Pada 861 px kelima tautan tampil.</dd><dt>Dampak</dt><dd>Pengguna ponsel dan tablet, yaitu sasaran utama situs belajar untuk pelajar, hanya bisa mencapai kuis dan permainan praktik dengan menggulir seluruh halaman.</dd></dl>
       </div>
     </article><article class="bug">
-      <a class="shot" href="evidence/bug-003.png"><img src="evidence/bug-003.png" alt="Screenshot showing the page stays almost empty when the saved progress has the wrong shape"></a>
+      <a class="shot" href="evidence/bug-003.png"><img src="evidence/bug-003.png" alt="Tangkapan layar BUG-003: halaman hampir kosong ketika progres tersimpan berbentuk salah"></a>
       <div>
-        <p class="meta"><b>BUG-003</b><span class="sev low">Severity: Low</span><span class="sev">Priority: Low</span><span class="sev">Found by TCPRG012</span></p>
-        <h3>The page stays almost empty when the saved progress has the wrong shape</h3>
-        <ol><li>Open Virsila, then DevTools → Application → Local Storage.</li><li>Set the key virsila-progres-v1 to {&quot;sila&quot;:null}.</li><li>Reload the page.</li></ol>
-        <dl><dt>Expected</dt><dd>The app ignores the damaged value and starts from 0%, as it already does for text that is not valid data (TCPRG011).</dd><dt>Actual</dt><dd>The hero shows no emblems, and the Lima Sila panel, the practice game and the quiz are empty. The console shows &quot;Cannot read properties of null (reading &#x27;includes&#x27;)&quot;. The page stays broken on every visit until the stored value is deleted.</dd><dt>Impact</dt><dd>Rare for normal users, because the value has to be damaged first (for example by an older version of the app or a browser extension). When it happens the user cannot recover without clearing site data.</dd></dl>
+        <p class="meta"><b>BUG-003</b><span class="sev low">Severity: Low</span><span class="sev">Priority: Low</span><span class="sev">Ditemukan oleh TCPRG012</span></p>
+        <h3>Halaman hampir kosong ketika progres tersimpan berbentuk salah</h3>
+        <ol><li>Buka Virsila, lalu DevTools → Application → Local Storage.</li><li>Isi kunci virsila-progres-v1 dengan {&quot;sila&quot;:null}.</li><li>Muat ulang halaman.</li></ol>
+        <dl><dt>Yang diharapkan</dt><dd>Aplikasi mengabaikan nilai yang rusak dan mulai dari 0%, seperti yang sudah terjadi untuk teks yang bukan data valid (TCPRG011).</dd><dt>Yang terjadi</dt><dd>Hero tidak menampilkan lambang, dan panel Lima Sila, permainan praktik, serta kuis kosong. Console menampilkan &quot;Cannot read properties of null (reading &#x27;includes&#x27;)&quot;. Halaman tetap rusak di setiap kunjungan sampai nilai tersimpan dihapus.</dd><dt>Dampak</dt><dd>Jarang terjadi pada pengguna biasa, karena nilainya harus rusak lebih dulu (misalnya oleh versi lama aplikasi atau ekstensi browser). Jika terjadi, pengguna tidak bisa pulih tanpa menghapus data situs.</dd></dl>
       </div>
     </article>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Sample <em>test cases</em></h2>
-  <p class="sub">Six of the 72. The workbook also has the pre-condition, test data, current result, priority and capture link for every case.</p>
+  <h2>Contoh <em>test case</em></h2>
+  <p class="sub">Enam dari 72. Di workbook, tiap kasus juga punya pre-condition, data uji, hasil saat dites, prioritas, dan tautan capture.</p>
   <div class="scroll"><table>
-    <thead><tr><th>ID</th><th>Test case and technique</th><th>Test step</th><th>Expected result</th></tr></thead>
-    <tbody><tr><td><b>TCHIS006</b><br><span class="st positive">Positive</span><br><span class="st passed">Passed</span></td><td>Garuda result appears only after the fourth card<small>Boundary value analysis (3 and 4 cards)</small></td><td><ol><li>Open three of the four Garuda cards.</li><li>Check whether the result line is shown.</li><li>Open the fourth card.</li></ol></td><td>With three cards open nothing is revealed. After the fourth, the cards show 17, 8, 19 and 45, the line &quot;17 Agustus 1945&quot; appears with a toast, and the list reads &quot;ditemukan&quot;.</td></tr><tr><td><b>TCPRG005</b><br><span class="st negative">Negative</span><br><span class="st passed">Passed</span></td><td>Nickname length limit<small>Boundary value analysis (29, 30, 31)</small></td><td><ol><li>Type 29 characters into the nickname field.</li><li>Clear it and type 30 characters.</li><li>Clear it and type 31 characters, then leave the field.</li></ol></td><td>29 and 30 characters are accepted. The 31st character is not accepted, so the saved nickname is 30 characters long.</td></tr><tr><td><b>TCEXM008</b><br><span class="st positive">Positive</span><br><span class="st passed">Passed</span></td><td>Exam activity is ticked from 70%<small>Boundary value analysis (60% / 70%)</small></td><td><ol><li>Finish an exam with 6 of 10 and read the progress list.</li><li>Finish another with 7 of 10 and read it again.</li></ol></td><td>At 60% the item is not ticked and gives partial credit (total 17%). At 70% the item is ticked and the total is 20%.</td></tr><tr><td><b>TCQUI010</b><br><span class="st negative">Negative</span><br><span class="st failed">Failed</span></td><td>A retry of wrong questions does not replace the best practice score<small>Exploratory / state transition</small></td><td><ol><li>Finish practice with 25 of 28 (89%).</li><li>Click &quot;Ulangi 3 soal yang salah&quot; and answer all three correctly.</li><li>Click &quot;Pilih mode lagi&quot; and read the best score for Latihan.</li></ol></td><td>The best score for Latihan stays 89%, because the retry covered only 3 of the 28 questions.</td></tr><tr><td><b>TCPRG007</b><br><span class="st negative">Negative</span><br><span class="st passed">Passed</span></td><td>HTML typed as a nickname is shown as text<small>Security (script injection)</small></td><td><ol><li>Type the test data into the nickname field and leave the field.</li><li>Finish an exam and read the result.</li></ol></td><td>The text is displayed exactly as typed in the toast and the result. No image is created and no alert pops up.</td></tr><tr><td><b>TCNAV004</b><br><span class="st positive">Positive</span><br><span class="st failed">Failed</span></td><td>Header navigation at the layout breakpoint<small>Boundary value analysis</small></td><td><ol><li>Set the window width to 861 px and count the header links.</li><li>Set the width to 860 px and count again.</li></ol></td><td>The five section links stay reachable on both sides of the breakpoint.</td></tr></tbody>
+    <thead><tr><th>ID</th><th>Test case dan teknik</th><th>Test step</th><th>Expected result</th></tr></thead>
+    <tbody><tr><td><b>TCHIS006</b><br><span class="st positive">Positive</span><br><span class="st passed">Passed</span></td><td>Hasil Garuda baru muncul setelah kartu keempat<small>Boundary value analysis (3 dan 4 kartu)</small></td><td><ol><li>Buka tiga dari empat kartu Garuda.</li><li>Periksa apakah baris hasil sudah tampil.</li><li>Buka kartu keempat.</li></ol></td><td>Dengan tiga kartu terbuka belum ada yang terungkap. Setelah kartu keempat, kartu menampilkan 17, 8, 19, dan 45, baris &quot;17 Agustus 1945&quot; muncul bersama toast, dan daftar progres tertulis &quot;ditemukan&quot;.</td></tr><tr><td><b>TCPRG005</b><br><span class="st negative">Negative</span><br><span class="st passed">Passed</span></td><td>Batas panjang nama panggilan<small>Boundary value analysis (29, 30, 31)</small></td><td><ol><li>Ketik 29 karakter di kolom nama panggilan.</li><li>Kosongkan lalu ketik 30 karakter.</li><li>Kosongkan lalu ketik 31 karakter, kemudian tinggalkan kolomnya.</li></ol></td><td>29 dan 30 karakter diterima. Karakter ke-31 tidak diterima, sehingga nama yang tersimpan sepanjang 30 karakter.</td></tr><tr><td><b>TCEXM008</b><br><span class="st positive">Positive</span><br><span class="st passed">Passed</span></td><td>Aktivitas ujian tercentang mulai 70%<small>Boundary value analysis (60% / 70%)</small></td><td><ol><li>Selesaikan ujian dengan 6 dari 10 lalu baca daftar progres.</li><li>Selesaikan ujian lain dengan 7 dari 10 lalu baca lagi.</li></ol></td><td>Pada 60% item belum tercentang dan memberi nilai sebagian (total 17%). Pada 70% item tercentang dan total 20%.</td></tr><tr><td><b>TCQUI010</b><br><span class="st negative">Negative</span><br><span class="st failed">Failed</span></td><td>Mengulang soal yang salah tidak mengganti skor terbaik latihan<small>Exploratory / state transition</small></td><td><ol><li>Selesaikan latihan dengan 25 dari 28 (89%).</li><li>Klik &quot;Ulangi 3 soal yang salah&quot; lalu jawab ketiganya dengan benar.</li><li>Klik &quot;Pilih mode lagi&quot; dan baca skor terbaik Latihan.</li></ol></td><td>Skor terbaik Latihan tetap 89%, karena pengulangan hanya mencakup 3 dari 28 soal.</td></tr><tr><td><b>TCPRG007</b><br><span class="st negative">Negative</span><br><span class="st passed">Passed</span></td><td>HTML yang diketik sebagai nama ditampilkan sebagai teks<small>Keamanan (injeksi skrip)</small></td><td><ol><li>Ketik data uji di kolom nama panggilan lalu tinggalkan kolomnya.</li><li>Selesaikan satu ujian dan baca hasilnya.</li></ol></td><td>Teks ditampilkan persis seperti yang diketik di toast dan di hasil. Tidak ada gambar yang dibuat dan tidak ada alert yang muncul.</td></tr><tr><td><b>TCNAV004</b><br><span class="st positive">Positive</span><br><span class="st failed">Failed</span></td><td>Navigasi header di batas perubahan tata letak<small>Boundary value analysis</small></td><td><ol><li>Atur lebar jendela ke 861 px lalu hitung tautan di header.</li><li>Atur lebar ke 860 px lalu hitung lagi.</li></ol></td><td>Kelima tautan bagian tetap bisa dijangkau di kedua sisi batas.</td></tr></tbody>
   </table></div>
 </div></section>
 
 <div class="wrap"><div class="download" id="download">
   <div>
-    <h2>Download the Excel files</h2>
-    <p>The test results for Virsila, and an empty template with the same structure for use on another project.</p>
-    <ul><li>Summary with live formulas</li><li>Test plan</li><li>One sheet per module</li><li>72 test cases with results</li><li>3 bug reports</li><li>Template with example rows and a how-to sheet</li></ul>
+    <h2>Unduh file Excel</h2>
+    <p>Hasil tes Virsila, dan template kosong dengan struktur yang sama untuk dipakai di proyek lain.</p>
+    <ul><li>Summary dengan rumus</li><li>Test plan</li><li>Satu sheet per modul</li><li>72 test case beserta hasilnya</li><li>3 laporan bug</li><li>Template dengan baris contoh dan sheet petunjuk</li></ul>
   </div>
   <div class="dl-btns">
-    <a class="btn y" href="Virsila-Manual-QA.xlsx" download="Virsila-Manual-QA.xlsx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Test results (.xlsx)</a>
-    <a class="btn w" href="QA-Manual-Test-Case-Template.xlsx" download="QA-Manual-Test-Case-Template.xlsx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Blank template (.xlsx)</a>
+    <a class="btn y" href="Virsila-Manual-QA.xlsx" download="Virsila-Manual-QA.xlsx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Hasil tes (.xlsx)</a>
+    <a class="btn w" href="QA-Manual-Test-Case-Template.xlsx" download="QA-Manual-Test-Case-Template.xlsx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Template kosong (.xlsx)</a>
   </div>
 </div></div>
 </main>
-<footer><div class="wrap">Tested on 16 Nov 2026 in Google Chrome 153. The exam timer case was shortened with a simulated clock. · <a href="../virsila/">Virsila</a> · <a href="../#projects">Back to portfolio</a></div></footer>
+<footer><div class="wrap">Diuji pada 16 Nov 2026 di Google Chrome 153. Kasus timer ujian dipersingkat dengan jam yang disimulasikan. · <a href="../virsila/">Virsila</a> · <a href="../#projects">Kembali ke portofolio</a></div></footer>
 <script src="../assets/back3d.js"></script>
 </body>
 </html>
