@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Manual QA: Virsila — M. Rivaldi Mahari</title>
-<meta name="description" content="Manual testing of the Virsila learning web app: test plan, 66 test cases, a traceability matrix and 3 bug reports, with the Excel workbook to download.">
+<meta name="description" content="Manual testing of the Virsila learning web app: 72 positive and negative test cases across 8 modules, 3 bug reports, the Excel results and a reusable template.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -69,35 +69,54 @@ td ol{padding-left:18px}
 .download small{display:block;text-align:center;color:#C7D3C3;margin-top:8px;font-size:13px}
 footer{border-top:1px solid var(--line);padding:22px 0 80px;color:var(--muted);font-size:14.5px}
 @media (max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}.steps,.tech{grid-template-columns:1fr}.bug{grid-template-columns:1fr}.download{grid-template-columns:1fr;padding:26px}.download ul{columns:1}}
+.st.passed,.st.positive{background:var(--green-3);color:var(--green)}.st.failed{background:var(--red-soft);color:var(--red)}.st.note{background:var(--yellow-soft);color:#7A5A00}.st.negative{background:#FCE5CD;color:#7F3F00}
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.pn div{border-radius:20px;padding:20px;font-size:15.5px;color:var(--muted)}.pn .p{background:var(--green-3)}.pn .n{background:#FCE5CD}
+.pn b{display:block;color:var(--ink);font-size:17px}
+.dl-btns{display:grid;gap:12px}.dl-btns .btn{justify-content:center}.btn.w{background:#fff;color:var(--green)}
+@media (max-width:820px){.pn{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="top"><div class="wrap"><a href="../#projects">← Rivaldi’s portfolio</a><a class="pill" href="#download">Download the Excel workbook</a></div></div>
+<div class="top"><div class="wrap"><a href="../#projects">← Rivaldi’s portfolio</a><a class="pill" href="#download">Download the Excel files</a></div></div>
 <header class="hero"><div class="wrap">
   <span class="eyebrow">Manual QA project</span>
   <h1>Testing <em>Virsila</em> by hand, end to end.</h1>
-  <p class="lead">Virsila is an interactive Pancasila learning web app with lessons, a practice game, a timed quiz and saved progress. I planned the testing, designed 66 test cases from derived requirements, ran them, and reported 3 bugs with steps and evidence.</p>
-  <div class="cta"><a class="btn y" href="#download">Download the workbook</a><a class="btn o" href="../virsila/">Open the app under test</a></div>
+  <p class="lead">Virsila is an interactive Pancasila learning web app with lessons, a practice game, a timed quiz and saved progress. I split it into modules and features, wrote positive and negative test cases for each, ran them, and reported 3 bugs with steps and evidence.</p>
+  <div class="cta"><a class="btn y" href="#download">Download the results</a><a class="btn o" href="../virsila/">Open the app under test</a></div>
 </div></header>
 <main>
 <div class="wrap stats">
-  <div><b>66</b>test cases designed and traced to 20 requirements</div>
-  <div><b>61</b>passed, 4 failed, 1 blocked</div>
-  <div><b>94%</b>pass rate of executed cases</div>
+  <div><b>72</b>test cases in 8 modules and 31 features</div>
+  <div><b>51 + 21</b>positive and negative cases</div>
+  <div><b>67</b>passed, 4 failed, 1 noted (94% pass rate)</div>
   <div><b>3</b>bugs reported, none critical</div>
 </div>
 
 <section><div class="wrap">
   <h2>How I <em>worked</em></h2>
-  <p class="sub">The process follows the standard test process (ISTQB): plan, analyse, design, execute, report. There was no written specification, so the first job was to write one.</p>
+  <p class="sub">The process follows the standard test process: plan, analyse, design, execute, report. There was no written specification, so expected results come from the app and its on-screen text.</p>
   <ol class="steps">
-    <li><b>Derive requirements</b>Explored every screen and wrote 20 testable requirements from what the app says it does.</li>
+    <li><b>Break the app down</b>Explored every screen and split the app into 8 modules and 31 features, one sheet per module.</li>
     <li><b>Plan</b>Set scope, approach, environment, entry and exit criteria, and severity and priority scales.</li>
-    <li><b>Design test cases</b>Wrote steps, test data and expected results for each requirement, naming the technique used.</li>
-    <li><b>Execute</b>Ran every case from a clean browser, at desktop size and at five narrower widths, recording the actual result.</li>
+    <li><b>Design test cases</b>For every feature: positive cases first, then negative ones, each with pre-condition, steps, test data and expected result.</li>
+    <li><b>Execute</b>Ran every case from a clean browser, at laptop size and at five narrower widths, recording the current result and status.</li>
     <li><b>Report bugs</b>Wrote each failure up with steps to reproduce, expected and actual results, impact, severity and a screenshot.</li>
-    <li><b>Summarise</b>Linked every case and bug back to its requirement and judged the result against the exit criteria.</li>
+    <li><b>Summarise</b>Counted results per module and judged them against the exit criteria.</li>
   </ol>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Positive and <em>negative</em> cases</h2>
+  <p class="sub">Every test case is labelled with its type, and inside each feature the positive cases come before the negative ones.</p>
+  <div class="pn">
+    <div class="p"><b>Positive · 51 cases</b>Valid input and the normal way of using a feature. The feature must work: the right screen opens, the score goes up, the progress is saved.</div>
+    <div class="n"><b>Negative · 21 cases</b>Invalid input, a wrong order of actions or misuse. The app must refuse it or stay unchanged, without breaking: a 31st character is not accepted, an answered question cannot be changed, HTML typed as a name stays plain text.</div>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>Feature</th><th>Positive case</th><th>Negative case</th></tr></thead>
+    <tbody><tr><th scope="row">Nickname</th><td><b>TCPRG004</b> Save a nickname</td><td><b>TCPRG007</b> HTML typed as a nickname is shown as text <span class="st passed">Passed</span></td></tr><tr><th scope="row">Deep link</th><td><b>TCNAV006</b> Deep link opens a specific sila</td><td><b>TCNAV007</b> Invalid deep link falls back to Sila 1 <span class="st passed">Passed</span></td></tr><tr><th scope="row">Keyboard answers</th><td><b>TCQUI005</b> Answer with the keyboard</td><td><b>TCQUI007</b> Keys outside A-D and 1-4 are ignored <span class="st passed">Passed</span></td></tr><tr><th scope="row">Garuda cards</th><td><b>TCHIS006</b> Garuda result appears only after the fourth card</td><td><b>TCHIS008</b> Clicking an opened Garuda card again changes nothing <span class="st passed">Passed</span></td></tr><tr><th scope="row">Result and retry</th><td><b>TCQUI009</b> Review and retry the wrong questions</td><td><b>TCQUI010</b> A retry of wrong questions does not replace the best practice score <span class="st failed">Failed</span></td></tr><tr><th scope="row">Answer a situation</th><td><b>TCPRA001</b> Correct answer in the practice game</td><td><b>TCPRA003</b> A practice-game answer cannot be changed <span class="st passed">Passed</span></td></tr></tbody>
+  </table></div>
 </div></section>
 
 <section><div class="wrap">
@@ -105,7 +124,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 80px;color:var(--muted);f
   <p class="sub">Each test case in the workbook names the technique that produced it. Four examples:</p>
   <div class="tech">
     <div><b>Boundary value analysis</b>The nickname allows 30 characters, so I typed <code>29</code>, <code>30</code> and <code>31</code>. The exam activity is ticked from 70%, so I scored <code>60%</code> and <code>70%</code>. The timer warning starts at one minute, so I checked <code>01:01</code> and <code>01:00</code>.</div>
-    <div><b>Equivalence partitioning</b>One correct and one wrong answer per quiz mode instead of every combination; one case per header link; all five sila because each has different content.</div>
+    <div><b>Equivalence partitioning</b>One correct and one wrong answer per quiz mode instead of every combination; keys <code>A</code>–<code>D</code> as the valid group and <code>E</code>, <code>5</code>, <code>0</code> as the invalid one.</div>
     <div><b>State transition</b>Not learned → learned → not learned; exam answer A → C; practice finished → retry → finished. The retry path is where BUG-001 was found.</div>
     <div><b>Error guessing</b>What if the saved progress is damaged? What if someone types HTML as their name? The first found BUG-003; the second passed.</div>
   </div>
@@ -114,10 +133,10 @@ footer{border-top:1px solid var(--line);padding:22px 0 80px;color:var(--muted);f
 <section><div class="wrap">
   <h2>Results by <em>module</em></h2>
   <div class="scroll"><table>
-    <thead><tr><th>Module</th><th>Cases</th><th>Pass</th><th>Fail</th><th>Blocked</th><th>Pass share</th></tr></thead>
-    <tbody><tr><th scope="row">Navigation</th><td>7</td><td>5</td><td>2</td><td>–</td><td><span class="bar"><i style="width:71%"></i></span></td></tr><tr><th scope="row">Lima Sila</th><td>6</td><td>6</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">History</th><td>7</td><td>7</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Practice game</th><td>7</td><td>7</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Quiz: practice</th><td>11</td><td>10</td><td>1</td><td>–</td><td><span class="bar"><i style="width:91%"></i></span></td></tr><tr><th scope="row">Quiz: exam</th><td>8</td><td>8</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Progress</th><td>12</td><td>11</td><td>1</td><td>–</td><td><span class="bar"><i style="width:92%"></i></span></td></tr><tr><th scope="row">Layout & accessibility</th><td>8</td><td>7</td><td>–</td><td>1</td><td><span class="bar"><i style="width:88%"></i></span></td></tr><tr><th scope="row">Total</th><td><b>66</b></td><td><b>61</b></td><td><b>4</b></td><td><b>1</b></td><td></td></tr></tbody>
+    <thead><tr><th>Module</th><th>All TC</th><th>Positive</th><th>Negative</th><th>Passed</th><th>Failed</th><th>Note</th><th>Pass share</th></tr></thead>
+    <tbody><tr><th scope="row">Navigation</th><td>8</td><td>7</td><td>1</td><td>6</td><td>2</td><td>–</td><td><span class="bar"><i style="width:75%"></i></span></td></tr><tr><th scope="row">Lima Sila</th><td>7</td><td>6</td><td>1</td><td>7</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">History</th><td>8</td><td>6</td><td>2</td><td>8</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Practice</th><td>8</td><td>5</td><td>3</td><td>8</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Quiz Practice</th><td>12</td><td>7</td><td>5</td><td>11</td><td>1</td><td>–</td><td><span class="bar"><i style="width:92%"></i></span></td></tr><tr><th scope="row">Quiz Exam</th><td>9</td><td>6</td><td>3</td><td>9</td><td>–</td><td>–</td><td><span class="bar"><i style="width:100%"></i></span></td></tr><tr><th scope="row">Progress</th><td>12</td><td>6</td><td>6</td><td>11</td><td>1</td><td>–</td><td><span class="bar"><i style="width:92%"></i></span></td></tr><tr><th scope="row">Layout</th><td>8</td><td>8</td><td>–</td><td>7</td><td>–</td><td>1</td><td><span class="bar"><i style="width:88%"></i></span></td></tr><tr><th scope="row">Total</th><td><b>72</b></td><td><b>51</b></td><td><b>21</b></td><td><b>67</b></td><td><b>4</b></td><td><b>1</b></td><td></td></tr></tbody>
   </table></div>
-  <p class="note"><b>Exit criteria:</b> all High-priority cases were executed, no Critical or High-severity bug is open and the pass rate is above 90%, so the criteria are met. One case (external links) is blocked and still has to be re-run with internet access.</p>
+  <p class="note"><b>Exit criteria:</b> all High-priority cases were executed, no Critical or High-severity bug is open and the pass rate is above 90%, so the criteria are met. One case (external links) has the status Note and still has to be re-run with internet access.</p>
 </div></section>
 
 <section><div class="wrap">
@@ -126,7 +145,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 80px;color:var(--muted);f
   <article class="bug">
       <a class="shot" href="evidence/bug-001.png"><img src="evidence/bug-001.png" alt="Screenshot showing retrying only the wrong questions overwrites the best Latihan score with 100%"></a>
       <div>
-        <p class="meta"><b>BUG-001</b><span class="sev medium">Severity: Medium</span><span class="sev">Priority: High</span><span class="sev">Found by TC-QUI-08</span></p>
+        <p class="meta"><b>BUG-001</b><span class="sev medium">Severity: Medium</span><span class="sev">Priority: High</span><span class="sev">Found by TCQUI010</span></p>
         <h3>Retrying only the wrong questions overwrites the best Latihan score with 100%</h3>
         <ol><li>Open Virsila with no saved progress and go to &quot;Kuis&quot;.</li><li>Click &quot;Mulai latihan&quot; and finish all 28 questions with 25 correct and 3 wrong (result 89%).</li><li>On the result screen click &quot;Ulangi 3 soal yang salah&quot;.</li><li>Answer the three questions correctly and finish.</li><li>Click &quot;Pilih mode lagi&quot; and read the best score under Latihan.</li></ol>
         <dl><dt>Expected</dt><dd>The best Latihan score stays 89%. A retry covers only the 3 questions that were wrong, so it should not count as a full practice score.</dd><dt>Actual</dt><dd>The retry result is 100% with the text &quot;Skor terbaik baru untuk mode ini.&quot;, and the mode screen then shows &quot;Skor terbaik: 100%&quot; for Latihan.</dd><dt>Impact</dt><dd>A learner who got questions wrong sees a perfect best score, so the score no longer tells them or a teacher how well they know the material.</dd></dl>
@@ -134,7 +153,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 80px;color:var(--muted);f
     </article><article class="bug">
       <a class="shot" href="evidence/bug-002.png"><img src="evidence/bug-002.png" alt="Screenshot showing on screens up to 860 px wide the header hides four of the five section links and offers no menu"></a>
       <div>
-        <p class="meta"><b>BUG-002</b><span class="sev medium">Severity: Medium</span><span class="sev">Priority: Medium</span><span class="sev">Found by TC-NAV-06, TC-NAV-07</span></p>
+        <p class="meta"><b>BUG-002</b><span class="sev medium">Severity: Medium</span><span class="sev">Priority: Medium</span><span class="sev">Found by TCNAV003, TCNAV004</span></p>
         <h3>On screens up to 860 px wide the header hides four of the five section links and offers no menu</h3>
         <ol><li>Open Virsila in a window 390 px wide (or any width up to 860 px).</li><li>Look at the header.</li><li>Try to go to Sejarah, Praktik or Kuis from the header.</li></ol>
         <dl><dt>Expected</dt><dd>All five sections can be reached from the header, either as links or through a menu button.</dd><dt>Actual</dt><dd>Only &quot;Progres&quot; is shown. Lima Sila, Sejarah, Praktik and Kuis are hidden and there is no menu button. At 861 px all five links are shown.</dd><dt>Impact</dt><dd>Phone and tablet users, the main audience of a learning site for students, can only reach the quiz and the practice game by scrolling through the whole page.</dd></dl>
@@ -142,30 +161,33 @@ footer{border-top:1px solid var(--line);padding:22px 0 80px;color:var(--muted);f
     </article><article class="bug">
       <a class="shot" href="evidence/bug-003.png"><img src="evidence/bug-003.png" alt="Screenshot showing the page stays almost empty when the saved progress has the wrong shape"></a>
       <div>
-        <p class="meta"><b>BUG-003</b><span class="sev low">Severity: Low</span><span class="sev">Priority: Low</span><span class="sev">Found by TC-PRG-11</span></p>
+        <p class="meta"><b>BUG-003</b><span class="sev low">Severity: Low</span><span class="sev">Priority: Low</span><span class="sev">Found by TCPRG012</span></p>
         <h3>The page stays almost empty when the saved progress has the wrong shape</h3>
         <ol><li>Open Virsila, then DevTools → Application → Local Storage.</li><li>Set the key virsila-progres-v1 to {&quot;sila&quot;:null}.</li><li>Reload the page.</li></ol>
-        <dl><dt>Expected</dt><dd>The app ignores the damaged value and starts from 0%, as it already does for text that is not valid data (TC-PRG-10).</dd><dt>Actual</dt><dd>The hero shows no emblems, and the Lima Sila panel, the practice game and the quiz are empty. The console shows &quot;Cannot read properties of null (reading &#x27;includes&#x27;)&quot;. The page stays broken on every visit until the stored value is deleted.</dd><dt>Impact</dt><dd>Rare for normal users, because the value has to be damaged first (for example by an older version of the app or a browser extension). When it happens the user cannot recover without clearing site data.</dd></dl>
+        <dl><dt>Expected</dt><dd>The app ignores the damaged value and starts from 0%, as it already does for text that is not valid data (TCPRG011).</dd><dt>Actual</dt><dd>The hero shows no emblems, and the Lima Sila panel, the practice game and the quiz are empty. The console shows &quot;Cannot read properties of null (reading &#x27;includes&#x27;)&quot;. The page stays broken on every visit until the stored value is deleted.</dd><dt>Impact</dt><dd>Rare for normal users, because the value has to be damaged first (for example by an older version of the app or a browser extension). When it happens the user cannot recover without clearing site data.</dd></dl>
       </div>
     </article>
 </div></section>
 
 <section><div class="wrap">
   <h2>Sample <em>test cases</em></h2>
-  <p class="sub">Six of the 66. The workbook also has preconditions, test data, actual results and requirement IDs for every case.</p>
+  <p class="sub">Six of the 72. The workbook also has the pre-condition, test data, current result, priority and capture link for every case.</p>
   <div class="scroll"><table>
-    <thead><tr><th>ID</th><th>Title and technique</th><th>Steps</th><th>Expected result</th></tr></thead>
-    <tbody><tr><td><b>TC-HIS-06</b><br><span class="st pass">Pass</span></td><td>Garuda result appears only after the fourth card<small>Boundary value analysis (3 and 4 cards)</small></td><td><ol><li>Open three of the four Garuda cards.</li><li>Check whether the result line is shown.</li><li>Open the fourth card.</li></ol></td><td>With three cards open nothing is revealed. After the fourth, the cards show 17, 8, 19 and 45, the line &quot;17 Agustus 1945&quot; appears with a toast, and the list reads &quot;ditemukan&quot;.</td></tr><tr><td><b>TC-PRG-03</b><br><span class="st pass">Pass</span></td><td>Nickname length limit<small>Boundary value analysis (29, 30, 31)</small></td><td><ol><li>Type 29 characters into the nickname field.</li><li>Clear it and type 30 characters.</li><li>Clear it and type 31 characters, then leave the field.</li></ol></td><td>29 and 30 characters are accepted. The 31st character is not accepted, so the saved nickname is 30 characters long.</td></tr><tr><td><b>TC-EXM-06</b><br><span class="st pass">Pass</span></td><td>Exam activity is ticked from 70%<small>Boundary value analysis (60% / 70%)</small></td><td><ol><li>Finish an exam with 6 of 10 and read the progress list.</li><li>Finish another with 7 of 10 and read it again.</li></ol></td><td>At 60% the item is not ticked and gives partial credit (total 17%). At 70% the item is ticked and the total is 20%.</td></tr><tr><td><b>TC-QUI-08</b><br><span class="st fail">Fail</span></td><td>A retry of wrong questions does not replace the best practice score<small>Exploratory / state transition</small></td><td><ol><li>Finish practice with 25 of 28 (89%).</li><li>Click &quot;Ulangi 3 soal yang salah&quot; and answer all three correctly.</li><li>Click &quot;Pilih mode lagi&quot; and read the best score for Latihan.</li></ol></td><td>The best score for Latihan stays 89%, because the retry covered only 3 of the 28 questions.</td></tr><tr><td><b>TC-PRG-05</b><br><span class="st pass">Pass</span></td><td>HTML typed as a nickname is shown as text<small>Security (script injection)</small></td><td><ol><li>Type the test data into the nickname field and leave the field.</li><li>Finish an exam and read the result.</li></ol></td><td>The text is displayed exactly as typed in the toast and the result. No image is created and no alert pops up.</td></tr><tr><td><b>TC-NAV-07</b><br><span class="st fail">Fail</span></td><td>Header navigation at the layout breakpoint<small>Boundary value analysis</small></td><td><ol><li>Set the window width to 861 px and count the header links.</li><li>Set the width to 860 px and count again.</li></ol></td><td>The five section links stay reachable on both sides of the breakpoint.</td></tr></tbody>
+    <thead><tr><th>ID</th><th>Test case and technique</th><th>Test step</th><th>Expected result</th></tr></thead>
+    <tbody><tr><td><b>TCHIS006</b><br><span class="st positive">Positive</span><br><span class="st passed">Passed</span></td><td>Garuda result appears only after the fourth card<small>Boundary value analysis (3 and 4 cards)</small></td><td><ol><li>Open three of the four Garuda cards.</li><li>Check whether the result line is shown.</li><li>Open the fourth card.</li></ol></td><td>With three cards open nothing is revealed. After the fourth, the cards show 17, 8, 19 and 45, the line &quot;17 Agustus 1945&quot; appears with a toast, and the list reads &quot;ditemukan&quot;.</td></tr><tr><td><b>TCPRG005</b><br><span class="st negative">Negative</span><br><span class="st passed">Passed</span></td><td>Nickname length limit<small>Boundary value analysis (29, 30, 31)</small></td><td><ol><li>Type 29 characters into the nickname field.</li><li>Clear it and type 30 characters.</li><li>Clear it and type 31 characters, then leave the field.</li></ol></td><td>29 and 30 characters are accepted. The 31st character is not accepted, so the saved nickname is 30 characters long.</td></tr><tr><td><b>TCEXM008</b><br><span class="st positive">Positive</span><br><span class="st passed">Passed</span></td><td>Exam activity is ticked from 70%<small>Boundary value analysis (60% / 70%)</small></td><td><ol><li>Finish an exam with 6 of 10 and read the progress list.</li><li>Finish another with 7 of 10 and read it again.</li></ol></td><td>At 60% the item is not ticked and gives partial credit (total 17%). At 70% the item is ticked and the total is 20%.</td></tr><tr><td><b>TCQUI010</b><br><span class="st negative">Negative</span><br><span class="st failed">Failed</span></td><td>A retry of wrong questions does not replace the best practice score<small>Exploratory / state transition</small></td><td><ol><li>Finish practice with 25 of 28 (89%).</li><li>Click &quot;Ulangi 3 soal yang salah&quot; and answer all three correctly.</li><li>Click &quot;Pilih mode lagi&quot; and read the best score for Latihan.</li></ol></td><td>The best score for Latihan stays 89%, because the retry covered only 3 of the 28 questions.</td></tr><tr><td><b>TCPRG007</b><br><span class="st negative">Negative</span><br><span class="st passed">Passed</span></td><td>HTML typed as a nickname is shown as text<small>Security (script injection)</small></td><td><ol><li>Type the test data into the nickname field and leave the field.</li><li>Finish an exam and read the result.</li></ol></td><td>The text is displayed exactly as typed in the toast and the result. No image is created and no alert pops up.</td></tr><tr><td><b>TCNAV004</b><br><span class="st positive">Positive</span><br><span class="st failed">Failed</span></td><td>Header navigation at the layout breakpoint<small>Boundary value analysis</small></td><td><ol><li>Set the window width to 861 px and count the header links.</li><li>Set the width to 860 px and count again.</li></ol></td><td>The five section links stay reachable on both sides of the breakpoint.</td></tr></tbody>
   </table></div>
 </div></section>
 
 <div class="wrap"><div class="download" id="download">
   <div>
-    <h2>Download the workbook</h2>
-    <p>One Excel file with everything on this page, ready to filter, re-run and extend.</p>
-    <ul><li>Summary with live formulas</li><li>Test plan</li><li>Requirements traceability matrix</li><li>66 test cases with results</li><li>3 bug reports</li><li>How-to sheet</li></ul>
+    <h2>Download the Excel files</h2>
+    <p>The test results for Virsila, and an empty template with the same structure for use on another project.</p>
+    <ul><li>Summary with live formulas</li><li>Test plan</li><li>One sheet per module</li><li>72 test cases with results</li><li>3 bug reports</li><li>Template with example rows and a how-to sheet</li></ul>
   </div>
-  <div><a class="btn y" href="Virsila-Manual-QA.xlsx" download="Virsila-Manual-QA.xlsx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Virsila-Manual-QA.xlsx</a><small>Excel · 6 sheets</small></div>
+  <div class="dl-btns">
+    <a class="btn y" href="Virsila-Manual-QA.xlsx" download="Virsila-Manual-QA.xlsx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Test results (.xlsx)</a>
+    <a class="btn w" href="QA-Manual-Test-Case-Template.xlsx" download="QA-Manual-Test-Case-Template.xlsx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Blank template (.xlsx)</a>
+  </div>
 </div></div>
 </main>
 <footer><div class="wrap">Tested on 16 Nov 2026 in Google Chrome 153. The exam timer case was shortened with a simulated clock. · <a href="../virsila/">Virsila</a> · <a href="../#projects">Back to portfolio</a></div></footer>
