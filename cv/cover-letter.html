@@ -20,7 +20,7 @@ a{color:inherit;text-decoration:none}
 .toolbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 14px;background:var(--green);box-shadow:0 8px 24px rgba(29,36,31,.25);margin-bottom:22px;font:600 14px/1.2 "Plus Jakarta Sans",Inter,system-ui,sans-serif}
 .toolbar a{font-weight:800;padding:9px 18px;border-radius:999px;color:#fff;white-space:nowrap}
 .toolbar .back{border:2px solid rgba(255,255,255,.5)}
-.toolbar .tabs{display:flex;background:rgba(255,255,255,.12);border-radius:999px;padding:4px}
+.toolbar .tabs{display:flex;max-width:100%;overflow-x:auto;background:rgba(255,255,255,.12);border-radius:999px;padding:4px}
 .toolbar .tabs a{padding:7px 16px;color:#E6EDE3}
 .toolbar .tabs a[aria-current]{background:#fff;color:var(--green)}
 .toolbar .dl{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--green)}
@@ -71,7 +71,31 @@ html:not(.data) .letter [data-role="qa"],html.data .letter [data-role="data"]{di
 .switch button{font:inherit;font-weight:800;padding:8px 16px;border-radius:999px;border:2px solid var(--green);background:#fff;color:var(--green);cursor:pointer}
 .switch button[aria-pressed="true"]{background:var(--green);color:#fff}
 .switch button:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
-@media print{.switch{display:none}}
+@media print{.switch,.tailor{display:none!important}}
+.switch .cust{border-style:dashed;margin-left:10px}
+.switch .cust[aria-expanded="true"]{background:var(--yellow);border-style:solid;border-color:var(--yellow);color:var(--green)}
+.tailor{width:210mm;max-width:calc(100% - 24px);margin:0 auto 16px;background:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 10px 30px rgba(29,36,31,.18);font:500 14px/1.4 "Plus Jakarta Sans",Inter,system-ui,sans-serif;color:#1D241F}
+.tailor h2{font-size:16px;font-weight:800;text-transform:none;letter-spacing:0;border:0;margin:0;padding:0;color:var(--green)}
+.tailor .hint{color:#5D675F;margin-top:4px}
+.tailor .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-top:14px}
+.tailor label{display:block;font-weight:700;font-size:13px;color:var(--green)}
+.tailor label small{font-weight:500;color:#5D675F}
+.tailor input,.tailor textarea{display:block;width:100%;margin-top:4px;font:inherit;font-weight:500;color:#111;border:1.5px solid #C9D2C1;border-radius:10px;padding:8px 10px;background:#fff}
+.tailor textarea{resize:vertical;min-height:58px}
+.tailor input:focus-visible,.tailor textarea:focus-visible{outline:3px solid var(--yellow);outline-offset:1px;border-color:var(--green)}
+.tailor .wide{grid-column:1/-1}
+.tailor .acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.tailor button{font:inherit;font-weight:800;padding:9px 18px;border-radius:999px;border:2px solid var(--green);background:#fff;color:var(--green);cursor:pointer}
+.tailor button.go{background:var(--green);color:#fff}
+.tailor button:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.tailor .saved{color:#5D675F;font-size:13px}
+@media screen{
+  html.tailoring .letter .ed{border-radius:4px;cursor:text;transition:background .15s}
+  html.tailoring .letter .ed:hover{background:#FFF8E1}
+  html.tailoring .letter .ed:focus{outline:2px solid var(--yellow);outline-offset:3px;background:#FFFDF4}
+  html.tailoring .letter [data-f]{background:#E7EFE2;border-radius:3px;box-shadow:0 0 0 1px #E7EFE2}
+}
+@media screen and (max-width:700px){.tailor .grid{grid-template-columns:1fr}.switch{flex-wrap:wrap}.switch .cust{margin-left:0}}
 @media screen and (max-width:700px){.letter{font-size:14px}}
 </style>
 </head>
@@ -92,36 +116,57 @@ html:not(.data) .letter [data-role="qa"],html.data .letter [data-role="data"]{di
   <span>Version:</span>
   <button type="button" data-r="qa" aria-pressed="true">QA Engineer</button>
   <button type="button" data-r="data" aria-pressed="false">Data Analyst</button>
+  <button type="button" class="cust" id="cust" aria-expanded="false" aria-controls="tailor">Customize for a company</button>
 </div>
+
+<form class="tailor" id="tailor" hidden autocomplete="off">
+  <h2>Tailor this letter</h2>
+  <p class="hint">Fill in the company details and the letter updates as you type. Click any paragraph in the letter to rewrite it. Changes are saved in this browser only.</p>
+  <div class="grid">
+    <label>Company name<input name="company" placeholder="e.g. PT Contoh Teknologi"></label>
+    <label>Position<input name="position" placeholder="e.g. Junior QA Engineer"></label>
+    <label>Recipient <small>(name or title)</small><input name="recipient" placeholder="Hiring Manager"></label>
+    <label>Date<input name="date" type="date"></label>
+    <label class="wide">Company address <small>(optional, one line per row)</small><textarea name="address" rows="2" placeholder="Street&#10;City"></textarea></label>
+    <label class="wide">Why this company <small>(optional paragraph, added before the closing paragraph)</small><textarea name="why" rows="3" placeholder="What draws you to this company or product, and what you would bring to it."></textarea></label>
+  </div>
+  <div class="acts">
+    <button type="button" class="go" id="t-pdf">Save as PDF</button>
+    <button type="button" id="t-reset">Reset to original</button>
+    <span class="saved" id="t-saved" role="status"></span>
+  </div>
+</form>
 
 <main class="doc letter">
   <h1>M. RIVALDI MAHARI</h1>
   <p class="contact">Bandung, Indonesia • 089695637050 • <a href="mailto:rivaldimhr@gmail.com">rivaldimhr@gmail.com</a> • <a href="https://rivaldimhr.github.io/">rivaldimhr.github.io</a> • <a href="https://github.com/rivaldimhr">github.com/rivaldimhr</a></p>
   <hr class="rule">
 
-  <p class="date">16 November 2026</p>
-  <p class="to">Hiring Manager<br>Recruitment Team</p>
+  <p class="date"><span data-f="date">16 November 2026</span></p>
+  <p class="to"><span data-f="recipient">Hiring Manager</span><br><span data-f="company">Recruitment Team</span><span data-f="address"></span></p>
 
   <!-- ===== QA Engineer ===== -->
   <div data-role="qa">
-    <p class="re">Re: Application for Quality Assurance Engineer</p>
+    <p class="re">Re: Application for <span data-f="position">Quality Assurance Engineer</span></p>
     <div class="body">
-      <p>Dear Hiring Manager,</p>
-      <p>I am writing to apply for the Quality Assurance Engineer position. I recently graduated in Information Technology Systems from Institut Teknologi Bandung and have worked in two QA roles, where I learned that good testing starts with understanding how people actually use a product.</p>
+      <p>Dear <span data-f="recipient">Hiring Manager</span>,</p>
+      <p>I am writing to apply for the <span data-f="position">Quality Assurance Engineer</span> position<span data-f="atco"></span>. I recently graduated in Information Technology Systems from Institut Teknologi Bandung and have worked in two QA roles, where I learned that good testing starts with understanding how people actually use a product.</p>
       <p>At PT Akhdani Reka Solusi, I created and executed test cases for the SIMPUS web application based on its requirements and user workflows, automated repetitive regression checks with Selenium, and worked with developers until each reported bug was fixed and verified. Before that, at PT Bringin Inti Teknologi, I tested Bee-RP, an employee management system, as part of a three-person QA team, and led QA for TrackMate, a task-tracking web app, preparing both for user acceptance testing.</p>
       <p>To go further than my day-to-day work, I built a QA automation portfolio around a project-monitoring web app and a REST API. I wrote a test plan and 64 test cases, logged 14 bugs in Jira with steps and evidence, and automated 115 test runs with Playwright and pytest, plus a Postman collection run by Newman. Everything runs daily in GitHub Actions and publishes an HTML report, which you can open on my portfolio.</p>
+      <p data-f="why" hidden></p>
       <p>I bring careful, well-documented testing and clear communication with developers, and I also use SQL and Python, which helps when a test needs to check the data behind a screen. I would welcome the chance to discuss how I could support your team's releases. Thank you for your time and consideration.</p>
     </div>
   </div>
 
   <!-- ===== Data Analyst ===== -->
   <div data-role="data">
-    <p class="re">Re: Application for Data Analyst</p>
+    <p class="re">Re: Application for <span data-f="position">Data Analyst</span></p>
     <div class="body">
-      <p>Dear Hiring Manager,</p>
-      <p>I am writing to apply for the Data Analyst position. I recently graduated in Information Technology Systems from Institut Teknologi Bandung, and I enjoy turning raw data into answers that a business can act on.</p>
+      <p>Dear <span data-f="recipient">Hiring Manager</span>,</p>
+      <p>I am writing to apply for the <span data-f="position">Data Analyst</span> position<span data-f="atco"></span>. I recently graduated in Information Technology Systems from Institut Teknologi Bandung, and I enjoy turning raw data into answers that a business can act on.</p>
       <p>During my internship at PT Sarana Pactindo, I built a web-based billing forecast system and analyzed data to support updates to two company websites, working with two stakeholders to understand what they needed and to improve the accuracy of the results. My two Quality Assurance roles since then taught me to check numbers carefully before anyone relies on them.</p>
       <p>In my own projects, I analyzed 98,000 e-commerce orders with 13 SQL queries covering cohort retention, RFM segmentation and delivery delays. I found that only 3% of customers buy again and that a late first delivery lowers repeat purchases by 25% (p = 0.002), and I turned this into five recommendations with success metrics. I also built a 7-day demand forecast for 300 products from 1 million retail transactions. Both projects have public dashboards and code on my portfolio.</p>
+      <p data-f="why" hidden></p>
       <p>I would bring solid SQL and Python, a habit of testing my own analysis, and the ability to explain findings in plain language to people outside the data team. I would welcome the chance to discuss how I could help your team make better decisions with data. Thank you for your time and consideration.</p>
     </div>
   </div>
@@ -130,11 +175,57 @@ html:not(.data) .letter [data-role="qa"],html.data .letter [data-role="data"]{di
 </main>
 
 <script>
-(()=>{const root=document.documentElement,dl=document.getElementById('dl'),btns=document.querySelectorAll('.switch button');
+(()=>{const root=document.documentElement,dl=document.getElementById('dl'),btns=document.querySelectorAll('.switch button[data-r]');
 const set=r=>{root.classList.toggle('data',r==='data');btns.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.r===r)));
   const f='M-Rivaldi-Mahari-Cover-Letter-'+(r==='data'?'Data-Analyst':'QA')+'.pdf';dl.href='../assets/'+f;dl.download=f;
   history.replaceState(null,'',r==='data'?'#data':location.pathname);};
-btns.forEach(b=>b.addEventListener('click',()=>set(b.dataset.r)));addEventListener('hashchange',()=>set(location.hash==='#data'?'data':'qa'));set(root.classList.contains('data')?'data':'qa');})();
+btns.forEach(b=>b.addEventListener('click',()=>set(b.dataset.r)));window.__role=()=>root.classList.contains('data')?'data':'qa';addEventListener('hashchange',()=>set(location.hash==='#data'?'data':'qa'));set(root.classList.contains('data')?'data':'qa');})();
+</script>
+<script>
+/* Tailor the letter for one company: fields fill the marked spots, paragraphs can be rewritten, everything stays in this browser. */
+(()=>{
+const KEY='cover-letter-tailor-v1',root=document.documentElement,form=document.getElementById('tailor'),cust=document.getElementById('cust'),saved=document.getElementById('t-saved');
+const letter=document.querySelector('.letter'),roles={qa:letter.querySelector('[data-role="qa"]'),data:letter.querySelector('[data-role="data"]')};
+const paras=r=>[...roles[r].querySelectorAll('.body p:not([data-f])')];
+const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* keep only text and the marked spots when storing or restoring a paragraph */
+const clean=el=>[...el.childNodes].map(n=>n.nodeType===3?esc(n.nodeValue):(n.nodeType===1&&n.dataset&&/^(position|atco|recipient)$/.test(n.dataset.f||'')?`<span data-f="${n.dataset.f}"></span>`:esc(n.textContent||''))).join('');
+const DEF={date:letter.querySelector('[data-f="date"]').textContent,recipient:'Hiring Manager',company:'Recruitment Team',position:{qa:'Quality Assurance Engineer',data:'Data Analyst'},paras:{qa:paras('qa').map(clean),data:paras('data').map(clean)}};
+let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S||typeof S!=='object'||Array.isArray(S))S={};
+S.f=Object.assign({company:'',recipient:'',date:'',address:'',why:''},S.f&&typeof S.f==='object'?S.f:{});
+S.position=Object.assign({qa:'',data:''},S.position&&typeof S.position==='object'?S.position:{});
+S.paras=S.paras&&typeof S.paras==='object'?S.paras:{};
+const role=()=>window.__role?window.__role():'qa';
+const fmt=v=>{const d=new Date(v+'T00:00');return isNaN(d)?DEF.date:d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})};
+const str=v=>typeof v==='string'?v.trim():'';
+function render(){
+  const f=S.f,co=str(f.company),rec=str(f.recipient)||DEF.recipient;
+  letter.querySelectorAll('[data-f]').forEach(el=>{const k=el.dataset.f,r=el.closest('[data-role]')?.dataset.role;
+    if(k==='date')el.textContent=f.date?fmt(f.date):DEF.date;
+    else if(k==='recipient')el.textContent=rec;
+    else if(k==='company')el.textContent=co||DEF.company;
+    else if(k==='atco')el.textContent=co?' at '+co:'';
+    else if(k==='position')el.textContent=str(S.position[r||role()])||DEF.position[r||role()];
+    else if(k==='address'){el.textContent='';str(f.address).split(/\n+/).filter(x=>x.trim()).forEach(l=>{el.append(document.createElement('br'),l.trim())})}
+    else if(k==='why'){el.textContent=str(f.why);el.hidden=!str(f.why)}
+  });
+}
+function restoreParas(){for(const r of['qa','data']){const st=Array.isArray(S.paras[r])?S.paras[r]:[];paras(r).forEach((p,i)=>{const h=typeof st[i]==='string'?st[i]:DEF.paras[r][i];const t=document.createElement('template');t.innerHTML=h;p.innerHTML=clean(t.content);p.classList.add('ed')})}}
+function fill(){for(const el of form.elements){if(!el.name)continue;el.value=el.name==='position'?S.position[role()]:S.f[el.name]||''}form.elements.position.placeholder='e.g. '+DEF.position[role()]}
+let tm;function save(){try{localStorage.setItem(KEY,JSON.stringify(S));saved.textContent='Saved in this browser'}catch(e){saved.textContent='Could not save in this browser; your changes last until you close this tab'}clearTimeout(tm);tm=setTimeout(()=>saved.textContent='',2500)}
+function editable(on){root.classList.toggle('tailoring',on);letter.querySelectorAll('.ed').forEach(p=>{p.contentEditable=on?'true':'false';p.querySelectorAll('[data-f]').forEach(s=>s.contentEditable='false')})}
+form.addEventListener('input',e=>{const el=e.target;if(!el.name)return;if(el.name==='position')S.position[role()]=el.value;else S.f[el.name]=el.value;render();save()});
+form.addEventListener('submit',e=>e.preventDefault());
+letter.addEventListener('input',e=>{const p=e.target.closest('.ed');if(!p)return;const r=p.closest('[data-role]').dataset.role;S.paras[r]=paras(r).map(clean);save()});
+letter.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.closest('.ed'))e.preventDefault()});
+letter.addEventListener('paste',e=>{if(!e.target.closest('.ed'))return;e.preventDefault();document.execCommand('insertText',false,(e.clipboardData.getData('text/plain')||'').replace(/\s+/g,' '))});
+cust.addEventListener('click',()=>{const open=form.hidden;form.hidden=!open;cust.setAttribute('aria-expanded',String(open));editable(open);if(open){if(!S.f.date){const d=new Date();S.f.date=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;render()}fill();form.elements.company.focus()}});
+document.querySelectorAll('.switch button[data-r]').forEach(b=>b.addEventListener('click',()=>{fill();render();editable(!form.hidden)}));
+document.getElementById('t-reset').addEventListener('click',()=>{if(!confirm('Remove your changes and go back to the original letter?'))return;try{localStorage.removeItem(KEY)}catch(e){}S={f:{company:'',recipient:'',date:'',address:'',why:''},position:{qa:'',data:''},paras:{}};restoreParas();render();fill();editable(!form.hidden);saved.textContent='Back to the original letter'});
+document.getElementById('t-pdf').addEventListener('click',()=>{const t=document.title,co=str(S.f.company).replace(/[^\w]+/g,'-').replace(/^-|-$/g,'');document.title='M-Rivaldi-Mahari-Cover-Letter-'+(co||(role()==='data'?'Data-Analyst':'QA'));addEventListener('afterprint',()=>{document.title=t},{once:true});print()});
+restoreParas();render();
+})();
 </script>
 </body>
 </html>
